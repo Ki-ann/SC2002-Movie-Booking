@@ -1,35 +1,71 @@
-package Controllers;
+/**
+ Base navigation controller class that keeps track of the order in which navigation controller is called
+ and instantiates each controller globally.
+ @author Phee Kian Ann
+ @version 1.0
+ @since 2022-10-25
+ */
 
+package Controllers;
 import java.util.Stack;
 
 public class NavigationController {
 
+	/**
+	 * NavigationController singleton pattern instance.
+	 */
 	protected static NavigationController instance = null;
 
+	/**
+	 * Creates a new instance of NavigationController if there isn't one,
+	 * else returns the old created instance.
+	 * @return Instance of NavigationController singleton.
+	 */
 	public static NavigationController getInstance() {
 		if (instance == null)
 			instance = new NavigationController();
 		return instance;
 	}
 
-	private Stack<INavigation> stack;
+	/**
+	 * Stack keeps track controller creation order using a FILO order.
+	 */
+	private Stack<INavigation> stack = new Stack<>();
 
 	/**
-	 * 
-	 * @param navigation
+	 * Loads a new INavigation object, pushes it into the stack and runs the Start() method.
+	 * @param navigation Takes in an object that implements INavigation interface
+	 * @see INavigation
 	 */
 	public void Load(INavigation navigation) {
-		// TODO - implement Controllers.NavigationController.Load
-		throw new UnsupportedOperationException();
+		instance.stack.push(navigation);
+		navigation.Start();
 	}
 
 	/**
-	 * 
-	 * @param level
+	 * Pop the top level in the stack by given amount and Load the next controller.
+	 * @param level (Optional) Given an int, decides the amount of controllers to pop from the stack.
 	 */
 	public void goBack(int... level) {
-		// TODO - implement Controllers.NavigationController.goBack
-		throw new UnsupportedOperationException();
+		// Default Pop 1 level
+		int popLevels = 1;
+		// Override default if there are args passed
+		if(level.length > 0){
+			popLevels = level[0];
+		}
+
+		// Check if given an arg that is larger than the stack size
+		if(popLevels <= stack.size()){
+			INavigation lastController = stack.peek();
+			// Pop until it has reached required
+			for(int i=0; i < popLevels; ++i){
+				lastController = stack.pop();
+			}
+			// Reload the last popped navigation
+			Load(lastController);
+		}else{
+			throw new IndexOutOfBoundsException();
+		}
 	}
 
 }

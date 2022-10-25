@@ -8,8 +8,7 @@ public class MovieEditController implements INavigation {
 	}
 
 	public void GotoSearchMoviesSystem() {
-		// TODO - implement Controllers.MovieEditController.GotoSearchMoviesSystem
-		throw new UnsupportedOperationException();
+		NavigationController.getInstance().Load(new SearchMovieController());
 	}
 
 	public void CreateMovie() {

@@ -12,18 +12,15 @@ public class AdminController implements INavigation {
 	}
 
 	public void GotoMovieEditSystem() {
-		// TODO - implement Controllers.AdminController.GotoMovieEditSystem
-		throw new UnsupportedOperationException();
+		NavigationController.getInstance().Load(new MovieEditController());
 	}
 
 	public void GotoSettingsSystem() {
-		// TODO - implement Controllers.AdminController.GotoSettingsSystem
-		throw new UnsupportedOperationException();
+		NavigationController.getInstance().Load(new SettingsController());
 	}
 
 	public void GotoCineplexEditSystem() {
-		// TODO - implement Controllers.AdminController.GotoCineplexEditSystem
-		throw new UnsupportedOperationException();
+		NavigationController.getInstance().Load(new CineplexController());
 	}
 
 	public void Logout() {

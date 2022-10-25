@@ -8,23 +8,20 @@ public class CustomerController implements INavigation {
 	}
 
 	public void GotoBookingSystem() {
-		// TODO - implement Controllers.CustomerController.GotoBookingSystem
-		throw new UnsupportedOperationException();
+		NavigationController.getInstance().Load(new BookingController());
 	}
 
 	public void GotoSearchMoviesSystem() {
-		// TODO - implement Controllers.CustomerController.GotoSearchMoviesSystem
-		throw new UnsupportedOperationException();
+		NavigationController.getInstance().Load(new SearchMovieController());
 	}
 
 	public void GotoTopMoviesSystem() {
-		// TODO - implement Controllers.CustomerController.GotoTopMoviesSystem
-		throw new UnsupportedOperationException();
+		NavigationController.getInstance().Load(new TopMovieController());
 	}
 
 	public void GotoHistorySystem() {
-		// TODO - implement Controllers.CustomerController.GotoHistorySystem
-		throw new UnsupportedOperationException();
+		// TODO - Rethink whether to merge with BookingSystem or keep it seperate
+		NavigationController.getInstance().Load(new BookingController());
 	}
 
 }

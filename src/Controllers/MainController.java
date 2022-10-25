@@ -8,13 +8,11 @@ public class MainController implements INavigation {
 	}
 
 	public void GotoAdminModule() {
-		// TODO - implement Controllers.MainController.GotoAdminModule
-		throw new UnsupportedOperationException();
+		NavigationController.getInstance().Load(new AdminController());
 	}
 
 	public void GotoCustomerModule() {
-		// TODO - implement Controllers.MainController.GotoCustomerModule
-		throw new UnsupportedOperationException();
+		NavigationController.getInstance().Load(new CustomerController());
 	}
 
 }
