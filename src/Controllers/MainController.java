@@ -1,10 +1,18 @@
 package Controllers;
 
+import Views.ConsoleIOManager;
+import Views.MainView;
+
 public class MainController implements INavigation {
 
 	public void Start() {
-		// TODO - implement Controllers.MainController.Start
-		throw new UnsupportedOperationException();
+		MainView.DisplayMenu();
+		switch(ConsoleIOManager.ReadInt()){
+			case 1 -> GotoAdminModule();
+			case 2 -> GotoCustomerModule();
+			case 0 -> NavigationController.getInstance().goBack();
+		}
+
 	}
 
 	public void GotoAdminModule() {

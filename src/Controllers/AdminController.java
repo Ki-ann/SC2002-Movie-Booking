@@ -1,14 +1,18 @@
 package Controllers;
 
 import Controllers.Authentication.IAuthenticator;
+import Views.AdminView;
+import Views.ConsoleIOManager;
 
 public class AdminController implements INavigation {
 
 	private IAuthenticator authenticator;
 
 	public void Start() {
-		// TODO - implement Controllers.AdminController.Start
-		throw new UnsupportedOperationException();
+		AdminView.DisplayMenu();
+		switch(ConsoleIOManager.ReadInt()){
+			case 0 -> NavigationController.getInstance().goBack();
+		}
 	}
 
 	public void GotoMovieEditSystem() {
