@@ -34,10 +34,17 @@ public class NavigationController {
     /**
      * Stack keeps track controller creation order using a FILO order.
      */
-    private Stack<INavigation> stack = new Stack<>();
+    private final Stack<INavigation> stack = new Stack<>();
 
     /**
      * Loads a new INavigation object, pushes it into the stack and runs the Start() method.
+     *
+     * <br>Example:
+     * <pre>
+     * {@code
+     *      NavigationController.getInstance().Load(new AdminController());
+     * }
+     * </pre>
      * @param navigation Takes in an object that implements INavigation interface
      * @see INavigation
      */
