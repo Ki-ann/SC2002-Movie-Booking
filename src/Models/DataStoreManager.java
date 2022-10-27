@@ -56,12 +56,13 @@ public class DataStoreManager {
      *
      * @param object object to be added to the dataStore
      */
+    @SuppressWarnings("unchecked")
     public void AddToStore(Serializable object) {
         // Get class ArrayList that will store the object
-        ArrayList<Serializable> list = GetStore(object.getClass());
+        ArrayList<Serializable> list = (ArrayList<Serializable>)GetStore(object.getClass());
         if (list == null) {
             Store.put(object.getClass(), new ArrayList<>());
-            list = Store.get(object.getClass());
+            list = (ArrayList<Serializable>) GetStore(object.getClass());
         }
         // Add to ArrayList
         list.add(object);
@@ -75,7 +76,7 @@ public class DataStoreManager {
      * <br>Example:
      * <pre>
      * {@code
-     * 		ArrayList<Serializable> adminList = DataStoreManager.getInstance().GetStore(Admin.class);
+     * 		ArrayList<Admin> adminList = DataStoreManager.getInstance().GetStore(Admin.class);
      * }
      * </pre>
      *
@@ -83,8 +84,9 @@ public class DataStoreManager {
      * @param <T>            Generic type that is Serializable
      * @return The ArrayList for the given class from the DataStore dictionary
      */
-    public <T extends Serializable> ArrayList<Serializable> GetStore(Class<T> Deserializable) {
-        return Store.get(Deserializable);
+    @SuppressWarnings("unchecked")
+    public <T extends Serializable> ArrayList<T> GetStore(Class<T> Deserializable) {
+        return (ArrayList<T>) Store.get(Deserializable);
     }
 
     /**
