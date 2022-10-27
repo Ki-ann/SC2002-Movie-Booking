@@ -1,6 +1,8 @@
 package Models.Data;
 
-public class CinemaLayout {
+import java.io.Serializable;
+
+public class CinemaLayout implements Serializable {
 
 	private int row;
 	private int column;

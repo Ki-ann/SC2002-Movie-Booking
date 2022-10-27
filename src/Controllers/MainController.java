@@ -6,13 +6,19 @@ import Views.MainView;
 public class MainController implements INavigation {
 
 	public void Start() {
+		ConsoleIOManager.ClearScreen();
 		MainView.DisplayMenu();
-		switch(ConsoleIOManager.ReadInt()){
-			case 1 -> GotoAdminModule();
-			case 2 -> GotoCustomerModule();
-			case 0 -> NavigationController.getInstance().goBack();
-		}
-
+		boolean valid = true;
+		do {
+			switch (ConsoleIOManager.ReadInt()) {
+				case 1 -> GotoAdminModule();
+				case 2 -> GotoCustomerModule();
+				default -> {
+					ConsoleIOManager.PrintLine("Invalid input! Please select an item from the menu!");
+					valid = false;
+				}
+			}
+		} while(!valid);
 	}
 
 	public void GotoAdminModule() {

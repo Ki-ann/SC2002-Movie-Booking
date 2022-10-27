@@ -1,11 +1,12 @@
 package Models.Data;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class ShowTime {
+public class ShowTime implements Serializable {
 
-	private LocalTime timeOfMovie;
-	private LocalDate dateOfMovie;
+	public LocalTime timeOfMovie;
+	public LocalDate dateOfMovie;
 
 }

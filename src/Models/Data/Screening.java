@@ -1,9 +1,10 @@
 package Models.Data;
 
-public class Screening {
+import java.io.Serializable;
 
-	private Movie movie;
-	private ShowTime showTime;
-	private CinemaLayout sessionLayout;
+public class Screening implements Serializable {
 
+	public Movie movie;
+	public ShowTime showTime;
+	public CinemaLayout sessionLayout;
 }
