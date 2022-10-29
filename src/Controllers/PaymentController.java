@@ -10,7 +10,7 @@ public class PaymentController {
 	private int paymentMethod;
 	private int timeStamp;
 
-	public void NewPaymentTransaction() {
+	public void newPaymentTransaction() {
 		// TODO - implement Controllers.PaymentController.NewPaymentTransaction
 		throw new UnsupportedOperationException();
 	}
@@ -19,7 +19,7 @@ public class PaymentController {
 	 * 
 	 * @param PaymentMethod
 	 */
-	public boolean Pay(IPayment PaymentMethod) {
+	public boolean pay(IPayment PaymentMethod) {
 		// TODO - implement Controllers.PaymentController.Pay
 		throw new UnsupportedOperationException();
 	}

@@ -2,5 +2,6 @@ package Models.Data.Enums;
 
 public enum SeatType {
 	NORMAL,
-	SPECIAL_NEEDS
+	SPECIAL_NEEDS,
+	PROHIBITED
 }

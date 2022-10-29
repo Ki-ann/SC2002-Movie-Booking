@@ -8,26 +8,26 @@ public class AdminController implements INavigation {
 
 	private IAuthenticator authenticator;
 
-	public void Start() {
+	public void start() {
 		AdminView.DisplayMenu();
-		switch(ConsoleIOManager.ReadInt()){
+		switch(ConsoleIOManager.readInt()){
 			case 0 -> NavigationController.getInstance().goBack();
 		}
 	}
 
-	public void GotoMovieEditSystem() {
-		NavigationController.getInstance().Load(new MovieEditController());
+	public void gotoMovieEditSystem() {
+		NavigationController.getInstance().load(new MovieEditController());
 	}
 
-	public void GotoSettingsSystem() {
-		NavigationController.getInstance().Load(new SettingsController());
+	public void gotoSettingsSystem() {
+		NavigationController.getInstance().load(new SettingsController());
 	}
 
-	public void GotoCineplexEditSystem() {
-		NavigationController.getInstance().Load(new CineplexController());
+	public void gotoCineplexEditSystem() {
+		NavigationController.getInstance().load(new CineplexController());
 	}
 
-	public void Logout() {
+	public void logout() {
 		// TODO - implement Controllers.AdminController.Logout
 		throw new UnsupportedOperationException();
 	}
