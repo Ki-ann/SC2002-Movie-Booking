@@ -11,6 +11,7 @@ public class AdminController implements INavigation {
 	public void Start() {
 		AdminView.DisplayMenu();
 		switch(ConsoleIOManager.ReadInt()){
+			case 1 -> GotoSettingsSystem();
 			case 0 -> NavigationController.getInstance().goBack();
 		}
 	}

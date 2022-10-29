@@ -1,12 +1,12 @@
 package Controllers;
-
+import Models.DataStoreManager;
 import Views.ConsoleIOManager;
-import Models.Data.Setting;
+import Models.Data.*;
 import Views.SettingsView;
 import java.util.*;
-import java.util.ArrayList;
 
 public class SettingsController implements INavigation {
+	public Setting setting = new Setting();
 	private static Scanner sc = new Scanner(System.in);
 	public int initialMenuSelection = -1;
 	public void Start() {
@@ -28,9 +28,7 @@ public class SettingsController implements INavigation {
     
 	}
 			
-				
-
-	private static void manageTicketPrice() {
+	private void manageTicketPrice() {
 		//display original price chart
 		displayTicketPrices();
 		int choice;
@@ -52,6 +50,7 @@ public class SettingsController implements INavigation {
 				System.out.println("Enter new standard price: ");
 				double newSP = sc.nextDouble();
 				Setting.setStandardPrice(newSP);
+				DataStoreManager.getInstance().AddToStore(setting);
 				System.out.println("\nStandard price updated.");
 				displayTicketPrices();
 
@@ -63,7 +62,8 @@ public class SettingsController implements INavigation {
 		} while (choice >= 0 || choice <= 2);
 	}
 	
-	private static void manageHolidays() {
+	//SET HOLIDAY NAME AND DATE
+	private void manageHolidays() {
 		String holidayDate;
 		String holidayName;
 		ConsoleIOManager.ClearScreen();
@@ -85,7 +85,7 @@ public class SettingsController implements INavigation {
 					Setting.Holiday.put(holidayName,holidayDate);
 					System.out.println("Added date as holiday.");
 					System.out.println(Setting.Holiday);
-					
+					DataStoreManager.getInstance().AddToStore(Setting.Holiday);
 				}
 				else {
 					System.out.println("You have entered wrong input. Please re-enter again!");
@@ -95,15 +95,14 @@ public class SettingsController implements INavigation {
 		NavigationController.getInstance().goBack(1);
 	}
 	
-	/**
-	 * displayTicketPrices() : Displays ticket price chart
-	 */
-	private static void displayTicketPrices() {
+	//displayTicketPrices() : Displays ticket price chart
+	private void displayTicketPrices() {
 		System.out.println("____________ TICKET PRICE CHART ___________\n");
-		System.out.printf("Adult\t\t\t\t%.2f\n",Setting.getAdultPrice());
-		System.out.printf("Student\t\t\t\t%.2f\n", Setting.getStudentPrice());
-		System.out.printf("Senior\t\t\t\t%.2f\n",Setting.getSeniorPrice());
-		System.out.printf("Children\t\t\t%.2f\n", Setting.getChildPrice());
+		System.out.printf("Adult\t\t\t\t%.2f\n",setting.getAdultPrice());
+		System.out.printf("Student\t\t\t\t%.2f\n", setting.getStudentPrice());
+		System.out.printf("Senior\t\t\t\t%.2f\n",setting.getSeniorPrice());
+		System.out.printf("Children\t\t\t%.2f\n", setting.getChildPrice());
+		System.out.printf("Holiday\t\t\t%.2f\n", setting.getHolidayPrice());
 		System.out.println("\n");
 	}
 }
