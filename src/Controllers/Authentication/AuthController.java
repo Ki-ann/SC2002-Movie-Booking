@@ -1,17 +1,34 @@
 package Controllers.Authentication;
 
+import Controllers.NavigationController;
+import Models.DataStoreManager;
 import Models.Data.Admin;
+import Views.ConsoleIOManager;
 
 public class AuthController implements IAuthenticator {
-
-	public Admin login() {
+	public Admin Login() {
 		// TODO - implement Controllers.Authentication.AuthController.Login
-		throw new UnsupportedOperationException();
-	}
+		ConsoleIOManager.PrintLine("Username: ");
+		String Username = ConsoleIOManager.ReadString();
+		ConsoleIOManager.PrintLine("Password: ");
+		String password = ConsoleIOManager.ReadString();
 
-	public void logout() {
+		return new Admin(Username,password);
+	}
+	public void createAccount(){
+		ConsoleIOManager.PrintLine("Username: ");
+		String Username	 = ConsoleIOManager.ReadString();
+		ConsoleIOManager.PrintLine("Password: ");
+		String password = ConsoleIOManager.ReadString();
+		DataStoreManager.getInstance().AddToStore(new Admin(Username, password));
+
+		ConsoleIOManager.PrintLine("Account created");
+	}
+	
+	public void Logout() {
 		// TODO - implement Controllers.Authentication.AuthController.Logout
-		throw new UnsupportedOperationException();
+		System.out.println("Logged out!");
+		NavigationController.getInstance().goBack();
 	}
 
 }

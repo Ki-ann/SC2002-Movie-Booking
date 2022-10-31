@@ -5,19 +5,19 @@ import java.util.List;
 
 public class Cineplex implements Serializable {
 
-	private final ArrayList<Cinema> cinemaList = new ArrayList<>();
+	public ArrayList<Cinema> cinemaList = new ArrayList<>();
 	private String name;
 
-	public ArrayList<Cinema> getCinemaList() {
+	public ArrayList<Cinema> GetCinemaList() {
 		return cinemaList;
 	}
 
-	public List<Cinema> getCinemasWithMovie(Movie movie) {
-		return getCinemaList()
+	public List<Cinema> GetFilteredCinemaList(Movie movie) {
+		return GetCinemaList()
 				// Foreach Cinema...
 				.stream()
 				// Find those Cinemas with the selected movie
-				.filter(Cinema->Cinema.getMovieList()
+				.filter(Cinema->Cinema.GetMovieList()
 								// Foreach movie screening in the cinema
 								.stream()
 								// Find the screenings which match
@@ -29,7 +29,7 @@ public class Cineplex implements Serializable {
 	 * 
 	 * @param index
 	 */
-	public Cinema getCinemaByIndex(int index) {
+	public Cinema GetCinema(int index) {
 		return cinemaList.get(index);
 	}
 

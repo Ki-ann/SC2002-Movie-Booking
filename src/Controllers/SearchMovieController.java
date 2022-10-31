@@ -4,7 +4,7 @@ import Models.Data.Movie;
 
 public class SearchMovieController implements INavigation {
 
-	public void start() {
+	public void Start() {
 		// TODO - implement Controllers.SearchMovieController.Start
 		throw new UnsupportedOperationException();
 	}
@@ -13,12 +13,12 @@ public class SearchMovieController implements INavigation {
 	 * 
 	 * @param NameSubstring
 	 */
-	public Movie[] searchMoviebyName(String NameSubstring) {
+	public Movie[] SearchMoviebyName(String NameSubstring) {
 		// TODO - implement Controllers.SearchMovieController.SearchMoviebyName
 		throw new UnsupportedOperationException();
 	}
 
-	public void gotoReviewSystem() {
+	public void GotoReviewSystem() {
 		// TODO - implement Controllers.SearchMovieController.GotoReviewSystem
 		throw new UnsupportedOperationException();
 	}

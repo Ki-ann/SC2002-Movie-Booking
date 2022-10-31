@@ -1,48 +1,31 @@
 package Controllers;
 
+import Models.Data.Cinema;
 import Models.Data.Cineplex;
 import Models.Data.Movie;
+import Models.Data.Screening;
 import Models.DataStoreManager;
-import java.util.ArrayList;
 
-/**
- * Cineplex Controller is a Navigation that manages the logic and flow for Cineplex functions.
- *
- * @author
- * @version 1.0
- * @since 2022-10-28
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class CineplexController implements INavigation {
 
-    /**
-     * Start method implementation for initialization after loading with NavigationController.
-     *
-     * @see NavigationController
-     * @see INavigation
-     */
-    public void start() {
+    @Override
+    public void Start() {
+        ArrayList<Cineplex> e = GetCineplexList();
     }
 
-    /**
-     * Retrieves the cineplex list from DataStore.
-     * @see DataStoreManager
-     * @return Arraylist of Cineplex in the DataStore.
-     */
-    public ArrayList<Cineplex> getCineplexList() {
-        return DataStoreManager.getInstance().getStore(Cineplex.class);
+    public ArrayList<Cineplex> GetCineplexList() {
+        return DataStoreManager.getInstance().GetStore(Cineplex.class);
     }
 
-    /**
-     * Filters the list of cineplex with the given movie.
-     * @param movie the movie to filter for.
-     * @return An ArrayList of Cineplex which currently have a screening for the given movie.
-     */
-    public ArrayList<Cineplex> findCineplexAndCinemaWithSelectedMovie(Movie movie){
+    public ArrayList<Cineplex> FindCineplexAndCinemaWithSelectedMovie(Movie movie){
         ArrayList<Cineplex> cineplexList = new ArrayList<>();
         // Foreach cineplex
-        for (Cineplex cine : getCineplexList()) {
+        for (Cineplex cine : GetCineplexList()) {
             // If the selected movie appears in one of the cinemas, add to list
-            if(cine.getCinemasWithMovie(movie).size() > 0){
+            if(cine.GetFilteredCinemaList(movie).size() > 0){
                 cineplexList.add(cine);
             }
         }

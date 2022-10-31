@@ -1,8 +1,3 @@
-package Controllers;
-
-import Views.ConsoleIOManager;
-import java.util.Stack;
-
 /**
  * Base navigation controller class that keeps track of the order in which navigation controller is called
  * and instantiates each controller globally.
@@ -11,6 +6,13 @@ import java.util.Stack;
  * @version 1.0
  * @since 2022-10-25
  */
+
+package Controllers;
+
+import Views.ConsoleIOManager;
+
+import java.util.Stack;
+
 public class NavigationController {
 
     /**
@@ -46,9 +48,9 @@ public class NavigationController {
      * @param navigation Takes in an object that implements INavigation interface
      * @see INavigation
      */
-    public void load(INavigation navigation) {
+    public void Load(INavigation navigation) {
         instance.stack.push(navigation);
-        navigation.start();
+        navigation.Start();
     }
 
     /**
@@ -67,7 +69,7 @@ public class NavigationController {
 
         if (popLevels <= stack.size() + 1) {
             if (stack.size() == 0) {
-                ConsoleIOManager.printLine("Already on the first page!");
+                ConsoleIOManager.PrintLine("Already on the first page!");
             }
 
             // Pop until it has reached required
@@ -76,12 +78,12 @@ public class NavigationController {
                 --popLevels;
             }
         } else {
-            ConsoleIOManager.printLine("Too large of a value is given! Unable to go back!");
+            ConsoleIOManager.PrintLine("Too large of a value is given! Unable to go back!");
             return;
         }
 
         // Reload the last popped navigation
-        load(lastController);
+        Load(lastController);
     }
 
 }

@@ -4,35 +4,35 @@ import java.io.Serializable;
 
 public class Customer implements Serializable {
 
-	private String name = "";
-	private int phone = 0;
-	private String email = "";
+	private String Name = "";
+	private int Phone = 0;
+	private String Email = "";
 
 	public String getName() {
-		return name;
+		return Name;
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		Name = name;
 	}
 
 	public int getPhone() {
-		return phone;
+		return Phone;
 	}
 
 	public void setPhone(int phone) {
-		this.phone = phone;
+		Phone = phone;
 	}
 
 	public String getEmail() {
-		return email;
+		return Email;
 	}
 
 	public void setEmail(String email) {
-		this.email = email;
+		Email = email;
 	}
 
-	public boolean isAllFilled(){
-		return !name.isEmpty() && !email.isEmpty() && phone != 0;
+	public boolean AllFilled(){
+		return !Name.isEmpty() && !Email.isEmpty() && Phone != 0;
 	}
 }
