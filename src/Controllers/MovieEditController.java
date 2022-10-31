@@ -2,21 +2,21 @@ package Controllers;
 
 public class MovieEditController implements INavigation {
 
-	public void start() {
+	public void Start() {
 		// TODO - implement Controllers.MovieEditController.Start
 		throw new UnsupportedOperationException();
 	}
 
-	public void gotoSearchMoviesSystem() {
-		NavigationController.getInstance().load(new SearchMovieController());
+	public void GotoSearchMoviesSystem() {
+		NavigationController.getInstance().Load(new SearchMovieController());
 	}
 
-	public void createMovie() {
+	public void CreateMovie() {
 		// TODO - implement Controllers.MovieEditController.CreateMovie
 		throw new UnsupportedOperationException();
 	}
 
-	public void updateMovie() {
+	public void UpdateMovie() {
 		// TODO - implement Controllers.MovieEditController.UpdateMovie
 		throw new UnsupportedOperationException();
 	}

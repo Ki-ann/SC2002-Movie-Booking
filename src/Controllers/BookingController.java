@@ -1,362 +1,206 @@
 package Controllers;
 
+import Controllers.Payment.SimplePayment;
 import Models.Data.*;
-import Models.Data.Enums.BookingState;
 import Models.Data.Enums.MovieStatus;
-import Models.Data.Enums.SeatType;
 import Models.DataStoreManager;
 import Views.BookingView;
 import Views.ConsoleIOManager;
+
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * BookingController is a Navigation that manages the logic and flow for booking of movie tickets
- *
- * @author Phee Kian Ann
- * @version 1.0
- * @since 2022-10-29
- */
 public class BookingController implements INavigation {
 
-    private int initialMenuSelection = -1;
-    private BookingState currentBookingBookingState = BookingState.GET_MOVIES;
-    private BookingTicket bookingTicket = new BookingTicket();
-    private LocalDate currentlySelectedDate = LocalDate.now();
+    public int initialMenuSelection = -1;
+    public BookingTicket bookingTicket = new BookingTicket();
+    public LocalDate currentlySelectedDate = LocalDate.now();
 
-    /**
-     * Start method implementation for initialization after loading with NavigationController
-     * Resets the currently stored variables and displays the selection menu for the user.
-     * @see NavigationController
-     * @see INavigation
-     */
-    public void start() {
-        reset();
-        BookingView.displayMenu();
+    public void Start() {
+        BookingView.DisplayMenu();
         do {
             if (initialMenuSelection == -1) {
-                initialMenuSelection = ConsoleIOManager.readInt();
+                initialMenuSelection = ConsoleIOManager.ReadInt();
             }
             switch (initialMenuSelection) {
-                case 1 -> createBookingTransaction();
-                case 2 -> viewBookingHistory();
+                case 1 -> CreateBookingTransaction();
+                case 2 -> ViewBookingHistory();
                 case 0 -> NavigationController.getInstance().goBack();
                 default -> {
-                    ConsoleIOManager.printLine("Invalid input! Please select an item from the menu!");
+                    ConsoleIOManager.PrintLine("Invalid input! Please select an item from the menu!");
                     initialMenuSelection = -1;
                 }
             }
         } while (initialMenuSelection == -1);
     }
 
-    /**
-     * The state machine function that handles the flow of creating a booking transaction.
-     */
-    public void createBookingTransaction() {
-        CineplexController controller = new CineplexController();
+    public void CreateBookingTransaction() {
+        Movie selectedMovie = bookingTicket.getSelectedMovie();
+        Cineplex selectedCineplex = bookingTicket.getSelectedCineplex();
+        Cinema selectedCinema = bookingTicket.getSelectedCinema();
+        Screening selectedScreening = bookingTicket.getSelectedScreening();
+        Customer customer = bookingTicket.getCustomer();
 
-        do {
-            Movie selectedMovie = bookingTicket.getSelectedMovie();
-            Cineplex selectedCineplex = bookingTicket.getSelectedCineplex();
-            Cinema selectedCinema = bookingTicket.getSelectedCinema();
-            Screening selectedScreening = bookingTicket.getSelectedScreening();
-            Customer customer = bookingTicket.getCustomer();
-            // State machine
-            switch (currentBookingBookingState) {
-                case GET_MOVIES ->//===== Get Movies that are NOW_SHOWING
-                        {
-                            List<Movie> movieList = getMovieList().stream().filter(Movie -> Movie.getMovieStatus() == MovieStatus.NOW_SHOWING).toList();
+        //===== Get Movies that are NOW_SHOWING
+        if (selectedMovie == null) {
+            List<Movie> movieList = GetMovieList().stream().filter(Movie -> Movie.getMovieStatus() == MovieStatus.NOW_SHOWING).toList();
 
-                            // Display Movie list
-                            BookingView.printMovieList(movieList);
-                            // TODO handle no movie listings
-                            // Get input
-                            selectedMovie = (getSelectedMovie(movieList));
-                            bookingTicket.setSelectedMovie(selectedMovie);
+            // Display Movie list
+            BookingView.PrintMovieList(movieList);
+            // Get input
+            selectedMovie = (GetSelectedMovie(movieList));
+            bookingTicket.setSelectedMovie(selectedMovie);
+        }
+        // Did not get any Movie
+        if (selectedMovie == null) {
+            throw new RuntimeException();
+        }
 
-                            // Did not get any Movie
-                            if (selectedMovie == null) {
-                                this.initialMenuSelection = -1; // Go back to main menu
-                                NavigationController.getInstance().goBack(0);
-                            }
-                        }
-                case GET_CINEPLEX -> //===== Find all available cineplex with selected Movie
-                        {
-                            List<Cineplex> filteredCineplexList = controller.findCineplexAndCinemaWithSelectedMovie(bookingTicket.getSelectedMovie());
+        //// Find all available cineplex with selected Movie
+        if (selectedCineplex == null) {
+            CineplexController controller = new CineplexController();
+            List<Cineplex> filteredCineplexList = controller.FindCineplexAndCinemaWithSelectedMovie(bookingTicket.getSelectedMovie());
 
-                            // Display available cineplex with selected Movie
-                            BookingView.printCineplexList(filteredCineplexList);
-                            // TODO handle no Cineplex listings
-                            // Get input
-                            selectedCineplex = getSelectedCineplex(filteredCineplexList);
-                            bookingTicket.setSelectedCineplex(selectedCineplex);
+            // Display available cineplex with selected Movie
+            BookingView.PrintCineplexList(filteredCineplexList);
+            // Get input
+            selectedCineplex = GetSelectedCineplex(filteredCineplexList);
+            bookingTicket.setSelectedCineplex(selectedCineplex);
+        }
+        //===== Did not get any Cineplex
+        if (selectedCineplex == null) {
+            throw new RuntimeException();
+        }
 
-                            // Did not get any Cineplex
-                            if (selectedCineplex == null) {
-                                currentBookingBookingState = currentBookingBookingState.prev();
-                                continue;
-                            }
-                        }
-                case GET_DATE -> //===== Date Picker
-                        {
-                            // Print list of 7 dates starting from today
-                            BookingView.printDatePicker(selectedMovie);
+        //===== Date Picker
+        {
+            // Print list of 7 dates starting from today
+            BookingView.PrintDatePicker(selectedMovie);
 
-                            // Get input
-                            var selectedDate = getDatePicker();
-                            this.currentlySelectedDate = selectedDate;
+            // Get input
+            SetSelectedDate(GetDatePicker());
+        }
 
-                            // Did not get a date
-                            if (selectedDate == null) {
-                                currentBookingBookingState = currentBookingBookingState.prev();
-                                continue;
-                            }
-                        }
+        //===== Display all show times collated amongst all cinemas
+        if (selectedCinema == null) {
+            List<Cinema> CinemasWithSelectedMovie = selectedCineplex.GetFilteredCinemaList(selectedMovie);
 
+            // Display available time slots
+            BookingView.PrintCinemaOverview(CinemasWithSelectedMovie, selectedMovie, currentlySelectedDate);
+            // Get input
+            selectedCinema = GetSelectedCinema(CinemasWithSelectedMovie);
+            bookingTicket.setSelectedCinema(selectedCinema);
+        }
+        // Did not get any Cinema
+        if (selectedCinema == null) {
+            throw new RuntimeException();
+        }
 
-                case GET_ALL_SHOWTIME -> //===== Display all show times collated amongst all cinemas
-                        {
-                            List<Cinema> CinemasWithSelectedMovie = selectedCineplex.getCinemasWithMovie(selectedMovie);
+        //===== Display show time picker
+        if (selectedScreening == null) {
+            List<Screening> filteredScreeningList = selectedCinema.screeningList.stream()
+                    .filter(s->s.movie.getName().equals(bookingTicket.getSelectedMovie().getName())
+                            && s.showTime.dateOfMovie.isEqual(currentlySelectedDate)).toList();
+            // Display available time slots
+            BookingView.PrintCinemaShowtime(filteredScreeningList, selectedMovie, currentlySelectedDate);
+            // Get input
+            selectedScreening = GetSelectedScreening(filteredScreeningList);
+            bookingTicket.setSelectedScreening(selectedScreening);
+        }
+        // Did not get any screening ?? shouldn't reach here anyway
+        if (selectedScreening == null) {
+            throw new RuntimeException();
+        }
 
-                            // Display available time slots
-                            BookingView.printCinemaOverview(CinemasWithSelectedMovie, selectedMovie, currentlySelectedDate);
-                            // Get input
-                            selectedCinema = getSelectedCinema(CinemasWithSelectedMovie);
-                            bookingTicket.setSelectedCinema(selectedCinema);
+        //===== Seat picker
+        {
+            // Get input
+        }
 
-                            // Did not get any Cinema
-                            if (selectedCinema == null) {
-                                currentBookingBookingState = currentBookingBookingState.prev();
-                                continue;
-                            }
-                        }
+        //===== Get Customer info
+        if(customer == null || !customer.AllFilled()){
+            customer = GetCustomerInfo();
+            // Print Final Preview
+            BookingView.PrintCustomerInfo(customer);
+            bookingTicket.setCustomer(customer);
+        }
 
-                case GET_SHOWTIME_DETAILED -> //===== Display show time picker
-                        {
-                            List<Screening> filteredScreeningList = selectedCinema.getScreeningList().stream().filter(s -> s.getMovie().getName().equals(bookingTicket.getSelectedMovie().getName()) && s.getShowTime().dateOfMovie.isEqual(currentlySelectedDate)).toList();
-                            // Display available time slots
-                            BookingView.printCinemaShowtime(filteredScreeningList, selectedMovie, currentlySelectedDate);
-                            // Get input
-                            selectedScreening = getSelectedScreening(filteredScreeningList);
-                            bookingTicket.setSelectedScreening(selectedScreening);
-
-                            // Did not get any screening
-                            if (selectedScreening == null) {
-                                currentBookingBookingState = currentBookingBookingState.prev();
-                                continue;
-                            }
-                        }
-                case GET_SEAT -> //===== Seat picker
-                        {
-                            // Get input
-                            BookingView.printSeatLayout(selectedScreening.getSessionLayout());
-                            CinemaLayout selectedLayout = getSelectedSeat(selectedScreening.getSessionLayout());
-                            // Did not get any seats
-                            if (selectedLayout == null) {
-                                currentBookingBookingState = currentBookingBookingState.prev();
-                                continue;
-                            }
-                            selectedScreening.getSessionLayout().get(selectedLayout.getRow()).set(selectedLayout.getColumn(), selectedLayout);
-                            bookingTicket.setSelectedSeat(selectedLayout);
-                        }
-                case GET_CUSTOMER_INFO -> //===== Get Customer info
-                        {
-                            if (customer == null || !customer.isAllFilled()) {
-                                customer = getCustomerInfo();
-                                // Did not get customer, go back
-                                if (customer == null) {
-                                    currentBookingBookingState = currentBookingBookingState.prev();
-                                    // Customer cancelled
-                                    bookingTicket.getSelectedSeat().setAssigned(false);
-                                    continue;
-                                }
-                                // Print Final Preview
-                                BookingView.printCustomerInfo(customer);
-                                bookingTicket.setCustomer(customer);
-
-                            }
-                        }
-                case GET_CONFIRMATION -> //=====Price Check
-                        {
-                            bookingTicket.setPrice(10.50);
-                            //===== Confirm
-                            {
-                                BookingView.printCheckout(bookingTicket);
-                                boolean confirm = ConsoleIOManager.readConfirm();
-
-                                if (!confirm) {
-                                    currentBookingBookingState = currentBookingBookingState.prev();
-                                    bookingTicket.setCustomer(new Customer());
-                                    continue;
-                                }
-                            }
-                        }
-            }
-            currentBookingBookingState = currentBookingBookingState.next();
-        } while (currentBookingBookingState != BookingState.FINISHED);
-
+        //=====Price Check
+        bookingTicket.setPrice(10.50);
+        //===== Confirm
+        {
+            BookingView.PrintCheckout(bookingTicket);
+            ConsoleIOManager.ReadConfirm();
+        }
 
         //===== Payment (Success)
         //PaymentController paymentController = new PaymentController();
         //paymentController.Pay(new SimplePayment());
 
         //===== All succeeded, and save transaction
-        saveBookingTransaction(this.bookingTicket);
+        SaveBookingTransaction(this.bookingTicket);
     }
 
-    /**
-     * Gets the user's desired movie selection input .
-     * @param movieList The list of movies for the user to choose from.
-     * @return User selected movie.
-     */
-    private Movie getSelectedMovie(List<Movie> movieList) {
-        Movie selectedMovie;
-        int input;
-        do {
-            input = ConsoleIOManager.readInt();
-
-            if (input < 0 || input > movieList.size()) {
-                ConsoleIOManager.printLine("Invalid input! Please select an item from the menu!");
-            } else if (input == 0) {
-                return null;
-            } else {
-                selectedMovie = movieList.get(input - 1);
-                break;
-            }
-        } while (true);
-        return selectedMovie;
-    }
-
-    /**
-     * Gets the user's desired cineplex selection input.
-     * @param filteredCineplexList The list of cineplex for the user to choose from.
-     * @return User selected cineplex.
-     */
-    private Cineplex getSelectedCineplex(List<Cineplex> filteredCineplexList) {
-        Cineplex selectedCineplex;
-        int input;
-        do {
-            input = ConsoleIOManager.readInt();
-
-            if (input < 0 || input > filteredCineplexList.size()) {
-                ConsoleIOManager.printLine("Invalid input! Please select an item from the menu!");
-            } else if (input == 0) {
-                //Restart from choose movie
-                return null;
-            } else {
-                selectedCineplex = filteredCineplexList.get(input - 1);
-                break;
-            }
-        } while (true);
-        return selectedCineplex;
-    }
-
-    /**
-     * Gets the user's desired date selection input.
-     * @return User selected date.
-     */
-    private LocalDate getDatePicker() {
-        int input;
-        do {
-            input = ConsoleIOManager.readInt();
-
-            if (input < 0 || input > 7) {
-                ConsoleIOManager.printLine("Invalid input! Please select an item from the menu!");
-            } else if (input == 0) {
-                return null;
-            } else {
-                return LocalDate.now().plus(Period.ofDays(input - 1));
-            }
-        } while (true);
-    }
-
-    /**
-     * Gets the user's desired cinema selection input.
-     * @param cinemasWithSelectedMovie The list of cinemas that contain the selected movie.
-     * @return User selected cinema.
-     */
-    private Cinema getSelectedCinema(List<Cinema> cinemasWithSelectedMovie) {
-        Cinema selectedCinema;
-        int input;
-        do {
-            input = ConsoleIOManager.readInt();
-
-            if (input < 0 || input > cinemasWithSelectedMovie.size()) {
-                ConsoleIOManager.printLine("Invalid input! Please select an item from the menu!");
-            } else if (input == 0) {
-                //Restart from choose cineplex
-                return null;
-            } else {
-                selectedCinema = cinemasWithSelectedMovie.get(input - 1);
-                break;
-            }
-        } while (true);
-        return selectedCinema;
-    }
-
-    /**
-     * Gets the user's customer information. Runs in a loop until all fields are successfully inputted.
-     * @return User's customer information.
-     */
-    private Customer getCustomerInfo() {
+    private Customer GetCustomerInfo() {
         Customer customer = new Customer();
         int intInput = -1;
         String stringInput = "";
         do {
-            BookingView.printCustomerInfo(customer);
+            BookingView.PrintCustomerInfo(customer);
 
             if (customer.getName().isEmpty()) {
-                ConsoleIOManager.printF("Please enter your Name or choice: ");
-                stringInput = ConsoleIOManager.readString();
-                if (stringInput.equals("0")) break;
+                ConsoleIOManager.PrintF("Please enter your Name: ");
+                stringInput = ConsoleIOManager.ReadString();
+                if(stringInput.equals("0"))
+                    break;
                 customer.setName(stringInput);
 
                 continue;
             }
             if (customer.getEmail().isEmpty()) {
-                ConsoleIOManager.printF("Please enter your Email or choice: ");
-                stringInput = ConsoleIOManager.readString();
-                if (stringInput.equals("0")) break;
+                ConsoleIOManager.PrintF("Please enter your Email: ");
+                stringInput = ConsoleIOManager.ReadString();
+                if(stringInput.equals("0"))
+                    break;
 
                 customer.setEmail(stringInput);
                 continue;
             }
             if (customer.getPhone() == 0) {
-                ConsoleIOManager.printF("Please enter your Phone or choice: ");
-                intInput = ConsoleIOManager.readInt();
-                if (intInput == 0) break;
+                ConsoleIOManager.PrintF("Please enter your Phone: ");
+                intInput = ConsoleIOManager.ReadInt();
+                if(intInput == 0)
+                    break;
 
                 customer.setPhone(intInput);
                 break;
             }
 
 
-        } while (true);
+        }while(true);
 
         if (stringInput.equals("0") || intInput == 0) {
             //Restart from choose cineplex
-            return null;
+            this.bookingTicket.setCustomer(null);
+            NavigationController.getInstance().goBack(0);
         }
         return customer;
     }
 
-    /**
-     * Gets the user's desired screening selection input.
-     * @param filteredScreeningList  The list of available screenings to choose from
-     * @return User selected screening
-     */
-    private Screening getSelectedScreening(List<Screening> filteredScreeningList) {
+    private Screening GetSelectedScreening(List<Screening> filteredScreeningList) {
         Screening selectedScreening;
         int input;
         do {
-            input = ConsoleIOManager.readInt();
+            input = ConsoleIOManager.ReadInt();
 
             if (input < 0 || input > filteredScreeningList.size()) {
-                ConsoleIOManager.printLine("Invalid input! Please select an item from the menu!");
+                ConsoleIOManager.PrintLine("Invalid input! Please select an item from the menu!");
             } else if (input == 0) {
                 //Restart from choose cineplex
+                this.bookingTicket.setSelectedCineplex(null);
+                NavigationController.getInstance().goBack(0);
                 return null;
             } else {
                 selectedScreening = filteredScreeningList.get(input - 1);
@@ -366,108 +210,106 @@ public class BookingController implements INavigation {
         return selectedScreening;
     }
 
-    /**
-     * Gets the user's desired seat selection input
-     * @param layout The current selected Screening's layout
-     * @return User's selected Seat information
-     */
-    private CinemaLayout getSelectedSeat(ArrayList<ArrayList<CinemaLayout>> layout) {
-        String input;
+    private Movie GetSelectedMovie(List<Movie> movieList) {
+        Movie selectedMovie;
+        int input;
         do {
-            input = ConsoleIOManager.readString();
-            CinemaLayout selectedLayout = null;
-            // Get input
-            if (input.trim().length() >= 2) {
-                try {
-                    char inputCharArray = input.charAt(0);
-                    int row = inputCharArray > 64 && inputCharArray < 91 ? inputCharArray - 65 : -1;
-                    int col = Integer.parseInt(input.substring(1));
-                    if (row >= 0 && row < layout.size() && col >= 0 && col < layout.get(row).size()) {
-                        // Get seat layout
-                        selectedLayout = layout.get(row).get(col);
-                    }
-                } catch (NumberFormatException exception) {
-                    ConsoleIOManager.printLine("Invalid input! Please select a valid row & column! e.g. A10");
-                }
-            } else if (input.equals("0")) {
+            input = ConsoleIOManager.ReadInt();
+
+            if (input < 0 || input > movieList.size()) {
+                ConsoleIOManager.PrintLine("Invalid input! Please select an item from the menu!");
+            } else if (input == 0) {
+                this.initialMenuSelection = -1;
+                NavigationController.getInstance().goBack(0);
                 return null;
             } else {
-                ConsoleIOManager.printLine("Invalid input! Please select a valid row & column! e.g. A10");
-            }
-
-            // Found seat, assigning
-            if(selectedLayout != null) {
-                if (selectedLayout.isAssigned()) {
-                    ConsoleIOManager.printLine("Seat is already taken!");
-                    continue;
-                } else if (selectedLayout.getSeatType() == SeatType.PROHIBITED) {
-                    ConsoleIOManager.printLine("Invalid input! Please select a valid row & column! e.g. A10");
-                    continue;
-                }
-                selectedLayout.setAssigned(true);
-                return selectedLayout;
-            }
-        } while (true);
-    }
-
-    /**
-     * Booking was successful. Booking information is saved into the database, and cineplex is updated in the database.
-     * @param newBookingTicket the new successful booking transaction
-     */
-    private void saveBookingTransaction(BookingTicket newBookingTicket) {
-        BookingView.printSaveBooking();
-        DataStoreManager.getInstance().addToStore(newBookingTicket);
-        // Save everything including Cineplex information
-        DataStoreManager.getInstance().saveAll();
-
-        // Go back on user input
-        do {
-            if (ConsoleIOManager.readInt() == 0) {
-                NavigationController.getInstance().goBack(0);
+                selectedMovie = movieList.get(input - 1);
                 break;
+            }
+        } while (true);
+        return selectedMovie;
+    }
+
+    private Cineplex GetSelectedCineplex(List<Cineplex> filteredCineplexList) {
+        Cineplex selectedCineplex;
+        int input;
+        do {
+            input = ConsoleIOManager.ReadInt();
+
+            if (input < 0 || input > filteredCineplexList.size()) {
+                ConsoleIOManager.PrintLine("Invalid input! Please select an item from the menu!");
+            } else if (input == 0) {
+                //Restart from choose movie
+                this.bookingTicket.setSelectedMovie(null);
+                NavigationController.getInstance().goBack(0);
+                return null;
             } else {
-                ConsoleIOManager.printLine("Invalid input! Please select an item from the menu!");
+                selectedCineplex = filteredCineplexList.get(input - 1);
+                break;
+            }
+        } while (true);
+        return selectedCineplex;
+    }
+
+    private LocalDate GetDatePicker() {
+        int input;
+        do {
+            input = ConsoleIOManager.ReadInt();
+
+            if (input < 0 || input > 7) {
+                ConsoleIOManager.PrintLine("Invalid input! Please select an item from the menu!");
+            } else if (input == 0) {
+                this.bookingTicket.setSelectedCineplex(null);
+                NavigationController.getInstance().goBack(0);
+                return null;
+            } else {
+                return LocalDate.now().plus(Period.ofDays(input - 1));
             }
         } while (true);
     }
 
-    /**
-     * The function that handles the flow of viewing a User's booking history
-     */
-    private void viewBookingHistory() {
-        for (BookingTicket ticket : getBookingHistoryList()) {
+    private Cinema GetSelectedCinema(List<Cinema> cinemasWithSelectedMovie) {
+        Cinema selectedCinema;
+        int input;
+        do {
+            input = ConsoleIOManager.ReadInt();
 
-
-            ConsoleIOManager.printF("%d", ticket.getSelectedSeat().getRow());
-        }
-
+            if (input < 0 || input > cinemasWithSelectedMovie.size()) {
+                ConsoleIOManager.PrintLine("Invalid input! Please select an item from the menu!");
+            } else if (input == 0) {
+                //Restart from choose cineplex
+                this.bookingTicket.setSelectedCineplex(null);
+                NavigationController.getInstance().goBack(0);
+                return null;
+            } else {
+                selectedCinema = cinemasWithSelectedMovie.get(input - 1);
+                break;
+            }
+        } while (true);
+        return selectedCinema;
     }
 
-    /**
-     * Resets the temporary data fields in the object
-     */
-    private void reset() {
-        initialMenuSelection = -1;
-        currentBookingBookingState = BookingState.GET_MOVIES;
-        bookingTicket = new BookingTicket();
-        currentlySelectedDate = LocalDate.now();
+    public void SaveBookingTransaction(BookingTicket newBookingTicket) {
+        //debug
+        ConsoleIOManager.PrintLine("Saved new booking");
+        DataStoreManager.getInstance().AddToStore(newBookingTicket);
     }
 
-    /**
-     * Retrieves the Movie list from DataStore
-     * @see DataStoreManager
-     * @return Arraylist of Movies in the DataStore
-     */
-    private ArrayList<Movie> getMovieList() {
-        return DataStoreManager.getInstance().getStore(Movie.class);
+    public void ViewBookingHistory() {
+        // TODO - implement Controllers.BookingController.ViewBookingHistory
+        throw new UnsupportedOperationException();
     }
 
-    /**
-     * Retrieves the booking list from DataStore
-     * @see DataStoreManager
-     * @return Arraylist of BookingTickets in the DataStore
-     */
-    private ArrayList<BookingTicket> getBookingHistoryList() {
-        return DataStoreManager.getInstance().getStore(BookingTicket.class);
+    public ArrayList<Movie> GetMovieList() {
+        return DataStoreManager.getInstance().GetStore(Movie.class);
     }
+
+    public void SetSelectedDate(LocalDate newDate) {
+        this.currentlySelectedDate = newDate;
+    }
+
+    public LocalDate GetSelectedDate() {
+        return this.currentlySelectedDate;
+    }
+
 }

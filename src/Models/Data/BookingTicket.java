@@ -10,7 +10,6 @@ public class BookingTicket implements Serializable {
 	private Cinema selectedCinema;
 	private Movie selectedMovie;
 	private Screening selectedScreening;
-	private CinemaLayout selectedSeat;
 	private double price;
 
 	public int getBookingID() {
@@ -67,13 +66,5 @@ public class BookingTicket implements Serializable {
 
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
-	}
-
-	public CinemaLayout getSelectedSeat() {
-		return selectedSeat;
-	}
-
-	public void setSelectedSeat(CinemaLayout selectedSeat) {
-		this.selectedSeat = selectedSeat;
 	}
 }
