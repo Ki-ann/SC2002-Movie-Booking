@@ -9,7 +9,7 @@ class Main {
 		// Load DB
 		// DataStoreManager.getInstance().LoadAll();
 		// Load Initial Controller
-		NavigationController.getInstance().Load(new MainController());
+		NavigationController.getInstance().load(new MainController());
 
 	}
 }

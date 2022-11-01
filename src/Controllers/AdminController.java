@@ -12,10 +12,10 @@ public class AdminController implements INavigation {
 
 	private IAuthenticator authenticator = new AuthController();
 
-	public void Start() {
+	public void start() {
 		boolean login = false;
-		while(login==false){
-			Admin a = authenticator.Login();
+		while(!login){
+			Admin a = authenticator.login();
 			// ArrayList<Admin> admins = DataStoreManager.getInstance().GetStore(Admin.class);
 			// for(int i=0;i<admins.size();i++){
 			// 	if(a.getUsername()==admins.get(i).getUsername() && a.getPassword()==admins.get(i).getPassword()){
@@ -24,16 +24,16 @@ public class AdminController implements INavigation {
 			// 		break;
 			// 	}
 			// }
-			if(a.getUsername().equals("Shreyas") && a.getPassword().equals("12345")){
-				ConsoleIOManager.PrintLine("Login Successful");
-				login = true;
-				break;
+			if(a!=null) {
+					ConsoleIOManager.printLine("Login Successful");
+					login = true;
+					break;
 			}
-			ConsoleIOManager.PrintLine("Wrong username or password!");
+			ConsoleIOManager.printLine("Wrong username or password!");
 		}
 
 		AdminView.DisplayMenu();
-		switch(ConsoleIOManager.ReadInt()){
+		switch(ConsoleIOManager.readInt()){
 			case 1->GotoMovieEditSystem();
 			case 2->GotoSettingsSystem();
 			case 3->GotoCineplexEditSystem();
@@ -42,20 +42,20 @@ public class AdminController implements INavigation {
 	}
 
 	public void GotoMovieEditSystem() {
-		NavigationController.getInstance().Load(new MovieEditController());
+		NavigationController.getInstance().load(new MovieEditController());
 	}
 
 	public void GotoSettingsSystem() {
-		NavigationController.getInstance().Load(new SettingsController());
+		NavigationController.getInstance().load(new SettingsController());
 	}
 
 	public void GotoCineplexEditSystem() {
-		NavigationController.getInstance().Load(new CineplexController());
+		NavigationController.getInstance().load(new CineplexController());
 	}
 
-	public void Logout() {
+	public void logout() {
 		// TODO - implement Controllers.AdminController.Logout
-		authenticator.Logout();
+		authenticator.logout();
 		throw new UnsupportedOperationException();
 	}
 

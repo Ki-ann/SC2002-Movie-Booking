@@ -5,27 +5,35 @@ import Models.DataStoreManager;
 import Models.Data.Admin;
 import Views.ConsoleIOManager;
 
-public class AuthController implements IAuthenticator {
-	public Admin Login() {
-		// TODO - implement Controllers.Authentication.AuthController.Login
-		ConsoleIOManager.PrintLine("Username: ");
-		String Username = ConsoleIOManager.ReadString();
-		ConsoleIOManager.PrintLine("Password: ");
-		String password = ConsoleIOManager.ReadString();
+import java.util.ArrayList;
 
-		return new Admin(Username,password);
+public class AuthController implements IAuthenticator {
+	public Admin login() {
+		// TODO - implement Controllers.Authentication.AuthController.Login
+		ConsoleIOManager.printLine("Username: ");
+		String Username = ConsoleIOManager.readString();
+		ConsoleIOManager.printLine("Password: ");
+		String password = ConsoleIOManager.readString();
+
+		ArrayList<Admin> admins = DataStoreManager.getInstance().getStore(Admin.class);
+		for (Admin admin : admins) {
+			if (Username.equals(admin.getUsername()) && password.equals(admin.getPassword())) {
+				return new Admin(Username, password);
+			}
+		}
+		return null;
 	}
 	public void createAccount(){
-		ConsoleIOManager.PrintLine("Username: ");
-		String Username	 = ConsoleIOManager.ReadString();
-		ConsoleIOManager.PrintLine("Password: ");
-		String password = ConsoleIOManager.ReadString();
-		DataStoreManager.getInstance().AddToStore(new Admin(Username, password));
+		ConsoleIOManager.printLine("Username: ");
+		String Username	 = ConsoleIOManager.readString();
+		ConsoleIOManager.printLine("Password: ");
+		String password = ConsoleIOManager.readString();
+		DataStoreManager.getInstance().addToStore(new Admin(Username, password));
 
-		ConsoleIOManager.PrintLine("Account created");
+		ConsoleIOManager.printLine("Account created");
 	}
 	
-	public void Logout() {
+	public void logout() {
 		// TODO - implement Controllers.Authentication.AuthController.Logout
 		System.out.println("Logged out!");
 		NavigationController.getInstance().goBack();
