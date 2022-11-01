@@ -4,7 +4,7 @@ public class AdminView {
 
     public static void DisplayMenu() {
         ConsoleIOManager.clearScreen();
-        ConsoleIOManager.printMenu("This is the admin page.");
+        ConsoleIOManager.printMenu("This is the admin page.","Settings");
         ConsoleIOManager.printGoBack();
     }
 
