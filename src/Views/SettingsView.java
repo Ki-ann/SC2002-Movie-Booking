@@ -5,17 +5,17 @@ import java.util.*;
 public class SettingsView {
     Scanner sc = new Scanner(System.in);
     public static void DisplayMenu() {
-		ConsoleIOManager.ClearScreen();
-		ConsoleIOManager.PrintMenu("This is the setting page.",
+		ConsoleIOManager.clearScreen();
+		ConsoleIOManager.printMenu("This is the setting page.",
                 "I want to manage ticket price",
                 "I want to manage holidays");
-        ConsoleIOManager.PrintGoBack();
+        ConsoleIOManager.printGoBack();
     }
     public static void printMenu(){
-        ConsoleIOManager.PrintMenu("Manage holidays",
+        ConsoleIOManager.printMenu("Manage holidays",
         "1. List all holidays",
                 "2. Add a holiday");
-        ConsoleIOManager.PrintGoBack();
+        ConsoleIOManager.printGoBack();
     }
     public static int readChoice(int i, int j) {
         Scanner sc = new Scanner(System.in);

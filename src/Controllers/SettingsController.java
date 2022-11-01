@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class SettingsController implements INavigation {
+<<<<<<< HEAD
 	public Setting setting = new Setting();
 	private static Scanner sc = new Scanner(System.in);
 	public int initialMenuSelection = -1;
@@ -131,6 +132,12 @@ public class SettingsController implements INavigation {
         }
 		*/
         displayHolidayList();
+=======
+
+	public void start() {
+		// TODO - implement Controllers.SettingsController.Start
+		throw new UnsupportedOperationException();
+>>>>>>> refs/remotes/origin/main
 	}
 
 	//display holiday detail and also remove option is provided

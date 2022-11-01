@@ -4,8 +4,8 @@ import Models.Data.Admin;
 
 public interface IAuthenticator {
 
-	Admin Login();
+	Admin login();
 
-	void Logout();
+	void logout();
 
 }

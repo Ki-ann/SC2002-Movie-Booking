@@ -8,7 +8,7 @@ public class ReviewController {
 	 * 
 	 * @param selectedMovie
 	 */
-	public void CreateReview(Movie selectedMovie) {
+	public void createReview(Movie selectedMovie) {
 		// TODO - implement Controllers.ReviewController.CreateReview
 		throw new UnsupportedOperationException();
 	}
@@ -17,7 +17,7 @@ public class ReviewController {
 	 * 
 	 * @param selectedMovie
 	 */
-	public void ListReviews(Movie selectedMovie) {
+	public void listReviews(Movie selectedMovie) {
 		// TODO - implement Controllers.ReviewController.ListReviews
 		throw new UnsupportedOperationException();
 	}
