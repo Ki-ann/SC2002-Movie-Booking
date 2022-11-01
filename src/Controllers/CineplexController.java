@@ -1,8 +1,12 @@
 package Controllers;
 
+import Models.Data.Cinema;
 import Models.Data.Cineplex;
+import Models.Data.Enums.CinemaType;
 import Models.Data.Movie;
 import Models.DataStoreManager;
+
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 
 /**

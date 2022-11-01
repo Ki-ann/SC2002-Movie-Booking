@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class BookingTicket implements Serializable {
 
-	private int bookingID;
+	private String bookingID;
 	private Customer customer;
 	private Cineplex selectedCineplex;
 	private Cinema selectedCinema;
@@ -13,11 +13,11 @@ public class BookingTicket implements Serializable {
 	private CinemaLayout selectedSeat;
 	private double price;
 
-	public int getBookingID() {
+	public String getBookingID() {
 		return bookingID;
 	}
 
-	public void setBookingID(int bookingID) {
+	public void setBookingID(String bookingID) {
 		this.bookingID = bookingID;
 	}
 

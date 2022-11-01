@@ -1,6 +1,7 @@
 package Models;
 
 import Models.Data.CinemaLayout;
+import Models.Data.Cineplex;
 import Models.Data.Enums.SeatType;
 import java.io.*;
 import java.nio.file.Files;
@@ -37,13 +38,22 @@ public class DataStoreManager {
     }
 
     /**
-     * Dictionary store that holds all serialized and deserialized objects
+     * Dictionary store that holds all serialized and deserialized objects.
      *
      * <br> &#064;Key  Type.class e.g. Admin.class
      * <br> &#064;Value  ArrayList<Serializable> e.g. ArrayList<Admin>
      */
     private final Map<Class<? extends Serializable>, ArrayList<Serializable>> store = new HashMap<>();
 
+    /**
+     * Reference Map creates a Dictionary of duplicate objects after deserialization and assigns them to reference a single one only.
+     * @see Models.Data.SingleInstancedSerializable
+     */
+    private final Map<UUID, Object> referenceMap = new HashMap<>();
+
+    /**
+     * File path to store the serialized data files.
+     */
     private final String dataFolder = "\\Data\\";
     /**
      * Adds the given object to the ArrayList stored in the DataStore
@@ -73,7 +83,7 @@ public class DataStoreManager {
     }
 
     /**
-     * Removes the given object from the ArrayList stored in the DataStore
+     * Removes the given object from the ArrayList stored in the DataStore.
      * <br>Example:
      * <pre>
      * {@code
@@ -99,7 +109,7 @@ public class DataStoreManager {
         serializer(list, object.getClass());
     }
     /**
-     * Given a Type class as the Key, retrieve the ArrayList Value from the DataStore dictionary
+     * Given a Type class as the Key, retrieve the ArrayList Value from the DataStore dictionary.
      * <br>Example:
      * <pre>
      * {@code
@@ -118,7 +128,7 @@ public class DataStoreManager {
 
     /**
      * Retrieve all Serialized datafiles from the project root folder,
-     * and Deserialize the files into the DataStore dictionary
+     * and Deserialize the files into the DataStore dictionary.
      * <br>Example:
      * <pre>
      * {@code
@@ -160,7 +170,7 @@ public class DataStoreManager {
     }
 
     /**
-     * Manual call to serialize all data stored in DataStore
+     * Manual call to serialize all data stored in DataStore.
      */
     public void saveAll() {
         for (var entry : store.entrySet()) {
@@ -170,7 +180,18 @@ public class DataStoreManager {
     }
 
     /**
-     * Serializer method opens a FileOutputStream and ObjectOutputStream to write a Serializable object to file
+     * Manual call to save a single class only.
+     * @param serializable object to be serialized.
+     * @param <T> The generic type of the object to be serialized.
+     */
+    public <T extends Serializable> void save(Class<T> serializable) {
+        var set = store.entrySet().stream().filter(entry->entry.getKey() == serializable).findFirst();
+        // Serialize and save to disk
+        set.ifPresent(classArrayListEntry -> serializer(classArrayListEntry.getValue(), classArrayListEntry.getKey()));
+    }
+
+    /**
+     * Serializer method opens a FileOutputStream and ObjectOutputStream to write a Serializable object to file.
      *
      * @param serializable Takes in an ArrayList<subClassName> Object to be serialized
      * @param subClassName Type class of the inner Object to be serialized
@@ -264,5 +285,9 @@ public class DataStoreManager {
             System.out.println("Error");
         }
         return layout;
+    }
+
+    public Map<UUID, Object> getReferenceMap() {
+        return referenceMap;
     }
 }
