@@ -7,11 +7,7 @@ class Main {
 	public static void main(String[] args) {
 		System.out.println("Application Starting...");
 		// Load DB
-<<<<<<< HEAD
-		//DataStoreManager.getInstance().LoadAll();
-=======
-		DataStoreManager.getInstance().loadAll();
->>>>>>> refs/remotes/origin/main
+		//DataStoreManager.getInstance().loadAll();
 		// Load Initial Controller
 		NavigationController.getInstance().load(new MainController());
 

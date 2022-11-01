@@ -7,23 +7,23 @@ import java.util.*;
 import java.util.Date;
 import java.util.HashMap;
 
-public class SettingsController implements INavigation {
-<<<<<<< HEAD
+public class SettingsController implements INavigation  {
 	public Setting setting = new Setting();
 	private static Scanner sc = new Scanner(System.in);
 	public int initialMenuSelection = -1;
-	public void Start() {
+	@Override
+	public void start() {
         SettingsView.DisplayMenu();
         do {
             if (initialMenuSelection == -1) {
-                initialMenuSelection = ConsoleIOManager.ReadInt();
+                initialMenuSelection = ConsoleIOManager.readInt();
             }
             switch (initialMenuSelection) {
                 case 1 -> manageTicketPrice();
                 case 2 -> manageHolidays();
                 case 0 -> NavigationController.getInstance().goBack();
                 default -> {
-                    ConsoleIOManager.PrintLine("Invalid input! Please select an item from the menu!");
+                    ConsoleIOManager.printLine("Invalid input! Please select an item from the menu!");
                     initialMenuSelection = -1;
                 }
             }
@@ -44,17 +44,17 @@ public class SettingsController implements INavigation {
 							+ "____________________________________________	\n"
 							+ " Enter your choice here: ");
 			
-			choice = ConsoleIOManager.ReadInt();
+			choice = ConsoleIOManager.readInt();
 			if (choice < 0 || choice >1) {
-                ConsoleIOManager.PrintLine("Invalid input! Please select an item from the menu!");
+                ConsoleIOManager.printLine("Invalid input! Please select an item from the menu!");
 			}
 			else if (choice == 1) {
-				ConsoleIOManager.PrintLine("Current standard price: $" + Setting.getStandardPrice());
-				ConsoleIOManager.PrintLine("Enter new standard price: ");
+				ConsoleIOManager.printLine("Current standard price: $" + Setting.getStandardPrice());
+				ConsoleIOManager.printLine("Enter new standard price: ");
 				double newSP = sc.nextDouble();
 				Setting.setStandardPrice(newSP);
-				DataStoreManager.getInstance().AddToStore(setting);
-				ConsoleIOManager.PrintLine("\nStandard price updated.");
+				DataStoreManager.getInstance().addToStore(setting);
+				ConsoleIOManager.printLine("\nStandard price updated.");
 				displayTicketPrices();
 
 			}
@@ -68,13 +68,13 @@ public class SettingsController implements INavigation {
 	
 	//displayTicketPrices() : Displays ticket price chart
 	private void displayTicketPrices() {
-		ConsoleIOManager.PrintF("____________ TICKET PRICE CHART ___________\n");
-		ConsoleIOManager.PrintF("Adult\t\t\t\t%.2f\n",Setting.getStandardAdultPrice());
-		ConsoleIOManager.PrintF("Student\t\t\t\t%.2f\n", Setting.getStandardStudentPrice());
-		ConsoleIOManager.PrintF("Senior\t\t\t\t%.2f\n",Setting.getStandardSeniorPrice());
-		ConsoleIOManager.PrintF("Children\t\t\t%.2f\n", Setting.getStandardChildPrice());
-		ConsoleIOManager.PrintF("Weekend\t\t\t\t%.2f\n", Setting.getStandardChildPrice());
-		ConsoleIOManager.PrintF("\n");
+		ConsoleIOManager.printF("____________ TICKET PRICE CHART ___________\n");
+		ConsoleIOManager.printF("Adult\t\t\t\t%.2f\n",Setting.getStandardAdultPrice());
+		ConsoleIOManager.printF("Student\t\t\t\t%.2f\n", Setting.getStandardStudentPrice());
+		ConsoleIOManager.printF("Senior\t\t\t\t%.2f\n",Setting.getStandardSeniorPrice());
+		ConsoleIOManager.printF("Children\t\t\t%.2f\n", Setting.getStandardChildPrice());
+		ConsoleIOManager.printF("Weekend\t\t\t\t%.2f\n", Setting.getStandardWeekendPrice());
+		ConsoleIOManager.printF("\n");
 	}
 	private void manageHolidays() {
         SettingsView.printMenu();
@@ -89,20 +89,20 @@ public class SettingsController implements INavigation {
     }
 
 	private void displayHolidayList() {
-        ConsoleIOManager.PrintF("Holiday list\n");
+        ConsoleIOManager.printF("Holiday list\n");
         HashMap<String, Holiday> holidayList = Setting.getHolidayList();
         HashMap<Integer, Holiday> searchIndex = new HashMap<>();
         if (holidayList.isEmpty()) {
-            ConsoleIOManager.PrintF("No holiday exists\n");
+            ConsoleIOManager.printF("No holiday exists\n");
 			manageHolidays();
         }
         else {
             int index  = 0;
             for (String date : holidayList.keySet()) {
-                ConsoleIOManager.PrintF(++index + ". " + holidayList.get(date)+"\n");
+                ConsoleIOManager.printF(++index + ". " + holidayList.get(date)+"\n");
                 searchIndex.put(index, holidayList.get(date));
             }
-            ConsoleIOManager.PrintF("Press "+(++index) +" go back,else press corresponding holiday index for more details");
+            ConsoleIOManager.printF("Press "+(++index) +" go back,else press corresponding holiday index for more details");
 			System.out.println();
             int choice = SettingsView.readChoice(1, index);
             if (choice == index) manageHolidays();
@@ -132,19 +132,13 @@ public class SettingsController implements INavigation {
         }
 		*/
         displayHolidayList();
-=======
-
-	public void start() {
-		// TODO - implement Controllers.SettingsController.Start
-		throw new UnsupportedOperationException();
->>>>>>> refs/remotes/origin/main
 	}
 
 	//display holiday detail and also remove option is provided
 	private void displayHolidayDetail(Holiday holiday) {
 		Date x;
-        ConsoleIOManager.PrintF("Holiday name: "+holiday.getName()+"\n");
-        ConsoleIOManager.PrintF(holiday.printDetail(), "");
+        ConsoleIOManager.printF("Holiday name: "+holiday.getName()+"\n");
+        ConsoleIOManager.printF(holiday.printDetail(), "");
         if (SettingsView.askConfirm("\nEnter Y if you want to delete the holiday",
                 "Enter N to go back:")) {
 				x = SettingsView.readTimeMMdd("Enter the time you want to remove",
@@ -152,11 +146,14 @@ public class SettingsController implements INavigation {
             	Setting.getHolidayList().remove(SettingsView.formatTimeMMdd(x));
 				try {
 					//DataStoreManager.getInstance().AddToStore(Setting.holidayList);
-					ConsoleIOManager.PrintF("Successfully deleted the holiday.");
+					ConsoleIOManager.printF("Successfully deleted the holiday.");
 				} catch (Exception e) {
-					ConsoleIOManager.PrintF("Failed to delete the holiday.");
+					ConsoleIOManager.printF("Failed to delete the holiday.");
 				}
             }
 			displayHolidayList();
     }
+		
+
+	
 }
