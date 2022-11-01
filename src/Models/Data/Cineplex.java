@@ -2,7 +2,8 @@ package Models.Data;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.HashMap;
+import java.io.IOException;
 public class Cineplex implements Serializable {
 
 	public ArrayList<Cinema> cinemaList = new ArrayList<>();
