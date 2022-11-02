@@ -4,7 +4,16 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Locale;
 import java.util.Scanner;
-
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.io.EOFException;
+import java.text.ParseException;
 /**
  * Manager class to store an instance of Scanner and interface with console read and write.
  * <br>Wrappers allow for easy extension of logging if needed.
@@ -180,5 +189,86 @@ public class ConsoleIOManager {
         // If string is of odd length, append an extra character at the end.
         return String.format("%s", String.valueOf(fillChar).repeat(paddingSize) + s + String.valueOf(fillChar).repeat(s.length() % 2 == 0 ? paddingSize : paddingSize + 1));
 
+    }
+
+    //return string 
+    public static String readString(String... message) {
+        for (String m : message) System.out.println(m);
+        return scanner.nextLine();
+    }
+    
+    public static Date readTimeMMdd(String... message) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            String input = ConsoleIOManager.readString(message);
+            input = new SimpleDateFormat("yyyy").format(new Date()) + "-" + input;  // set year as current year
+            Date date = simpleDateFormat.parse(input);
+            return date;
+        } catch (ParseException ex) {
+            ConsoleIOManager.printLine("Wrong format. Try again.");
+            return readTimeMMdd(message);
+        }
+    }
+    //retun newformat of date
+    public static String formatTimeMMdd(Date time) {
+        return new SimpleDateFormat("MMMM, dd").format(time);
+    }
+
+    public static double readDouble(String... message) {
+        for (String m : message) System.out.println(m);
+        double output;
+        try {
+            output = scanner.nextDouble();
+            return output;
+        } catch (InputMismatchException ex) {
+            ConsoleIOManager.printLine("Invalid input, try again.");
+            scanner.nextLine();  // flush scanner
+            return readDouble(message);
+        }
+    }
+
+    public static boolean askConfirm(String... message) {
+        for (String m : message) System.out.println(m);
+        if (scanner.next().toUpperCase().equals("Y")) {scanner.nextLine();
+            return true;}
+        else return false;
+    }
+
+    /**
+     * This method is to read serialized object from a file.
+     * @param filename the file address to read from
+     * @param data the data to read from the file
+     * @throws IOException when the file address is invalid
+     */
+    public static Object readSerializedObject(String filename) throws IOException, ClassNotFoundException {
+        Object data;
+        FileInputStream fileInputStream;
+        ObjectInputStream objectInputStream;
+        try {
+            fileInputStream = new FileInputStream(filename);
+            objectInputStream = new ObjectInputStream(fileInputStream);
+            data = objectInputStream.readObject();
+            objectInputStream.close();
+        } catch (EOFException e) {
+            return null;
+        }
+
+        return data;
+    }
+
+    /**
+     * This method is to write serialized object to a file.
+     * @param filename the file address to write to
+     * @param data the data to be written to the file
+     * @throws IOException when the file address is invalid
+     */
+    public static void writeSerializedObject(String filename, Object data) throws IOException {
+        FileOutputStream fileOutputStream;
+        ObjectOutputStream objectOutputStream;
+
+        fileOutputStream = new FileOutputStream(filename);
+        objectOutputStream = new ObjectOutputStream(fileOutputStream);
+        objectOutputStream.writeObject(data);
+        objectOutputStream.close();
     }
 }
