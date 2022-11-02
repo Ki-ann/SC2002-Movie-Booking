@@ -8,11 +8,16 @@ import java.util.List;
 
 public class Cinema implements Serializable{
 
-	private String name = "Cinema";
-	private ArrayList<ArrayList<CinemaLayout>>  seatTemplate;
+	private String name;
 	private CinemaType cinemaType;
+	private ArrayList<ArrayList<CinemaLayout>>  seatTemplate;
 	private final ArrayList<Screening> screeningList = new ArrayList<>();
 
+	public Cinema(String cinemaName, CinemaType cinemaType,ArrayList<ArrayList<CinemaLayout>> seatTemplate){
+		this.name = cinemaName;
+		this.cinemaType = cinemaType;
+		this.seatTemplate = seatTemplate;
+	}
 	public List<Movie> getMovieList() {
 		return screeningList.stream().map(Screening::getMovie).toList();
 	}
@@ -47,5 +52,13 @@ public class Cinema implements Serializable{
 	public void addToScreeningList(Screening screening){
 		screening.setSessionLayout(getSeatTemplate());
 		screeningList.add(screening);
+	}
+
+	public CinemaType getCinemaType() {
+		return cinemaType;
+	}
+
+	public void setCinemaType(CinemaType cinemaType) {
+		this.cinemaType = cinemaType;
 	}
 }

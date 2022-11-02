@@ -4,8 +4,8 @@ import Views.ConsoleIOManager;
 import java.util.Stack;
 
 /**
- * Base navigation controller class that keeps track of the order in which navigation controller is called
- * and instantiates each controller globally.
+ * Base navigation controller class using a Facade and Singleton Pattern that keeps track
+ * of the order in which navigation controller is called and instantiates each controller accordingly.
  *
  * @author Phee Kian Ann
  * @version 1.0

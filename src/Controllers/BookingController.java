@@ -1,5 +1,6 @@
 package Controllers;
 
+import Controllers.Payment.SimplePayment;
 import Models.Data.*;
 import Models.Data.Enums.BookingState;
 import Models.Data.Enums.MovieStatus;
@@ -7,6 +8,8 @@ import Models.Data.Enums.SeatType;
 import Models.DataStoreManager;
 import Views.BookingView;
 import Views.ConsoleIOManager;
+
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
@@ -29,6 +32,7 @@ public class BookingController implements INavigation {
     /**
      * Start method implementation for initialization after loading with NavigationController
      * Resets the currently stored variables and displays the selection menu for the user.
+     *
      * @see NavigationController
      * @see INavigation
      */
@@ -41,7 +45,6 @@ public class BookingController implements INavigation {
             }
             switch (initialMenuSelection) {
                 case 1 -> createBookingTransaction();
-                case 2 -> viewBookingHistory();
                 case 0 -> NavigationController.getInstance().goBack();
                 default -> {
                     ConsoleIOManager.printLine("Invalid input! Please select an item from the menu!");
@@ -135,7 +138,7 @@ public class BookingController implements INavigation {
 
                 case GET_SHOWTIME_DETAILED -> //===== Display show time picker
                         {
-                            List<Screening> filteredScreeningList = selectedCinema.getScreeningList().stream().filter(s -> s.getMovie().getName().equals(bookingTicket.getSelectedMovie().getName()) && s.getShowTime().dateOfMovie.isEqual(currentlySelectedDate)).toList();
+                            List<Screening> filteredScreeningList = selectedCinema.getScreeningList().stream().filter(s -> s.getMovie().getName().equals(bookingTicket.getSelectedMovie().getName()) && s.getShowTime().getDateOfMovie().isEqual(currentlySelectedDate)).toList();
                             // Display available time slots
                             BookingView.printCinemaShowtime(filteredScreeningList, selectedMovie, currentlySelectedDate);
                             // Get input
@@ -199,15 +202,19 @@ public class BookingController implements INavigation {
 
 
         //===== Payment (Success)
-        //PaymentController paymentController = new PaymentController();
-        //paymentController.Pay(new SimplePayment());
-
+        PaymentController paymentController = new PaymentController();
+        String TID = paymentController.newPaymentTransaction(bookingTicket);
+        bookingTicket.setBookingID(TID);
+        if (TID.isEmpty()) {
+            CancelBookingTransaction();
+        }
         //===== All succeeded, and save transaction
         saveBookingTransaction(this.bookingTicket);
     }
 
     /**
      * Gets the user's desired movie selection input .
+     *
      * @param movieList The list of movies for the user to choose from.
      * @return User selected movie.
      */
@@ -231,6 +238,7 @@ public class BookingController implements INavigation {
 
     /**
      * Gets the user's desired cineplex selection input.
+     *
      * @param filteredCineplexList The list of cineplex for the user to choose from.
      * @return User selected cineplex.
      */
@@ -255,6 +263,7 @@ public class BookingController implements INavigation {
 
     /**
      * Gets the user's desired date selection input.
+     *
      * @return User selected date.
      */
     private LocalDate getDatePicker() {
@@ -274,6 +283,7 @@ public class BookingController implements INavigation {
 
     /**
      * Gets the user's desired cinema selection input.
+     *
      * @param cinemasWithSelectedMovie The list of cinemas that contain the selected movie.
      * @return User selected cinema.
      */
@@ -298,6 +308,7 @@ public class BookingController implements INavigation {
 
     /**
      * Gets the user's customer information. Runs in a loop until all fields are successfully inputted.
+     *
      * @return User's customer information.
      */
     private Customer getCustomerInfo() {
@@ -344,7 +355,8 @@ public class BookingController implements INavigation {
 
     /**
      * Gets the user's desired screening selection input.
-     * @param filteredScreeningList  The list of available screenings to choose from
+     *
+     * @param filteredScreeningList The list of available screenings to choose from
      * @return User selected screening
      */
     private Screening getSelectedScreening(List<Screening> filteredScreeningList) {
@@ -368,6 +380,7 @@ public class BookingController implements INavigation {
 
     /**
      * Gets the user's desired seat selection input
+     *
      * @param layout The current selected Screening's layout
      * @return User's selected Seat information
      */
@@ -396,7 +409,7 @@ public class BookingController implements INavigation {
             }
 
             // Found seat, assigning
-            if(selectedLayout != null) {
+            if (selectedLayout != null) {
                 if (selectedLayout.isAssigned()) {
                     ConsoleIOManager.printLine("Seat is already taken!");
                     continue;
@@ -412,6 +425,7 @@ public class BookingController implements INavigation {
 
     /**
      * Booking was successful. Booking information is saved into the database, and cineplex is updated in the database.
+     *
      * @param newBookingTicket the new successful booking transaction
      */
     private void saveBookingTransaction(BookingTicket newBookingTicket) {
@@ -432,15 +446,19 @@ public class BookingController implements INavigation {
     }
 
     /**
-     * The function that handles the flow of viewing a User's booking history
+     * User cancelled booking transaction, display relevant info and return to menu.
      */
-    private void viewBookingHistory() {
-        for (BookingTicket ticket : getBookingHistoryList()) {
-
-
-            ConsoleIOManager.printF("%d", ticket.getSelectedSeat().getRow());
-        }
-
+    public void CancelBookingTransaction() {
+        BookingView.printCancelledBooking();
+        // Go back on user input
+        do {
+            if (ConsoleIOManager.readInt() == 0) {
+                NavigationController.getInstance().goBack(0);
+                break;
+            } else {
+                ConsoleIOManager.printLine("Invalid input! Please select an item from the menu!");
+            }
+        } while (true);
     }
 
     /**
@@ -455,19 +473,11 @@ public class BookingController implements INavigation {
 
     /**
      * Retrieves the Movie list from DataStore
-     * @see DataStoreManager
+     *
      * @return Arraylist of Movies in the DataStore
+     * @see DataStoreManager
      */
     private ArrayList<Movie> getMovieList() {
         return DataStoreManager.getInstance().getStore(Movie.class);
-    }
-
-    /**
-     * Retrieves the booking list from DataStore
-     * @see DataStoreManager
-     * @return Arraylist of BookingTickets in the DataStore
-     */
-    private ArrayList<BookingTicket> getBookingHistoryList() {
-        return DataStoreManager.getInstance().getStore(BookingTicket.class);
     }
 }

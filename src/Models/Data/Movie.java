@@ -4,12 +4,10 @@ import Models.Data.Enums.MovieRating;
 import Models.Data.Enums.MovieStatus;
 import Models.Data.Enums.MovieType;
 
-import java.io.Serializable;
 import java.time.Duration;
-import java.time.LocalTime;
 import java.util.ArrayList;
 
-public class Movie implements Serializable {
+public class Movie extends SingleInstancedSerializable {
 
 	private String name = "Movie";
 	private String description;
@@ -23,7 +21,6 @@ public class Movie implements Serializable {
 	private ArrayList<String> cast;
 	private MovieType movieType;
 	private ArrayList<String> director;
-
 
 	public String getName() {
 		return name;
@@ -48,4 +45,6 @@ public class Movie implements Serializable {
 	public void setDuration(int hours, int minutes, int seconds) {
 		this.duration = Duration.ofHours(hours).plusMinutes(minutes).plusSeconds(seconds);
 	}
+
+
 }
