@@ -1,48 +1,54 @@
 package Models.Data;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.*;
-import java.io.IOException;
+
+import Models.DataStoreManager;
 import Views.ConsoleIOManager;
-import Views.SettingsView;
 import Models.Data.Enums.*;
 import java.text.SimpleDateFormat;
 
 public class Setting implements Serializable {
-    private static final String FILENAME_HOLIDAY = "Data/Holiday.dat"; 
-    public static HashMap<String, Holiday> holidayList = new HashMap<String, Holiday>();
-    private static double standardPrice = 10;
-    private static double weekendPrice = (int) standardPrice* 1.2;
+    public static Setting getSettings(){
+        DataStoreManager dataStoreInstance = DataStoreManager.getInstance();
+        ArrayList<Setting> settingStore =  dataStoreInstance.getStore(Setting.class);
+        if(settingStore.size() == 0){
+            Setting newSettings = new Setting();
+            dataStoreInstance.addToStore(newSettings);
+            return newSettings;
+        }
+        // Get the only stored setting object
+        return settingStore.get(0);
+    }
+
+    private void saveSettings(){
+        DataStoreManager.getInstance().save(Setting.class);
+    }
+
+    private double standardPrice = 10;
+    private double weekendPrice = (int) standardPrice* 1.2;
     final static int PLATINUM =5;
     final static int IMAX =10;
     final static  double CHILDMULTIPLIER = 0.7;
-	private Movie movie;
-	public Movie getMovie() {
-		return movie;
-	}
-    public void setMovie(Movie movie) {
-		this.movie = movie;
-	}
-    public static double getStandardPrice() {
+    public double getStandardPrice() {
 		return standardPrice;
 	}
-    public static double getStandardAdultPrice() {
+    public double getStandardAdultPrice() {
 		return standardPrice;
 	}
-    public static double getStandardStudentPrice() {
+    public double getStandardStudentPrice() {
 		return standardPrice*0.85;
 	}
-    public static double getStandardSeniorPrice() {
+    public double getStandardSeniorPrice() {
 		return standardPrice*0.8;
 	}
-    public static double getStandardWeekendPrice() {
+    public double getStandardWeekendPrice() {
 		return standardPrice*1.2;
 	}
-    public static double getStandardChildPrice() {
+    public double getStandardChildPrice() {
 		return standardPrice*0.7;
 	}
-    public static double getPrice(String date,CinemaType c, MovieStatus m, TicketClass t){
-        Date x = SettingsView.readTimeMMdd2(date);
+    public double getPrice(String date,CinemaType c, MovieStatus m, TicketClass t){
+        Date x = ConsoleIOManager.readTimeMMdd(date);
         Holiday holiday = getHoliday(x);
         double temp;
         if (holiday != null) {
@@ -105,54 +111,30 @@ public class Setting implements Serializable {
             }
         }
         switch(t){
-            case ADULT: return temp;
-            case CHILD: return temp*0.7;
-            case STUDENT: return temp*0.85;
-            case SENIOR: return temp*0.7;
+            case CHILD:
+            case SENIOR:
+                return temp*0.7;
+            case STUDENT:
+                return temp*0.85;
+            case ADULT:
             default: return temp;
         }
 	}
-    public static void setStandardPrice(double standardPrice) {
-		Setting.standardPrice = standardPrice;
+
+    public void setStandardPrice(double standardPrice) {
+		this.standardPrice = standardPrice;
+        saveSettings();
 	}
-    public static HashMap<String, Holiday> getHolidayList() {
-        return holidayList;
-    }
-    public static void addHoliday(String date, Holiday holiday)  {
-        Setting.holidayList.put(date, holiday);
-        try {
-            updateHolidayList();
-        }
-        catch(IOException ex) {
-            ConsoleIOManager.printLine("error");
-        }
-        //DataStoreManager.getInstance().AddToStore(Setting.holidayList);
-    }
 
     //This method is used to get the holiday with specified
-    public static Holiday getHoliday(Date time) {
-        HashMap<String, Holiday> holidayList = getHolidayList();
-        return holidayList.get(ConsoleIOManager.formatTimeMMdd(time));
+    private Holiday getHoliday(Date selectedDate) {
+        ArrayList<Holiday> holidayList = Holiday.getHolidayList();
+        return holidayList.stream().filter(holiday -> holiday.getDate() == selectedDate).findFirst().orElse(null);
     }
 
     //check wether it is wenkend or not
-    public static boolean isWeekend(Date time) {
+    private boolean isWeekend(Date time) {
         String whatDay = new SimpleDateFormat("EEEE").format(time);
-        if (whatDay.equals("Saturday") || whatDay.equals("Sunday")) return true;
-        else return false;
-    }
-    private static void readHolidayList() throws IOException, ClassNotFoundException {
-        if (ConsoleIOManager.readSerializedObject(FILENAME_HOLIDAY) == null) holidayList = new HashMap<>();
-        else holidayList = (HashMap<String, Holiday>) ConsoleIOManager.readSerializedObject(FILENAME_HOLIDAY);
-    }
-    public static void updateHolidayList() throws IOException {
-        ConsoleIOManager.writeSerializedObject(FILENAME_HOLIDAY, holidayList);
-    }
-    public static void initialize() {
-        try {
-            readHolidayList();  // may have class not found exception
-        } catch (IOException ex) {
-        } catch (ClassNotFoundException ex) {
-        }
+        return whatDay.equals("Saturday") || whatDay.equals("Sunday");
     }
 }
