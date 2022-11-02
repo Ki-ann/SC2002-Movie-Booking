@@ -28,8 +28,7 @@ public class BookingView {
     public static void displayMenu() {
         ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("This is the booking page.",
-                "Start booking",
-                "See my booking history");
+                "Start booking");
         ConsoleIOManager.printGoBack();
     }
 
@@ -72,14 +71,14 @@ public class BookingView {
      */
     public static void printCinemaOverview(List<Cinema> filteredCinemaList, Movie selectedMovie, LocalDate selectedDate) {
         String[] showTimeString = filteredCinemaList.stream()
-                .map(model -> model.getName() +
+                .map(model -> model.getName() + " | " + model.getCinemaType().name() +
                         "\r\n\tCurrent Show-Times:\r\n\t" +
                         model.getScreeningList().stream()
                                 .filter(s -> s.getMovie().getName().equals(selectedMovie.getName())
-                                        && s.getShowTime().dateOfMovie.isEqual(selectedDate))
-                                .map(s -> s.getShowTime().timeOfMovie +
+                                        && s.getShowTime().getDateOfMovie().isEqual(selectedDate))
+                                .map(s -> s.getShowTime().getTimeOfMovie() +
                                         " - " +
-                                        s.getShowTime().timeOfMovie.plus(s.getMovie().getDuration()).toString())
+                                        s.getShowTime().getTimeOfMovie().plus(s.getMovie().getDuration()).toString())
                                 .collect(Collectors.joining(" | ")))
                 .toArray(String[]::new);
 
@@ -97,9 +96,9 @@ public class BookingView {
      */
     public static void printCinemaShowtime(List<Screening> screeningList, Movie selectedMovie, LocalDate selectedDate) {
         String[] showTimeString = screeningList.stream()
-                .map(s -> s.getShowTime().timeOfMovie +
+                .map(s -> s.getShowTime().getTimeOfMovie() +
                         " - " +
-                        s.getShowTime().timeOfMovie.plus(s.getMovie().getDuration()).toString())
+                        s.getShowTime().getTimeOfMovie().plus(s.getMovie().getDuration()).toString())
                 .toArray(String[]::new);
 
         ConsoleIOManager.clearScreen();
@@ -131,6 +130,7 @@ public class BookingView {
      */
     public static void printCustomerInfo(Customer customer) {
         ConsoleIOManager.clearScreen();
+        ConsoleIOManager.printMenu("Enter customer information");
         ConsoleIOManager.printLine("Name: " + customer.getName());
         ConsoleIOManager.printLine("Email: " + customer.getEmail());
         ConsoleIOManager.printLine("Phone: " + (customer.getPhone() == 0 ? "" : customer.getPhone()));
@@ -143,10 +143,11 @@ public class BookingView {
      */
     public static void printCheckout(BookingTicket bookingTicket) {
         ConsoleIOManager.clearScreen();
+        ConsoleIOManager.printMenu("Booking Preview");
         ConsoleIOManager.printLine("Movie: " + bookingTicket.getSelectedMovie().getName() +
                 (bookingTicket.getSelectedMovie().getMovieStatus() == MovieStatus.PREVIEW? " - Preview" : ""));
         ConsoleIOManager.printF("%s - %s\n", bookingTicket.getSelectedCineplex().getName(), bookingTicket.getSelectedCinema().getName());
-        ConsoleIOManager.printF("%s - %s\n", bookingTicket.getSelectedScreening().getShowTime().dateOfMovie, bookingTicket.getSelectedScreening().getShowTime().timeOfMovie);
+        ConsoleIOManager.printF("%s - %s\n", bookingTicket.getSelectedScreening().getShowTime().getDateOfMovie(), bookingTicket.getSelectedScreening().getShowTime().getTimeOfMovie());
         ConsoleIOManager.printF("Seat:  %s\n",bookingTicket.getSelectedSeat().getSeatString());
         ConsoleIOManager.printF("$%.2f (Inclusive of GST/Service Change)\n", bookingTicket.getPrice());
         ConsoleIOManager.printLine("Name: " + bookingTicket.getCustomer().getName());
@@ -161,7 +162,10 @@ public class BookingView {
      */
     public static void printSeatLayout(ArrayList<ArrayList<CinemaLayout>> layout){
         ConsoleIOManager.clearScreen();
-        ConsoleIOManager.printF(centerString((layout.get(0).size() + 1) * 3, "[  Screen  ]"));
+        ConsoleIOManager.printMenu("Pick the seat you want to book for");
+
+
+        ConsoleIOManager.printLine(ConsoleIOManager.centerString((layout.get(0).size() + 1) * 3, "[  Screen  ]", ' '));
         for (int i = 0; i < layout.size(); i++) {
             ConsoleIOManager.printF("%-3c", (char) (65 + i));
             for (int j = 0; j < layout.get(i).size(); j++) {
@@ -191,16 +195,16 @@ public class BookingView {
      */
     public static void printSaveBooking(){
         ConsoleIOManager.printMenu("Saved new booking");
+        ConsoleIOManager.printLine();
         ConsoleIOManager.printGoBack();
     }
 
     /**
-     * Helper function to center a screen for printSeatLayout.
-     * @param width Final width required for the return string to be.
-     * @param s The string to be centered.
-     * @return a centered string with paddings on the left and right of the given string to reach the required width.
+     * Print a booking cancel message.
      */
-    private static String centerString(int width, String s) {
-        return String.format("%-" + width + "s\n", String.format("%" + (s.length() + (width - s.length()) / 2) + "s", s));
+    public static void printCancelledBooking(){
+        ConsoleIOManager.printMenu("Booking cancelled");
+        ConsoleIOManager.printLine();
+        ConsoleIOManager.printGoBack();
     }
 }

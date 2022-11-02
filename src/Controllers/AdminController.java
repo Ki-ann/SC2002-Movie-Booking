@@ -34,22 +34,22 @@ public class AdminController implements INavigation {
 
 		AdminView.DisplayMenu();
 		switch(ConsoleIOManager.readInt()){
-			case 1->GotoMovieEditSystem();
-			case 2->GotoSettingsSystem();
-			case 3->GotoCineplexEditSystem();
+			case 1->gotoMovieEditSystem();
+			case 2->gotoSettingsSystem();
+			case 3->gotoCineplexEditSystem();
 			case 4 -> NavigationController.getInstance().goBack();
 		}
 	}
 
-	public void GotoMovieEditSystem() {
+	public void gotoMovieEditSystem() {
 		NavigationController.getInstance().load(new MovieEditController());
 	}
 
-	public void GotoSettingsSystem() {
+	public void gotoSettingsSystem() {
 		NavigationController.getInstance().load(new SettingsController());
 	}
 
-	public void GotoCineplexEditSystem() {
+	public void gotoCineplexEditSystem() {
 		NavigationController.getInstance().load(new CineplexController());
 	}
 
