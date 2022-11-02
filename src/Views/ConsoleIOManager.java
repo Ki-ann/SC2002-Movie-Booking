@@ -4,7 +4,10 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Locale;
 import java.util.Scanner;
-
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.text.ParseException;
 /**
  * Manager class to store an instance of Scanner and interface with console read and write.
  * <br>Wrappers allow for easy extension of logging if needed.
@@ -180,5 +183,41 @@ public class ConsoleIOManager {
         // If string is of odd length, append an extra character at the end.
         return String.format("%s", String.valueOf(fillChar).repeat(paddingSize) + s + String.valueOf(fillChar).repeat(s.length() % 2 == 0 ? paddingSize : paddingSize + 1));
 
+    }
+
+    public static Date readTimeMMdd() {
+        return readTimeMMdd("");
+    }
+
+    public static Date readTimeMMdd(String x) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            String input = x;
+            if(input.equals("")){
+                input = ConsoleIOManager.readString();
+            }
+            input = new SimpleDateFormat("yyyy").format(new Date()) + "-" + input;  // set year as current year
+            return simpleDateFormat.parse(input);
+        } catch (ParseException ex) {
+            System.out.println("Wrong format. Try again.");
+            return readTimeMMdd(x);
+        }
+    }
+
+    public static String formatTimeMMdd(Date time) {
+        return new SimpleDateFormat("MMMM, dd").format(time);
+    }
+
+    public static double readDouble() {
+        double output;
+        try {
+            output = scanner.nextDouble();
+            scanner.nextLine(); // Clear buffer
+            return output;
+        } catch (InputMismatchException ex) {
+            ConsoleIOManager.printLine("Invalid input, try again.");
+            scanner.nextLine();  // flush scanner
+            return readDouble();
+        }
     }
 }

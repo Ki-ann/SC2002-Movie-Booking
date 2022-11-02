@@ -1,6 +1,9 @@
 package Models.Data;
 
+import Models.DataStoreManager;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
@@ -26,20 +29,20 @@ public class Holiday implements Serializable {
         return date;
     }
 
-    
     public double getRate() {
         return rate;
     }
 
-    
-    public String printDetail() {
-        return "Date      : " + formatTimeMMdd(date) + "\n" +
-                "Price rate: " + rate;
+    public String detailString() {
+        return String.format("Holiday name: %s\nDate: %s\nPrice Increase : %.2f%%",name,formatTimeMMdd(date), rate);
     }
     public String toString() {
         return name + " (" + formatTimeMMdd(date) + ")";
     }
     public static String formatTimeMMdd(Date time) {
-        return new SimpleDateFormat("MMMM, dd").format(time);
+        return new SimpleDateFormat("MM-dd").format(time);
+    }
+    public static ArrayList<Holiday> getHolidayList() {
+        return DataStoreManager.getInstance().getStore(Holiday.class);
     }
 }

@@ -71,10 +71,7 @@ public class DataStoreManager {
     public void addToStore(Serializable object) {
         // Get class ArrayList that will store the object
         ArrayList<Serializable> list = (ArrayList<Serializable>) getStore(object.getClass());
-        if (list == null) {
-            store.put(object.getClass(), new ArrayList<>());
-            list = (ArrayList<Serializable>) getStore(object.getClass());
-        }
+
         // Add to ArrayList
         list.add(object);
 
@@ -99,7 +96,7 @@ public class DataStoreManager {
         ArrayList<Serializable> list = (ArrayList<Serializable>) getStore(object.getClass());
 
         // Not found, does not have a list
-        if (list == null) {
+        if (list.size() == 0) {
             return;
         }
         // Remove from ArrayList
@@ -123,7 +120,12 @@ public class DataStoreManager {
      */
     @SuppressWarnings("unchecked")
     public <T extends Serializable> ArrayList<T> getStore(Class<T> Deserializable) {
-        return (ArrayList<T>) store.get(Deserializable);
+        ArrayList<T> list = (ArrayList<T>) store.get(Deserializable);
+        if (list == null) {
+            list = new ArrayList<>();
+            store.put(Deserializable, (ArrayList<Serializable>) list);
+        }
+        return list;
     }
 
     /**

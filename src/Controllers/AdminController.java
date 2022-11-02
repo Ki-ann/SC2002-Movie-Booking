@@ -31,7 +31,7 @@ public class AdminController implements INavigation {
 			}
 			ConsoleIOManager.printLine("Wrong username or password!");
 		}
-
+		
 		AdminView.DisplayMenu();
 		switch(ConsoleIOManager.readInt()){
 			case 1->gotoMovieEditSystem();

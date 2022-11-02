@@ -1,77 +1,79 @@
 package Views;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import Models.Data.*;
 import java.util.*;
+
 public class SettingsView {
+    
     Scanner sc = new Scanner(System.in);
-    public static void DisplayMenu() {
+    public static void displayMenu() {
 		ConsoleIOManager.clearScreen();
 		ConsoleIOManager.printMenu("This is the setting page.",
                 "I want to manage ticket price",
                 "I want to manage holidays");
         ConsoleIOManager.printGoBack();
     }
-    public static void printMenu(){
-        ConsoleIOManager.printMenu("Manage holidays",
-        "1. List all holidays",
-                "2. Add a holiday");
+    public static void printTicketPriceMenu(Setting setting) {
+        ConsoleIOManager.clearScreen();
+        displayTicketPrices(setting);
+        ConsoleIOManager.printMenu("Manage Ticket Price",
+                "Edit Standard Ticket Price");
         ConsoleIOManager.printGoBack();
     }
-    public static int readChoice(int i, int j) {
-        Scanner sc = new Scanner(System.in);
-        int choice;
-        try {
-            choice = sc.nextInt();
-        } catch (InputMismatchException ex) {
-            System.out.println("Invalid input, try again.");
-            sc.nextLine();  // flush scanner
-            return readChoice(i, j);
-        }
 
-        if (choice < i || choice > j) {
-            System.out.println("Invalid input, try again.");
-            return readChoice(i, j);
-        }
-        return choice;
+    public static void printHolidayMenu(){
+        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.printMenu("Manage holidays",
+        "List all holidays",
+                "Add a holiday");
+        ConsoleIOManager.printGoBack();
     }
-    public static String readString(String... message) {
-        for (String m : message) System.out.println(m);
-        Scanner sc = new Scanner(System.in);
-        return sc.nextLine();
-    }
-    public static Date readTimeMMdd(String... message) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            String input = readString(message);
-            input = new SimpleDateFormat("yyyy").format(new Date()) + "-" + input;  // set year as current year
-            Date date = simpleDateFormat.parse(input);
-            return date;
-        } catch (ParseException ex) {
-            System.out.println("Wrong format. Try again.");
-            return readTimeMMdd(message);
-        }
-    }
-    public static String formatTimeMMdd(Date time) {
-        return new SimpleDateFormat("MMMM, dd").format(time);
-    }
-    public static double readDouble(String... message) {
-        for (String m : message) System.out.println(m);
-        Scanner sc = new Scanner(System.in);
-        double output;
 
-        try {
-            output = sc.nextDouble();
-            return output;
-        } catch (InputMismatchException ex) {
-            System.out.println("Invalid input, try again.");
-            sc.nextLine();  // flush scanner
-            return readDouble(message);
-        }
+
+    public static void displayTicketPrices(Setting setting){
+        ConsoleIOManager.printMenu("     TICKET PRICE CHART     ");
+		ConsoleIOManager.printF("Adult\t\t\t\t%.2f\n",setting.getStandardAdultPrice());
+		ConsoleIOManager.printF("Student\t\t\t\t%.2f\n", setting.getStandardStudentPrice());
+		ConsoleIOManager.printF("Senior\t\t\t\t%.2f\n",setting.getStandardSeniorPrice());
+		ConsoleIOManager.printF("Children\t\t\t%.2f\n", setting.getStandardChildPrice());
+		ConsoleIOManager.printF("Weekend\t\t\t\t%.2f\n", setting.getStandardWeekendPrice());
+		ConsoleIOManager.printF("\n");
     }
-    public static boolean askConfirm(String... message) {
-        for (String m : message) System.out.println(m);
-        Scanner sc = new Scanner(System.in);
-        if (sc.next().toUpperCase().equals("Y")) return true;
-        else return false;
+
+    public static void printSetStandardPrice(Setting setting) {
+        ConsoleIOManager.printLine("Current standard price: $" + setting.getStandardPrice());
+        ConsoleIOManager.printLine("Enter new standard price: ");
+    }
+
+    public static void printSetStandardPriceSuccess() {
+        ConsoleIOManager.printLine("Standard price updated.");
+        ConsoleIOManager.printGoBack();
+    }
+
+    public static void printHolidayListMenu(String[] holidayString) {
+        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.printMenu("Holiday list option", holidayString);
+        if (holidayString.length == 0) {
+            ConsoleIOManager.printLine("No holiday exists");
+        }
+        ConsoleIOManager.printGoBack();
+    }
+
+    public static void printAddHolidaySuccess(){
+        ConsoleIOManager.printLine("Successfully added the holiday.");
+        ConsoleIOManager.printGoBack();
+    }
+
+    public static void displayHolidayDetails(Holiday holiday) {
+        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.printLine(holiday.detailString());
+        ConsoleIOManager.printLine();
+        ConsoleIOManager.printLine("Please enter your choice:");
+        ConsoleIOManager.printLine("[Y] Do you want to delete this holiday?");
+        ConsoleIOManager.printLine("[N] Cancel and go back");
+    }
+
+    public static void printHolidayDeletionSuccess() {
+        ConsoleIOManager.printLine("Successfully deleted the holiday.");
+        ConsoleIOManager.printGoBack();
     }
 }
