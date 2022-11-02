@@ -16,8 +16,7 @@ class MainTestKiann {
         //Test file
         System.out.println("Application Starting...");
         // Load DB
-        Admin obj = new Admin();
-        DataStoreManager.getInstance().addToStore(obj);
+        Admin obj = new Admin("admin", "admin");
         DataStoreManager.getInstance().addToStore(obj);
         Movie mov = new Movie();
         mov.setName("movie 1");

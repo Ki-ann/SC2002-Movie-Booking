@@ -63,4 +63,11 @@ public class BookingHistoryView {
                     "$" + twoPlaces.format(ticket.getPrice()));
         }
     }
+
+    /**
+     * Prints a message when no booking history is found at all
+     */
+    public static void printNoBookingHistoryFound(){
+        ConsoleIOManager.printLine("No booking history was found in the system");
+    }
 }
