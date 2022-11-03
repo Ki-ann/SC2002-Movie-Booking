@@ -1,5 +1,8 @@
 package Controllers;
 
+import Views.ConsoleIOManager;
+import Views.MovieEditView;
+
 public class MovieEditController implements INavigation {
 
 	public void start() {
@@ -18,6 +21,10 @@ public class MovieEditController implements INavigation {
 
 	public void updateMovie() {
 		// TODO - implement Controllers.MovieEditController.UpdateMovie
+		throw new UnsupportedOperationException();
+	}
+	public void deleteMovie(){
+		// TODO - implement Controllers.MovieEditController.DeleteMovie
 		throw new UnsupportedOperationException();
 	}
 

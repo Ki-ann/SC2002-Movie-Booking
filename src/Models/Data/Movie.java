@@ -22,9 +22,7 @@ public class Movie extends SingleInstancedSerializable {
 	private MovieType movieType;
 	private ArrayList<String> director;
 
-	public String getName() {
-		return name;
-	}
+	public String getName() {return name; }
 
 	public void setName(String name) {
 		this.name = name;
