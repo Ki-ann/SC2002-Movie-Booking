@@ -29,6 +29,7 @@ public class Setting implements Serializable {
     final static int PLATINUM =5;
     final static int IMAX =10;
     final static  double CHILDMULTIPLIER = 0.7;
+    private TopMovieViewingState currentTopMovieViewingState = TopMovieViewingState.BY_BOTH;
     public double getStandardPrice() {
 		return standardPrice;
 	}
@@ -136,5 +137,13 @@ public class Setting implements Serializable {
     private boolean isWeekend(Date time) {
         String whatDay = new SimpleDateFormat("EEEE").format(time);
         return whatDay.equals("Saturday") || whatDay.equals("Sunday");
+    }
+
+    public TopMovieViewingState getCurrentTopMovieViewingState() {
+        return currentTopMovieViewingState;
+    }
+
+    public void setCurrentTopMovieViewingState(TopMovieViewingState currentTopMovieViewingState) {
+        this.currentTopMovieViewingState = currentTopMovieViewingState;
     }
 }

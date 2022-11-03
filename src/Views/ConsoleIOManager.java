@@ -8,6 +8,10 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.text.ParseException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
+
 /**
  * Manager class to store an instance of Scanner and interface with console read and write.
  * <br>Wrappers allow for easy extension of logging if needed.
@@ -53,20 +57,39 @@ public class ConsoleIOManager {
         printLine(System.lineSeparator().repeat(50));
     }
 
-    /**
-     * Prints a choice menu with the given title and options. Usually followed by a readInt().
-     *
-     * @param title       Title of the choice menu.
-     * @param menuOptions Takes in a String Array of choices to be printed out sequentially.
-     */
     public static void printMenu(String title, String... menuOptions) {
+        printMenu(title, 100, menuOptions);
+    }
+        /**
+         * Prints a choice menu with the given title and options. Usually followed by a readInt().
+         *
+         * @param title       Title of the choice menu.
+         * @param menuOptions Takes in a String Array of choices to be printed out sequentially.
+         */
+    public static void printMenu(String title, int maxLength, String... menuOptions) {
         String choiceLine = "Please enter your choice:";
-        // Get the largest length string from either Title or menuOptions
-        int largestMenuLength = Arrays.stream(menuOptions).map(string -> string.split("\\r?\\n")[0].length()).max(Comparator.comparingInt(s -> s)).orElse(choiceLine.length()) + 30;
+        // Get the largest per-line string length from either Title or menuOptions
+        int largestMenuLength = Stream.concat(Arrays.stream(new String[]{title, choiceLine}), Arrays.stream(menuOptions))
+                .flatMap(string -> Arrays.stream(string.split("\\r?\\n")))
+                .toList().stream()
+                // map all lengths to a stream
+                .map(String::length)
+                // find the largest string length
+                .max(Comparator.comparingInt(s -> s))
+                .orElse(choiceLine.length()); // Default to choiceLine Length
+        largestMenuLength = Math.min(largestMenuLength, maxLength) + 10;
         // Get the length of a centered title string
-        int centeredTitleLength = centerString(largestMenuLength, title.trim(), ' ').length();
-        // Split the title if given a new line and center all splits
-        String[] centeredTitleArray = Arrays.stream(title.split("\\r?\\n")).map(splitTitle -> centerString(centeredTitleLength, splitTitle.trim(), ' ')).toArray(String[]::new);
+        int centeredTitleLength = centerString(largestMenuLength, title.split("\\r?\\n")[0].trim(), ' ').length();
+        // Split string by new line
+        String[] centeredTitleArray = Arrays.stream(title.split("\\r?\\n"))
+                // Split string again if it is longer than the max length (Word wrap)
+                .flatMap(splitLine -> (splitLine.length() > maxLength ?
+                        wordWrapper(splitLine,maxLength).stream()  // Split string into multiple smaller strings
+                        : Arrays.stream(new String[]{splitLine}))) // Only 1 line string found
+                .toList().stream()
+                // Center all splits
+                .map(splitTitle -> centerString(centeredTitleLength, splitTitle, ' '))
+                .toArray(String[]::new);
 
         //====Print Title
         // Top border
@@ -86,6 +109,17 @@ public class ConsoleIOManager {
             }
         }
     }
+
+    private static ArrayList<String> wordWrapper(String splitLine, int maxLength) {
+            ArrayList<String> matchList = new ArrayList<>();
+            Pattern regex = Pattern.compile(String.format("(.{1,%d}(?:\\s|$))|(.{0,%<d})",maxLength), Pattern.DOTALL);
+            Matcher regexMatcher = regex.matcher(splitLine);
+            while (regexMatcher.find()) {
+                matchList.add(regexMatcher.group());
+            }
+            return matchList;
+    }
+
 
     /**
      * To be used after a printMenu() method call to append a "Go Back" option.

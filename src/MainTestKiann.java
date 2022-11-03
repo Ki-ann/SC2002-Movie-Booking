@@ -3,12 +3,15 @@ import Controllers.MainController;
 import Controllers.NavigationController;
 import Models.Data.*;
 import Models.Data.Enums.CinemaType;
+import Models.Data.Enums.MovieRating;
 import Models.Data.Enums.MovieStatus;
 import Models.DataStoreManager;
+import Views.ConsoleIOManager;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 class MainTestKiann {
 
@@ -18,8 +21,21 @@ class MainTestKiann {
         // Load DB
         Admin obj = new Admin("admin", "admin");
         DataStoreManager.getInstance().addToStore(obj);
+
+
+
         Movie mov = new Movie();
-        mov.setName("movie 1");
+        mov.setName("Black Adam (English Sub) PG13");
+        mov.setCast(new ArrayList<>(Arrays.asList("Dwayne Johnson", "Aldis Hodge", "Pierce Brosnan", "Noah Centineo", "Sarah Shahi"," Marwan Kenzari"," Quintessa Swindell", "Bodhi Sabongui")));
+        mov.setDirector(new ArrayList<>(Arrays.asList("Jaume Collet-Serra")));
+        mov.setSynopsis("Nearly 5,000 years after he was bestowed with the almighty powers of the Egyptian gods - and imprisoned just as quickly - Black Adam is freed from his earthly tomb, ready to unleash his unique form of justice on the modern world.");
+        mov.setMovieGenre(new ArrayList<>(Arrays.asList("Action", "Adventure", "Fantasy")));
+        mov.setLanguage("English");
+        mov.setMovieRating(MovieRating.PG13);
+        mov.setDuration(0,125,0);
+        mov.setMovieStatus(MovieStatus.NOW_SHOWING);
+        ConsoleIOManager.printMenu(mov.toString());
+
 
         CineplexController cineplexController = new CineplexController();
         Cineplex cine = new Cineplex();
