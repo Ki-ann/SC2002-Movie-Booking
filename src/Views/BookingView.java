@@ -148,7 +148,7 @@ public class BookingView {
                 (bookingTicket.getSelectedMovie().getMovieStatus() == MovieStatus.PREVIEW? " - Preview" : ""));
         ConsoleIOManager.printF("%s - %s\n", bookingTicket.getSelectedCineplex().getName(), bookingTicket.getSelectedCinema().getName());
         ConsoleIOManager.printF("%s - %s\n", bookingTicket.getSelectedScreening().getShowTime().getDateOfMovie(), bookingTicket.getSelectedScreening().getShowTime().getTimeOfMovie());
-        ConsoleIOManager.printF("Seat:  %s\n",bookingTicket.getSelectedSeat().getSeatString());
+        ConsoleIOManager.printF("Seat:  %s | %s\n",bookingTicket.getSelectedSeat().getSeatString(), bookingTicket.getSelectedSeat().getSeatType());
         ConsoleIOManager.printF("$%.2f (Inclusive of GST/Service Change)\n", bookingTicket.getPrice());
         ConsoleIOManager.printLine("Name: " + bookingTicket.getCustomer().getName());
         ConsoleIOManager.printLine("Email: " + bookingTicket.getCustomer().getEmail());
@@ -160,7 +160,7 @@ public class BookingView {
      * Prints the given cinema seat layout 2-D array to a viewable interface for customers to pick.
      * @param layout the given session seat layout.
      */
-    public static void printSeatLayout(ArrayList<ArrayList<CinemaLayout>> layout){
+    public static void printSeatLayout(ArrayList<ArrayList<Seat>> layout){
         ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("Pick the seat you want to book for");
 
@@ -174,9 +174,13 @@ public class BookingView {
                 } else {
                     SeatType type = layout.get(i).get(j).getSeatType();
                     switch (type) {
-                        case NORMAL -> System.out.printf("%3s", "[ ]");
-                        case PROHIBITED -> System.out.printf("%3s", "  ");
-                        case SPECIAL_NEEDS -> System.out.printf("%3s", "L ");
+                        case NORMAL -> ConsoleIOManager.printF("%3s", "[ ]");
+                        case PROHIBITED -> ConsoleIOManager.printF("%3s", "  ");
+                        case SPECIAL_NEEDS -> ConsoleIOManager.printF("%3s", "L ");
+                        case COUPLE -> {
+                            ConsoleIOManager.printF("%6s", "[____]");
+                            j++;
+                        }
                     }
                 }
             }

@@ -155,7 +155,7 @@ public class BookingController implements INavigation {
                         {
                             // Get input
                             BookingView.printSeatLayout(selectedScreening.getSessionLayout());
-                            CinemaLayout selectedLayout = getSelectedSeat(selectedScreening.getSessionLayout());
+                            Seat selectedLayout = getSelectedSeat(selectedScreening.getSessionLayout());
                             // Did not get any seats
                             if (selectedLayout == null) {
                                 currentBookingBookingState = currentBookingBookingState.prev();
@@ -384,11 +384,11 @@ public class BookingController implements INavigation {
      * @param layout The current selected Screening's layout
      * @return User's selected Seat information
      */
-    private CinemaLayout getSelectedSeat(ArrayList<ArrayList<CinemaLayout>> layout) {
+    private Seat getSelectedSeat(ArrayList<ArrayList<Seat>> layout) {
         String input;
         do {
             input = ConsoleIOManager.readString();
-            CinemaLayout selectedLayout = null;
+            Seat selectedLayout = null;
             // Get input
             if (input.trim().length() >= 2) {
                 try {
@@ -430,6 +430,7 @@ public class BookingController implements INavigation {
      */
     private void saveBookingTransaction(BookingTicket newBookingTicket) {
         BookingView.printSaveBooking();
+        newBookingTicket.getSelectedMovie().incrementTicketSales();
         DataStoreManager.getInstance().addToStore(newBookingTicket);
         // Save everything including Cineplex information
         DataStoreManager.getInstance().saveAll();

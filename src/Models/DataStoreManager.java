@@ -1,8 +1,12 @@
 package Models;
 
-import Models.Data.CinemaLayout;
+import Models.Data.Seat;
 import Models.Data.Cineplex;
+import Models.Data.CoupleSeat;
 import Models.Data.Enums.SeatType;
+import Models.Data.Seat;
+import Views.ConsoleIOManager;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -71,10 +75,7 @@ public class DataStoreManager {
     public void addToStore(Serializable object) {
         // Get class ArrayList that will store the object
         ArrayList<Serializable> list = (ArrayList<Serializable>) getStore(object.getClass());
-        if (list == null) {
-            store.put(object.getClass(), new ArrayList<>());
-            list = (ArrayList<Serializable>) getStore(object.getClass());
-        }
+
         // Add to ArrayList
         list.add(object);
 
@@ -99,7 +100,7 @@ public class DataStoreManager {
         ArrayList<Serializable> list = (ArrayList<Serializable>) getStore(object.getClass());
 
         // Not found, does not have a list
-        if (list == null) {
+        if (list.size() == 0) {
             return;
         }
         // Remove from ArrayList
@@ -123,7 +124,12 @@ public class DataStoreManager {
      */
     @SuppressWarnings("unchecked")
     public <T extends Serializable> ArrayList<T> getStore(Class<T> Deserializable) {
-        return (ArrayList<T>) store.get(Deserializable);
+        ArrayList<T> list = (ArrayList<T>) store.get(Deserializable);
+        if (list == null) {
+            list = new ArrayList<>();
+            store.put(Deserializable, (ArrayList<Serializable>) list);
+        }
+        return list;
     }
 
     /**
@@ -261,8 +267,8 @@ public class DataStoreManager {
      * @param seatString
      * @return
      */
-    public ArrayList<ArrayList<CinemaLayout>> parseLayout(String seatString){
-        var layout = new ArrayList<ArrayList<CinemaLayout>>();
+    public ArrayList<ArrayList<Seat>> parseLayout(String seatString){
+        var layout = new ArrayList<ArrayList<Seat>>();
         StringReader reader = new StringReader(seatString);
         int k;
         try{
@@ -271,9 +277,19 @@ public class DataStoreManager {
             int col =0;
             while((k=reader.read())!=-1){
                 switch ((char) k) {
-                    case 'X' -> layout.get(row).add(new CinemaLayout(SeatType.PROHIBITED, row, col++));
-                    case '0' -> layout.get(row).add(new CinemaLayout(SeatType.NORMAL, row, col++));
-                    case '1' -> layout.get(row).add(new CinemaLayout(SeatType.SPECIAL_NEEDS, row, col++));
+                    case 'X' -> layout.get(row).add(new Seat(SeatType.PROHIBITED, row, col++));
+                    case '0' -> layout.get(row).add(new Seat(SeatType.NORMAL, row, col++));
+                    case '1' -> layout.get(row).add(new Seat(SeatType.SPECIAL_NEEDS, row, col++));
+                    case 'C' ->{
+                        CoupleSeat left = new CoupleSeat(row, col++);
+                        CoupleSeat right = new CoupleSeat(row, col++);
+                        left.setCouplePair(right);
+                        right.setCouplePair(left);
+                        layout.get(row).add(left);
+                        layout.get(row).add(right);
+                        // Skip 1 since we are adding two seats side by side
+                        reader.skip(1);
+                    }
                     case '.' -> {
                         col = 0;
                         ++row;
@@ -282,7 +298,7 @@ public class DataStoreManager {
                 }
             }
         }catch (Exception exception){
-            System.out.println("Error");
+            ConsoleIOManager.printLine("Error");
         }
         return layout;
     }

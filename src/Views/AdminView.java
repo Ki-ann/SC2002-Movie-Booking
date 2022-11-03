@@ -7,8 +7,8 @@ public class AdminView {
      * Print Menu to display different functionalities of Admin
      */
     public static void DisplayMenu() {
-        ConsoleIOManager.printMenu("This is the admin page","Edit Movies","Edit Settings","Edit Cineplexes","Logout");
-        // ConsoleIOManager.PrintGoBack();
+        ConsoleIOManager.printMenu("This is the admin page","Edit Movies","Edit Settings","Edit Cineplexes");
+        ConsoleIOManager.printF("[%d] %s\n", 0, "Logout");
     }
     /**
      * Print a message for login failure
