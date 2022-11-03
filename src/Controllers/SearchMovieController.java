@@ -23,8 +23,7 @@ public class SearchMovieController implements INavigation {
 		}
 		for(int i=0;i<movies.length;i++){
 			ConsoleIOManager.printLine("[ "+i+" ]");
-			ConsoleIOManager.printLine("Movie title: "+movies[i].getName());
-			ConsoleIOManager.printLine("Showing status: "+movies[i].getMovieStatus());
+			movies[i].toString();
 		}
 	}
 
