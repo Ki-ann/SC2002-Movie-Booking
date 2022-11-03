@@ -1,5 +1,6 @@
 package Controllers.Authentication;
 
+import Controllers.INavigation;
 import Controllers.NavigationController;
 import Models.DataStoreManager;
 import Models.Data.Admin;
@@ -8,7 +9,7 @@ import Views.ConsoleIOManager;
 
 import java.util.ArrayList;
 
-public class AuthController implements IAuthenticator {
+public class AuthController implements IAuthenticator{
 	public Admin login() {
 		ConsoleIOManager.printMenu("Login Page");
 		ConsoleIOManager.printLine("Username: ");
@@ -35,7 +36,7 @@ public class AuthController implements IAuthenticator {
 
 		ConsoleIOManager.printLine("Account created");
 	}
-	
+
 	public void logout() {
 		System.out.println("Logged out!");
 		NavigationController.getInstance().goBack();

@@ -4,12 +4,6 @@ import java.io.Console;
 
 public class AdminView {
     /**
-     * Print Menu for Login
-     */
-    public static void DisplayLoginMenu(){
-        ConsoleIOManager.printMenu("This is the login page","Login","Go back");
-    }
-    /**
      * Print Menu to display different functionalities of Admin
      */
     public static void DisplayMenu() {

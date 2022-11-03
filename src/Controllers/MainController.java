@@ -40,7 +40,7 @@ public class MainController implements INavigation {
 	 * @see NavigationController
 	 */
 	public void gotoAdminModule() {
-		NavigationController.getInstance().load(new AdminController());
+		NavigationController.getInstance().load(new LoginController());
 	}
 
 	/**

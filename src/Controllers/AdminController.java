@@ -7,29 +7,16 @@ import Models.DataStoreManager;
 import Models.Data.Admin;
 import Views.AdminView;
 import Views.ConsoleIOManager;
+import Views.LoginView;
 
 public class AdminController implements INavigation {
-
-	private IAuthenticator authenticator = new AuthController();
-
 	public void start() {
-		Admin admin = null;
-		while(admin==null) {
-			AdminView.DisplayLoginMenu();
-			switch(ConsoleIOManager.readInt()){
-				case 1-> admin = authenticator.login();
-				case 2->NavigationController.getInstance().goBack();
-			}
-		}
-		boolean login = true;
-		while(login) {
-			AdminView.DisplayMenu();
-			switch(ConsoleIOManager.readInt()){
-				case 1->gotoMovieEditSystem();
-				case 2->gotoSettingsSystem();
-				case 3->gotoCineplexEditSystem();
-				case 4 -> logout();
-			}
+		AdminView.DisplayMenu();
+		switch(ConsoleIOManager.readInt()){
+			case 1->gotoMovieEditSystem();
+			case 2->gotoSettingsSystem();
+			case 3->gotoCineplexEditSystem();
+			case 4 -> logout();
 		}
 	}
 
@@ -46,7 +33,7 @@ public class AdminController implements INavigation {
 	}
 
 	public void logout() {
-		authenticator.logout();
+		new AuthController().logout();
 		throw new UnsupportedOperationException();
 	}
 
