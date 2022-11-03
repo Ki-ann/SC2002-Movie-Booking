@@ -15,7 +15,7 @@ public class LoginController implements INavigation{
             LoginView.DisplayLoginMenu();
             switch(ConsoleIOManager.readInt()){
                 case 1-> admin = authenticator.login();
-                case 2-> NavigationController.getInstance().goBack();
+                case 0-> NavigationController.getInstance().goBack();
             }
         }
         NavigationController.getInstance().load(new AdminController());
