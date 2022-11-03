@@ -1,6 +1,6 @@
 package Models.Data.Enums;
 
-public enum paymentStatus {
+public enum PaymentStatus {
 	COMPLETED,
 	FAIL,
 	PROCESSING,

@@ -10,10 +10,10 @@ public class Cinema implements Serializable{
 
 	private String name;
 	private CinemaType cinemaType;
-	private ArrayList<ArrayList<CinemaLayout>>  seatTemplate;
+	private ArrayList<ArrayList<Seat>>  seatTemplate;
 	private final ArrayList<Screening> screeningList = new ArrayList<>();
 
-	public Cinema(String cinemaName, CinemaType cinemaType,ArrayList<ArrayList<CinemaLayout>> seatTemplate){
+	public Cinema(String cinemaName, CinemaType cinemaType,ArrayList<ArrayList<Seat>> seatTemplate){
 		this.name = cinemaName;
 		this.cinemaType = cinemaType;
 		this.seatTemplate = seatTemplate;
@@ -37,11 +37,11 @@ public class Cinema implements Serializable{
 		this.name = name;
 	}
 
-	public ArrayList<ArrayList<CinemaLayout>> getSeatTemplate() {
+	public ArrayList<ArrayList<Seat>> getSeatTemplate() {
 		return seatTemplate;
 	}
 
-	public void setSeatTemplate(ArrayList<ArrayList<CinemaLayout>> seatTemplate) {
+	public void setSeatTemplate(ArrayList<ArrayList<Seat>> seatTemplate) {
 		this.seatTemplate = seatTemplate;
 	}
 	public ArrayList<Screening> getScreeningList(){

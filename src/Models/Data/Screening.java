@@ -7,7 +7,7 @@ public class Screening implements Serializable {
 
 	private Movie movie;
 	private ShowTime showTime;
-	private ArrayList<ArrayList<CinemaLayout>> sessionLayout;
+	private ArrayList<ArrayList<Seat>> sessionLayout;
 
 	public Movie getMovie() {
 		return movie;
@@ -25,11 +25,11 @@ public class Screening implements Serializable {
 		this.showTime = showTime;
 	}
 
-	public ArrayList<ArrayList<CinemaLayout>> getSessionLayout() {
+	public ArrayList<ArrayList<Seat>> getSessionLayout() {
 		return sessionLayout;
 	}
 
-	public void setSessionLayout(ArrayList<ArrayList<CinemaLayout>> sessionLayout) {
+	public void setSessionLayout(ArrayList<ArrayList<Seat>> sessionLayout) {
 		this.sessionLayout = sessionLayout;
 	}
 }

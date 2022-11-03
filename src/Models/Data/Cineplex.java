@@ -5,8 +5,7 @@ import Models.DataStoreManager;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.HashMap;
-import java.io.IOException;
+
 public class Cineplex implements Serializable {
 
 	private final ArrayList<Cinema> cinemaList = new ArrayList<>();
@@ -33,14 +32,14 @@ public class Cineplex implements Serializable {
 		String cinemaCode = (this.getName().length() >= 2 ?
 							this.getName().substring(0,2) + (this.getCinemaList().size() + 1) :
 							this.getName() + "0" + (this.getCinemaList().size() + 1)).toUpperCase();
-		ArrayList<ArrayList<Models.Data.CinemaLayout>> seatTemplate = null;
+		ArrayList<ArrayList<Seat>> seatTemplate = null;
 		String seatString = "XXXXX0000XXXXXX." +
 				"0000X0000X00000." +
 				"0000X0000X00000." +
 				"0000X0000X00000." +
 				"0000X0000X00000." +
 				"0000X0000X00000." +
-				"0000X0000X00000." +
+				"0000X0CC0X00000." +
 				"0000X0000X00000";
 		switch (cinemaType){
 			case NORMAL -> seatTemplate =  DataStoreManager.getInstance().parseLayout(seatString);

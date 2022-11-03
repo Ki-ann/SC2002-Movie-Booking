@@ -45,6 +45,8 @@ public class BookingHistoryController implements INavigation {
             var filteredBookingList = bookingList.stream().filter(booking -> booking.getCustomer().getEmail().equals(customer.getEmail().trim())).toList();
             BookingHistoryView.printBookingHistoryList(filteredBookingList, customer);
 
+        }else{
+            BookingHistoryView.printNoBookingHistoryFound();
         }
 
         ConsoleIOManager.printGoBack();
