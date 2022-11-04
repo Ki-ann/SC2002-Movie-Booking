@@ -112,6 +112,33 @@ public class Movie extends SingleInstancedSerializable {
     public void setMovieRating(MovieRating movieRating) {
         this.movieRating = movieRating;
     }
+    
+    public void addReview(MovieReview review) {
+		
+		
+		if(movieReviews == null) {
+			movieReviews = new ArrayList<MovieReview>();
+		}
+		
+		movieReviews.add(review);
+	}
+	
+	public ArrayList<MovieReview> getReview() {
+		
+		return movieReviews;
+	}
+	
+	public float getAvgRating()
+	{
+		float sum = 0;
+		for(int i = 0; i<movieReviews.size(); i++) {
+			
+			
+			sum += movieReviews.get(i).getReviewScore();
+			
+		}
+		return sum/((float)movieReviews.size());
+	}
 
     @Override
     public String toString() {
