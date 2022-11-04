@@ -1,17 +1,20 @@
 package Models.Data;
+
 import java.io.Serializable;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.*;
 
 import Models.DataStoreManager;
-import Views.ConsoleIOManager;
 import Models.Data.Enums.*;
-import java.text.SimpleDateFormat;
+
+import static java.util.Map.entry;
 
 public class Setting implements Serializable {
-    public static Setting getSettings(){
+    public static Setting getSettings() {
         DataStoreManager dataStoreInstance = DataStoreManager.getInstance();
-        ArrayList<Setting> settingStore =  dataStoreInstance.getStore(Setting.class);
-        if(settingStore.size() == 0){
+        ArrayList<Setting> settingStore = dataStoreInstance.getStore(Setting.class);
+        if (settingStore.size() == 0) {
             Setting newSettings = new Setting();
             dataStoreInstance.addToStore(newSettings);
             return newSettings;
@@ -20,123 +23,87 @@ public class Setting implements Serializable {
         return settingStore.get(0);
     }
 
-    private void saveSettings(){
+    private void saveSettings() {
         DataStoreManager.getInstance().save(Setting.class);
     }
 
     private double standardPrice = 10;
-    private double weekendPrice = (int) standardPrice* 1.2;
-    final static int PLATINUM =5;
-    final static int IMAX =10;
-    final static  double CHILDMULTIPLIER = 0.7;
     private TopMovieViewingState currentTopMovieViewingState = TopMovieViewingState.BY_BOTH;
+
+    private final Map<AgeClass, Double> ageMultiplier = Map.ofEntries(
+            entry(AgeClass.ADULT, 1.0),
+            entry(AgeClass.STUDENT, 0.75),
+            entry(AgeClass.SENIOR, 0.45),
+            entry(AgeClass.CHILD, 0.30)
+    );
+
+    private final Map<MovieType, Double> movieTypeMultiplier = Map.ofEntries(
+            entry(MovieType.LOCAL, 1.0),
+            entry(MovieType.BLOCKBUSTER, 1.1),
+            entry(MovieType.DIGITAL3D, 1.1),
+            entry(MovieType.IMAX3D, 1.2)
+    );
+
+    private final Map<CinemaType, Double> cinemaClassMultiplier = Map.ofEntries(
+            entry(CinemaType.NORMAL, 1.0),
+            entry(CinemaType.PLATINUM, 1.1),
+            entry(CinemaType.IMAX, 1.2)
+    );
+    private final Map<SeatType, Double> seatTypeMultiplier = Map.ofEntries(
+            entry(SeatType.NORMAL, 1.0),
+            entry(SeatType.SPECIAL_NEEDS, 1.0),
+            entry(SeatType.COUPLE, 2.0)
+    );
+
+    private final double weekendMultiplier = 1.2;
+
     public double getStandardPrice() {
-		return standardPrice;
-	}
-    public double getStandardAdultPrice() {
-		return standardPrice;
-	}
-    public double getStandardStudentPrice() {
-		return standardPrice*0.85;
-	}
-    public double getStandardSeniorPrice() {
-		return standardPrice*0.8;
-	}
-    public double getStandardWeekendPrice() {
-		return standardPrice*1.2;
-	}
-    public double getStandardChildPrice() {
-		return standardPrice*0.7;
-	}
-    public double getPrice(String date,CinemaType c, MovieStatus m, TicketClass t){
-        Date x = ConsoleIOManager.readTimeMMdd(date);
-        Holiday holiday = getHoliday(x);
-        double temp;
-        if (holiday != null) {
-            temp = holiday.getRate();
-            switch (c){
-                case NORMAL:{
-                    if (m == MovieStatus.PREVIEW){
-                        temp*=1.2;
-                    }
-                    break;
-                }
-	            case PLATINUM:{
-                    temp +=4;
-                    if (m == MovieStatus.PREVIEW){
-                        temp*=1.2;
-                    }
-                    break;
-                }
-	            case IMAX:{
-                    temp +=8;
-                    if (m == MovieStatus.PREVIEW){
-                        temp*=1.2;
-                    }
-                    break;
-                }
-            }
-        }
-        else if(isWeekend(x)){
-            temp  = weekendPrice;
-            switch (c){
-                case NORMAL: break;
-	            case PLATINUM:{
-                    temp +=4;
-                    break;
-                }
-	            case IMAX:{
-                    temp +=8;
-                    break;
-                }  
-            }
-            if (m == MovieStatus.PREVIEW){
-                temp*=1.2;
-            }
-        }
-        else{
-            temp  = standardPrice;
-            switch (c){
-                case NORMAL: break;
-	            case PLATINUM:{
-                    temp +=4;
-                    break;
-                }
-	            case IMAX:{
-                    temp +=8;
-                    break;
-                }  
-            }
-            if (m == MovieStatus.PREVIEW){
-                temp*=1.2;
-            }
-        }
-        switch(t){
-            case CHILD:
-            case SENIOR:
-                return temp*0.7;
-            case STUDENT:
-                return temp*0.85;
-            case ADULT:
-            default: return temp;
-        }
-	}
-
-    public void setStandardPrice(double standardPrice) {
-		this.standardPrice = standardPrice;
-        saveSettings();
-	}
-
-    //This method is used to get the holiday with specified
-    private Holiday getHoliday(Date selectedDate) {
-        ArrayList<Holiday> holidayList = Holiday.getHolidayList();
-        return holidayList.stream().filter(holiday -> holiday.getDate() == selectedDate).findFirst().orElse(null);
+        return roundNearest50Cents(standardPrice);
     }
 
-    //check wether it is wenkend or not
-    private boolean isWeekend(Date time) {
-        String whatDay = new SimpleDateFormat("EEEE").format(time);
-        return whatDay.equals("Saturday") || whatDay.equals("Sunday");
+    public double getStandardPrice(AgeClass ageClass) {
+        return roundNearest50Cents(ageMultiplier.get(ageClass) * getStandardPrice());
+    }
+
+    public void setStandardPrice(double standardPrice) {
+        this.standardPrice = standardPrice;
+        saveSettings();
+    }
+
+    public double getWeekendPrice() {
+        return roundNearest50Cents(getStandardPrice() * weekendMultiplier);
+    }
+
+    private double roundNearest50Cents(double input) {
+        return Math.round(input * 2.0) / 2.0;
+    }
+
+    public double getPrice(BookingTicket newBookingTicket) {
+        var dateOfMovie = newBookingTicket.getSelectedScreening().getShowTime().getDateOfMovie();
+        var holiday = getHoliday(dateOfMovie);
+        double specialDay = 1.0;
+        if(holiday != null){
+            specialDay =  holiday.getRate();
+        }else if(isWeekend(dateOfMovie))
+            specialDay = weekendMultiplier;
+
+        return roundNearest50Cents(getStandardPrice(newBookingTicket.getCustomer().getAgeClass())
+                * movieTypeMultiplier.get(newBookingTicket.getSelectedMovie().getMovieType())
+                * cinemaClassMultiplier.get(newBookingTicket.getSelectedCinema().getCinemaType())
+                * seatTypeMultiplier.get(newBookingTicket.getSelectedSeat().getSeatType())
+                * specialDay
+        );
+    }
+
+    //This method is used to get the holiday with specified
+    private Holiday getHoliday(LocalDate selectedDate) {
+        ArrayList<Holiday> holidayList = Holiday.getHolidayList();
+        return holidayList.stream().filter(holiday -> holiday.getDate() == selectedDate).findFirst().orElse(null);
+
+    }
+
+    private boolean isWeekend(LocalDate selectedDate) {
+        return selectedDate.getDayOfWeek() == DayOfWeek.SATURDAY || selectedDate.getDayOfWeek() == DayOfWeek.SUNDAY;
     }
 
     public TopMovieViewingState getCurrentTopMovieViewingState() {

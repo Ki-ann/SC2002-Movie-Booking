@@ -5,12 +5,9 @@ import Controllers.Payment.SimplePayment;
 import Controllers.Payment.SimplePaymentAlwaysFailure;
 import Models.Data.BookingTicket;
 import Models.Data.DiscountCode;
-import Models.Data.Enums.PaymentMethod;
-import Models.Data.Movie;
 import Models.DataStoreManager;
 import Views.ConsoleIOManager;
 import Views.PaymentView;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;

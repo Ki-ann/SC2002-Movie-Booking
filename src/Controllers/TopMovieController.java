@@ -8,12 +8,25 @@ import Models.DataStoreManager;
 import Views.ConsoleIOManager;
 import Views.TopMovieView;
 
+/**
+ * TopMovieController that handles the logic for displaying top 5 movie ranking lists.
+ *
+ * @author Phee Kian Ann
+ * @version 1.0
+ * @since 2022-11-03
+ */
 public class TopMovieController implements INavigation {
 
     Setting setting = Setting.getSettings();
     Admin currentAdmin;
 
-    @Override
+    /**
+     * Start method implementation for initialization after loading with NavigationController.
+     * Chooses which option to display based on Setting configuration and if user is an Admin
+     *
+     * @see NavigationController
+     * @see INavigation
+     */
     public void start() {
         TopMovieViewingState currentViewingState = setting.getCurrentTopMovieViewingState();
         TopMovieView.displayMenu(currentViewingState, currentAdmin);
@@ -53,12 +66,21 @@ public class TopMovieController implements INavigation {
         } while (!valid);
     }
 
+    /**
+     * Allows for admin to configure which listing methods to be displayed for the customers
+     */
     private void editViewingState() {
     }
 
+    /**
+     * Lists top 5 movies by review ratings
+     */
     private void viewByRatings() {
     }
 
+    /**
+     * Lists top 5 movies by ticket sales
+     */
     private void viewBySales() {
         TopMovieView.printTopSales(DataStoreManager.getInstance().getStore(Movie.class));
 
@@ -72,6 +94,10 @@ public class TopMovieController implements INavigation {
         } while (true);
     }
 
+    /**
+     * Sets the currently logged in admin for the session
+     * @param admin current admin user
+     */
     public void SetAdmin(Admin admin) {
         this.currentAdmin = admin;
     }

@@ -142,7 +142,6 @@ public class DataStoreManager {
      * }
      * </pre>
      */
-
     @SuppressWarnings("unchecked")
     public void loadAll() {
         List<String> fileList;
@@ -252,6 +251,7 @@ public class DataStoreManager {
      * 0 = Normal Seat Type
      * 1 = Special needs Seat Type
      * X = Prohibited Seat Type
+     * C = Couple Seat Type
      *
      * <br>Example:
      * <pre>
@@ -303,6 +303,10 @@ public class DataStoreManager {
         return layout;
     }
 
+    /**
+     * Gets the instance of the reference map for deserialized object tracking
+     * @return current reference map
+     */
     public Map<UUID, Object> getReferenceMap() {
         return referenceMap;
     }

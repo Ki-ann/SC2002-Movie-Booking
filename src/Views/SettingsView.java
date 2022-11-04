@@ -1,5 +1,7 @@
 package Views;
 import Models.Data.*;
+import Models.Data.Enums.AgeClass;
+
 import java.util.*;
 
 public class SettingsView {
@@ -31,12 +33,12 @@ public class SettingsView {
 
     public static void displayTicketPrices(Setting setting){
         ConsoleIOManager.printMenu("     TICKET PRICE CHART     ");
-		ConsoleIOManager.printF("Adult\t\t\t\t%.2f\n",setting.getStandardAdultPrice());
-		ConsoleIOManager.printF("Student\t\t\t\t%.2f\n", setting.getStandardStudentPrice());
-		ConsoleIOManager.printF("Senior\t\t\t\t%.2f\n",setting.getStandardSeniorPrice());
-		ConsoleIOManager.printF("Children\t\t\t%.2f\n", setting.getStandardChildPrice());
-		ConsoleIOManager.printF("Weekend\t\t\t\t%.2f\n", setting.getStandardWeekendPrice());
-		ConsoleIOManager.printF("\n");
+		ConsoleIOManager.printF("%18s   $%-8.2f\n","Adult",setting.getStandardPrice(AgeClass.ADULT));
+		ConsoleIOManager.printF("%18s   $%-8.2f\n", "Student",setting.getStandardPrice(AgeClass.STUDENT));
+		ConsoleIOManager.printF("%18s   $%-8.2f\n","Senior",setting.getStandardPrice(AgeClass.SENIOR));
+		ConsoleIOManager.printF("%18s   $%-8.2f\n", "Children",setting.getStandardPrice(AgeClass.CHILD));
+		ConsoleIOManager.printF("%18s   $%-8.2f\n", "Weekend",setting.getWeekendPrice());
+		ConsoleIOManager.printLine();
     }
 
     public static void printSetStandardPrice(Setting setting) {

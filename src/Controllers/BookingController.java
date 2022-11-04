@@ -1,7 +1,7 @@
 package Controllers;
 
-import Controllers.Payment.SimplePayment;
 import Models.Data.*;
+import Models.Data.Enums.AgeClass;
 import Models.Data.Enums.BookingState;
 import Models.Data.Enums.MovieStatus;
 import Models.Data.Enums.SeatType;
@@ -9,7 +9,6 @@ import Models.DataStoreManager;
 import Views.BookingView;
 import Views.ConsoleIOManager;
 
-import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
@@ -181,9 +180,21 @@ public class BookingController implements INavigation {
 
                             }
                         }
+                case GET_CUSTOMER_AGE -> {
+                    BookingView.printAgeClassList();
+                    AgeClass selectedAgeClass = getSelectedAgeClass();
+
+                    if (selectedAgeClass == null) {
+                        bookingTicket.setCustomer(null);
+                        currentBookingBookingState = currentBookingBookingState.prev();
+                        continue;
+                    }
+                    bookingTicket.getCustomer().setAgeClass(selectedAgeClass);
+                }
                 case GET_CONFIRMATION -> //=====Price Check
                         {
-                            bookingTicket.setPrice(10.50);
+                            double price = Setting.getSettings().getPrice(bookingTicket);
+                            bookingTicket.setPrice(price);
                             //===== Confirm
                             {
                                 BookingView.printCheckout(bookingTicket);
@@ -205,7 +216,7 @@ public class BookingController implements INavigation {
         PaymentController paymentController = new PaymentController();
         String TID = paymentController.newPaymentTransaction(bookingTicket);
         bookingTicket.setBookingID(TID);
-        if (TID.isEmpty()) {
+        if (TID == null || TID.isEmpty()) {
             CancelBookingTransaction();
         }
         //===== All succeeded, and save transaction
@@ -421,6 +432,29 @@ public class BookingController implements INavigation {
                 return selectedLayout;
             }
         } while (true);
+    }
+
+    /**
+     * Gets user's selection of age class
+     *
+     * @return User selected age class
+     */
+    private AgeClass getSelectedAgeClass() {
+        AgeClass selectedClass;
+        int input;
+        do {
+            input = ConsoleIOManager.readInt();
+
+            if (input < 0 || input > AgeClass.values().length) {
+                ConsoleIOManager.printLine("Invalid input! Please select an item from the menu!");
+            } else if (input == 0) {
+                return null;
+            } else {
+                selectedClass = AgeClass.values()[input - 1];
+                break;
+            }
+        } while (true);
+        return selectedClass;
     }
 
     /**

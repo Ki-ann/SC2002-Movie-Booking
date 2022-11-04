@@ -3,6 +3,7 @@ package Models.Data;
 import Models.DataStoreManager;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
@@ -11,21 +12,20 @@ import java.text.SimpleDateFormat;
 
 public class Holiday implements Serializable {
     private String name;
-    private Date date;
+    private LocalDate date;
     private double rate;
 
-    public Holiday(String name, Date date, double rate) {
+    public Holiday(String name, LocalDate date, double rate) {
         this.name = name;
         this.date = date;
         this.rate = rate;
     }
-
     
     public String getName() {
         return name;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
@@ -34,13 +34,10 @@ public class Holiday implements Serializable {
     }
 
     public String detailString() {
-        return String.format("Holiday name: %s\nDate: %s\nPrice Increase : %.2f%%",name,formatTimeMMdd(date), rate);
+        return String.format("Holiday name: %s\nDate: %tm/%<td\nPrice Increase : %.2f%%",name,date, rate);
     }
     public String toString() {
-        return name + " (" + formatTimeMMdd(date) + ")";
-    }
-    public static String formatTimeMMdd(Date time) {
-        return new SimpleDateFormat("MM-dd").format(time);
+        return String.format("%s (%tm/%<td)",name ,date);
     }
     public static ArrayList<Holiday> getHolidayList() {
         return DataStoreManager.getInstance().getStore(Holiday.class);

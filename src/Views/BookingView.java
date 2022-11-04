@@ -1,6 +1,7 @@
 package Views;
 
 import Models.Data.*;
+import Models.Data.Enums.AgeClass;
 import Models.Data.Enums.MovieStatus;
 import Models.Data.Enums.SeatType;
 import java.time.LocalDate;
@@ -148,7 +149,9 @@ public class BookingView {
                 (bookingTicket.getSelectedMovie().getMovieStatus() == MovieStatus.PREVIEW? " - Preview" : ""));
         ConsoleIOManager.printF("%s - %s\n", bookingTicket.getSelectedCineplex().getName(), bookingTicket.getSelectedCinema().getName());
         ConsoleIOManager.printF("%s - %s\n", bookingTicket.getSelectedScreening().getShowTime().getDateOfMovie(), bookingTicket.getSelectedScreening().getShowTime().getTimeOfMovie());
-        ConsoleIOManager.printF("Seat:  %s | %s\n",bookingTicket.getSelectedSeat().getSeatString(), bookingTicket.getSelectedSeat().getSeatType());
+        ConsoleIOManager.printF("Seat:  %s | %s | %s\n",bookingTicket.getSelectedSeat().getSeatString(),
+                                                            bookingTicket.getSelectedSeat().getSeatType(),
+                                                            bookingTicket.getCustomer().getAgeClass());
         ConsoleIOManager.printF("$%.2f (Inclusive of GST/Service Change)\n", bookingTicket.getPrice());
         ConsoleIOManager.printLine("Name: " + bookingTicket.getCustomer().getName());
         ConsoleIOManager.printLine("Email: " + bookingTicket.getCustomer().getEmail());
@@ -165,7 +168,7 @@ public class BookingView {
         ConsoleIOManager.printMenu("Pick the seat you want to book for");
 
 
-        ConsoleIOManager.printLine(ConsoleIOManager.centerString((layout.get(0).size() + 1) * 3, "[  Screen  ]", ' '));
+        ConsoleIOManager.printLine(ConsoleIOManager.centerString((layout.get(0).size() + 1) * 3 + 3, String.format("%12s","[  Screen  ]"), ' '));
         for (int i = 0; i < layout.size(); i++) {
             ConsoleIOManager.printF("%-3c", (char) (65 + i));
             for (int j = 0; j < layout.get(i).size(); j++) {
@@ -209,6 +212,20 @@ public class BookingView {
     public static void printCancelledBooking(){
         ConsoleIOManager.printMenu("Booking cancelled");
         ConsoleIOManager.printLine();
+        ConsoleIOManager.printGoBack();
+    }
+
+    /**
+     * Prints a selection menu of Age classes
+     */
+    public static void printAgeClassList() {
+        String[] ageStringList = Arrays.stream(AgeClass.values())
+                .map(Enum::name)
+                .toArray(String[]::new);
+
+        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.printMenu("Please select your age",
+                ageStringList);
         ConsoleIOManager.printGoBack();
     }
 }

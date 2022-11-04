@@ -4,16 +4,27 @@ import Models.DataStoreManager;
 import Views.ConsoleIOManager;
 import Models.Data.*;
 import Views.SettingsView;
-
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
+/**
+ * SettingsController that handles the logic for modifying system configuration
+ *
+ * @author Han Zhi Guang, Phee Kian Ann
+ * @version 1.0
+ * @since 2022-11-03
+ */
 public class SettingsController implements INavigation {
 
     private final Setting setting = Setting.getSettings();
     private int initialMenuSelection = -1;
 
-    @Override
+    /**
+     * Start method implementation for initialization after loading with NavigationController.
+     *
+     * @see NavigationController
+     * @see INavigation
+     */
     public void start() {
         SettingsView.displayMenu();
 
@@ -33,6 +44,9 @@ public class SettingsController implements INavigation {
         } while (initialMenuSelection == -1);
     }
 
+    /**
+     *
+     */
     private void manageTicketPrice() {
         //display original price chart
         SettingsView.printTicketPriceMenu(setting);
@@ -50,6 +64,9 @@ public class SettingsController implements INavigation {
         } while (true);
     }
 
+    /**
+     *
+     */
     private void setStandardPrice() {
         SettingsView.printSetStandardPrice(setting);
         setting.setStandardPrice(ConsoleIOManager.readDouble());
@@ -65,6 +82,9 @@ public class SettingsController implements INavigation {
         } while (true);
     }
 
+    /**
+     *
+     */
     private void manageHolidays() {
         do {
             SettingsView.printHolidayMenu();
@@ -82,10 +102,12 @@ public class SettingsController implements INavigation {
         } while (true);
     }
 
-
+    /**
+     *
+     */
     private void displayHolidayList() {
         ArrayList<Holiday> holidayList = Holiday.getHolidayList();
-        var holidayString = holidayList.stream().map(holiday -> String.format("%s %tm-%<td  %.2f%%", holiday.getName() ,holiday.getDate(), holiday.getRate())).toArray(String[]::new);
+        var holidayString = holidayList.stream().map(holiday -> String.format("%s %tm/%<td  %.2f%%", holiday.getName() ,holiday.getDate(), holiday.getRate())).toArray(String[]::new);
         SettingsView.printHolidayListMenu(holidayString);
 
 
@@ -98,6 +120,11 @@ public class SettingsController implements INavigation {
         }
     }
 
+    /**
+     *
+     * @param holidayList
+     * @return
+     */
     private Holiday getSelectedHoliday(ArrayList<Holiday> holidayList) {
         int input;
         do {
@@ -113,13 +140,15 @@ public class SettingsController implements INavigation {
         } while (true);
     }
 
-    // add holiday and corresponding price
+    /**
+     *
+     */
     private void addHoliday() {
         ConsoleIOManager.printLine("Enter the name of the holiday:");
         String name = ConsoleIOManager.readString().toLowerCase();
         ConsoleIOManager.printLine("Enter the date of the holiday\n" +
-                "Format: MM-DD (e.g. 12-25)");
-        Date date = ConsoleIOManager.readTimeMMdd();
+                "Format: MM/DD (e.g. 12/25)");
+        LocalDate date = ConsoleIOManager.readTimeMMdd();
         ConsoleIOManager.printLine("Enter the % price increase on that day:\n" +
                 "e.g. holiday price is 10% more expensive standard price");
         double pricePercentage = ConsoleIOManager.readDouble();
@@ -139,7 +168,10 @@ public class SettingsController implements INavigation {
         } while (true);
     }
 
-    //display holiday detail and also remove option is provided
+    /**
+     *
+     * @param holiday
+     */
     private void displayHolidayDetail(Holiday holiday) {
         SettingsView.displayHolidayDetails(holiday);
         if (ConsoleIOManager.readConfirm()) {
@@ -149,6 +181,10 @@ public class SettingsController implements INavigation {
         }
     }
 
+    /**
+     *
+     * @param holiday
+     */
     private void deleteHoliday(Holiday holiday) {
         DataStoreManager.getInstance().removeFromStore(holiday);
         SettingsView.printHolidayDeletionSuccess();

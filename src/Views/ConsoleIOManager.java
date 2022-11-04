@@ -1,5 +1,7 @@
 package Views;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Locale;
@@ -215,24 +217,24 @@ public class ConsoleIOManager {
         if (paddingSize <= 0)
             paddingSize = 2; // Default padding
         // If string is of odd length, append an extra character at the end.
-        return String.format("%s", String.valueOf(fillChar).repeat(paddingSize) + s + String.valueOf(fillChar).repeat(s.length() % 2 == 0 ? paddingSize : paddingSize + 1));
+        return String.format("%s", String.valueOf(fillChar).repeat(paddingSize) + s + String.valueOf(fillChar).repeat((width - s.length()) % 2 == 0 ? paddingSize : paddingSize + 1));
 
     }
 
-    public static Date readTimeMMdd() {
+    public static LocalDate readTimeMMdd() {
         return readTimeMMdd("");
     }
 
-    public static Date readTimeMMdd(String x) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    public static LocalDate readTimeMMdd(String x) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         try {
             String input = x;
             if(input.equals("")){
                 input = ConsoleIOManager.readString();
             }
-            input = new SimpleDateFormat("yyyy").format(new Date()) + "-" + input;  // set year as current year
-            return simpleDateFormat.parse(input);
-        } catch (ParseException ex) {
+            input = String.format("%d/%s",LocalDate.now().getYear(), input);
+            return LocalDate.parse(input, dateTimeFormatter);
+        } catch (Exception ex) {
             System.out.println("Wrong format. Try again.");
             return readTimeMMdd(x);
         }

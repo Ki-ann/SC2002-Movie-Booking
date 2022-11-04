@@ -5,6 +5,7 @@ import Models.Data.*;
 import Models.Data.Enums.CinemaType;
 import Models.Data.Enums.MovieRating;
 import Models.Data.Enums.MovieStatus;
+import Models.Data.Enums.MovieType;
 import Models.DataStoreManager;
 import Views.ConsoleIOManager;
 
@@ -21,6 +22,8 @@ class MainTestKiann {
         // Load DB
         Admin obj = new Admin("admin", "admin");
         DataStoreManager.getInstance().addToStore(obj);
+        obj = new Admin("", "");
+        DataStoreManager.getInstance().addToStore(obj);
 
 
 
@@ -34,6 +37,7 @@ class MainTestKiann {
         mov.setMovieRating(MovieRating.PG13);
         mov.setDuration(0,125,0);
         mov.setMovieStatus(MovieStatus.NOW_SHOWING);
+        mov.setMovieType(MovieType.LOCAL);
         ConsoleIOManager.printMenu(mov.toString());
 
 
@@ -41,7 +45,7 @@ class MainTestKiann {
         Cineplex cine = new Cineplex();
         cine.setName("Bishan");
         cine.addCinemaToCineplex(CinemaType.NORMAL);
-        cine.addCinemaToCineplex(CinemaType.NORMAL);
+        cine.addCinemaToCineplex(CinemaType.PLATINUM);
 
         Screening screening = new Screening();
         screening.setMovie(mov);
@@ -53,8 +57,19 @@ class MainTestKiann {
         screening2.setShowTime(new ShowTime());
         screening2.getShowTime().setTimeOfMovie(LocalTime.NOON.plusHours(3));
         screening2.getShowTime().setDateOfMovie(LocalDate.now());
+        Screening screening3 = new Screening();
+        screening3.setMovie(mov);
+        screening3.setShowTime(new ShowTime());
+        screening3.getShowTime().setTimeOfMovie(LocalTime.NOON.plusHours(3));
+        screening3.getShowTime().setDateOfMovie(LocalDate.now().plusDays(2));
         cine.getCinemaByIndex(0).addToScreeningList(screening);
         cine.getCinemaByIndex(0).addToScreeningList(screening2);
+        cine.getCinemaByIndex(0).addToScreeningList(screening3);
+        screening = new Screening();
+        screening.setMovie(mov);
+        screening.setShowTime(new ShowTime());
+        screening.getShowTime().setTimeOfMovie(LocalTime.NOON);
+        screening.getShowTime().setDateOfMovie(LocalDate.now());
         cine.getCinemaByIndex(1).addToScreeningList(screening);
 
         DataStoreManager.getInstance().addToStore(cine);
