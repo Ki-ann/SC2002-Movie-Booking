@@ -1,7 +1,8 @@
 package Models.Data.Enums;
 
 public enum MovieType {
-	attribute,
-	attribute2,
-	attribute3
+	DIGITAL3D,
+	IMAX3D,
+	BLOCKBUSTER,
+	LOCAL
 }
