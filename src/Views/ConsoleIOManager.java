@@ -9,11 +9,10 @@ import java.util.Scanner;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.text.ParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
-
+import java.time.LocalTime;
 /**
  * Manager class to store an instance of Scanner and interface with console read and write.
  * <br>Wrappers allow for easy extension of logging if needed.
@@ -254,6 +253,23 @@ public class ConsoleIOManager {
             ConsoleIOManager.printLine("Invalid input, try again.");
             scanner.nextLine();  // flush scanner
             return readDouble();
+        }
+    }
+
+    public static LocalTime readTimeHHMM() {
+        return readTimeHHMM("");
+    }
+    public static LocalTime readTimeHHMM(String x) {
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("HH:mm");
+        try {
+            String input = x;
+            if(input.equals("")){
+                input = ConsoleIOManager.readString();
+            }
+            return LocalTime.parse(input, f);
+        } catch (Exception ex) {
+            System.out.println("Wrong format. Try again.");
+            return readTimeHHMM(x);
         }
     }
 }

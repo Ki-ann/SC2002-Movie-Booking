@@ -61,4 +61,13 @@ public class Cinema implements Serializable{
 	public void setCinemaType(CinemaType cinemaType) {
 		this.cinemaType = cinemaType;
 	}
+
+	public boolean removeScreeningList(Screening screening) {
+		for (Screening i : screeningList){
+			if((i.getShowTime()).getTimeOfMovie() == screening.getShowTime().getTimeOfMovie()){
+				screeningList.remove(i);
+				return true;
+			}
+		}return false;
+	}
 }
