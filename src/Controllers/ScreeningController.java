@@ -7,7 +7,6 @@ import Views.ConsoleIOManager;
 import Models.Data.Screening;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -134,8 +133,6 @@ public class ScreeningController implements INavigation {
         LocalTime localTime = ConsoleIOManager.readTimeHHMM();
         screening.getShowTime().setTimeOfMovie(localTime);
         screening.getShowTime().setDateOfMovie(selectDate);
-        boolean x = selectedCinema.removeScreeningList(screening);
-        ConsoleIOManager.printF(String.valueOf(x));
         selectedCinema.removeScreeningList(screening);
         DataStoreManager.getInstance().addToStore(movie);
         ScreeningView.printDeleteShowTimeSuccess();
