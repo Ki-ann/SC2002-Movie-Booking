@@ -7,8 +7,8 @@ public class MovieEditView {
     public static void displayMenu() {
         ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("This is the Movie Editing Page", "Create a Movie", "Update existing Movies",
-                "Delete existing Movies");
-        ConsoleIOManager.printGoBack();
+                "Delete existing Movies", "Go Back");
+        //ConsoleIOManager.printGoBack();
     }
 
     public static void printAddName(){
