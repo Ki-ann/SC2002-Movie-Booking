@@ -8,15 +8,29 @@ import Models.Data.Enums.MovieStatus;
 import Models.DataStoreManager;
 import Models.Data.Movie;
 import Views.ConsoleIOManager;
-import java.time.Duration;
-
+import Views.MovieEditView;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class MovieEditController implements INavigation {
 
+	private int MovieEditSelection = -1;
 	public void start() {
-		// TODO - implement Controllers.MovieEditController.Start
+		MovieEditView.displayMenu();
+		do {
+			if (MovieEditSelection == -1) {
+				MovieEditSelection = ConsoleIOManager.readInt();
+			}
+			switch (MovieEditSelection) {
+				case 1 -> createMovie();
+				case 2 -> updateMovie();
+				case 3 -> deleteMovie();
+				case 4 -> NavigationController.getInstance().goBack();
+				default -> {
+					ConsoleIOManager.printLine("Invalid input! Please select an item from the menu!");
+					MovieEditSelection = -1;
+				}
+			}
+		} while (MovieEditSelection == -1);
 	}
 
 	public void createMovie() {
@@ -26,69 +40,112 @@ public class MovieEditController implements INavigation {
 		ConsoleIOManager.printMenu("Movie Details");
 
 		//Name
-		ConsoleIOManager.printLine("Please input the Name of the movie: ");
+		MovieEditView.printAddName();
 		String name = ConsoleIOManager.readString();
 		movie.setName(name);
 
-//		//movieStatus ENUM (In Progress)
-//		ConsoleIOManager.printLine("Please input the movie status: \n1: Coming Soon\n2: Preview\n3: Now Showing\n");
-//		MovieStatus choice;
-//		movie.setMovieStatus(choice);
-//
-//		Movie.setMovieStatus(MovieStatus.NOW_SHOWING);
-		//Duration
-		ConsoleIOManager.printLine("Please input the Duration of Movie (in minutes): ");
+//		//movieStatusENUM
+		MovieEditView.printAddMovieStatus();
+		MovieStatus movieStatus;
+		int movieStatusInput;
+
+		do {
+			movieStatusInput = ConsoleIOManager.readInt();
+			if (movieStatusInput < 0) {
+				ConsoleIOManager.printLine("Invalid input! Please select an item from the menu!");
+			}
+
+			else {
+				movieStatus = MovieStatus.values()[movieStatusInput-1];
+				movie.setMovieStatus(movieStatus);
+				break;
+			}
+		} while(true);
+
+		//DurationD
+		MovieEditView.printAddDuration();
 		int minutes = ConsoleIOManager.readInt();
 		movie.setDuration(0,minutes,0);
+
 		//SynopsisD
-		ConsoleIOManager.printLine("Please input the Synopsis: ");
+		MovieEditView.printAddSynopsis();
 		String synopsis = ConsoleIOManager.readString();
 		movie.setSynopsis(synopsis);
+
 		//LanguageD
-		ConsoleIOManager.printLine("Please input the Language of Movie:");
+		MovieEditView.printAddLanguage();
 		String language = ConsoleIOManager.readString();
 		movie.setLanguage(language);
 
 		//Cast
-		ConsoleIOManager.printLine("Please input the number of Casts: ");
+		MovieEditView.printNumCast();
 		int numCasts = ConsoleIOManager.readInt();
 		ArrayList <String> cast = new ArrayList<>();
 		for (int i = 0; i < numCasts; i++){
-			ConsoleIOManager.printLine("Please input the Cast(s): ");
+			MovieEditView.printAddCast();
 			String castMember = ConsoleIOManager.readString();
 			cast.add(castMember);
 			movie.setCast(cast);
 		}
 
 		//Genre
-		ConsoleIOManager.printLine("Please input the number of Genre(s): ");
+		MovieEditView.printNumGenre();
 		int numGenre = ConsoleIOManager.readInt();
 		ArrayList <String> genre = new ArrayList<>();
 		for (int i = 0; i < numGenre; i++){
-			ConsoleIOManager.printLine("Please input the Cast(s): ");
+			MovieEditView.printAddGenre();
 			String genreType = ConsoleIOManager.readString();
 			cast.add(genreType);
 			movie.setCast(genre);
 		}
+
 		//Director
-		ConsoleIOManager.printLine("Please input the number of Casts: ");
+		MovieEditView.printNumDirector();
 		int numDirector = ConsoleIOManager.readInt();
 		ArrayList <String> director = new ArrayList<>();
 		for (int i = 0; i < numDirector; i++){
-			ConsoleIOManager.printLine("Please input the Cast(s): ");
+			MovieEditView.printAddDirector();
 			String directorMember = ConsoleIOManager.readString();
 			cast.add(directorMember);
 			movie.setCast(director);
 		}
+
 		//MovieTypeENUM
-//		ConsoleIOManager.printLine("Movie Type: ");
-//		String movieType = ConsoleIOManager.readString();
-//		movie.setMovieType(movieType);
-//
-//		//MovieRatingENUM
-//		ConsoleIOManager.printLine("Movie Rating: ");
-//		MovieRating = ConsoleIOManager.readString();
-//		movie.setMovieType(movieType);
+		MovieType movieType;
+		int movieTypeInput;
+
+		do {
+			MovieEditView.printAddMovieType();
+			movieTypeInput = ConsoleIOManager.readInt();
+			if (movieTypeInput < 0) {
+				ConsoleIOManager.printLine("Invalid input! Please select an item from the menu!");
+			}
+
+			else {
+				movieType = MovieType.values()[movieTypeInput-1];
+				movie.setMovieType(movieType);
+				break;
+			}
+		} while(true);
+
+
+		//MovieRatingENUM
+		MovieEditView.printAddMovieRating();
+		MovieRating movieRating;
+		int movieRatingInput;
+
+		do {
+			movieRatingInput = ConsoleIOManager.readInt();
+			if (movieRatingInput < 0) {
+				ConsoleIOManager.printLine("Invalid input! Please select an item from the menu!");
+			}
+
+			else {
+				movieRating = MovieRating.values()[movieRatingInput-1];
+				movie.setMovieRating(movieRating);
+				break;
+			}
+		} while(true);
 
 		throw new UnsupportedOperationException();
 	}
@@ -99,7 +156,7 @@ public class MovieEditController implements INavigation {
 	}
 
 	public void deleteMovie() {
-		//moviesearch
+		//MovieSearch
 
 		//particular movie change to ENUM endofshowing
 		throw new UnsupportedOperationException();
