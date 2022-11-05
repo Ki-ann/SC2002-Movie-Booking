@@ -5,6 +5,9 @@ import Models.DataStoreManager;
 import Views.ConsoleIOManager;
 import Views.SearchMovieView;
 
+import javax.lang.model.type.UnknownTypeException;
+import javax.swing.text.NavigationFilter;
+import java.io.Console;
 import java.util.ArrayList;
 
 public class SearchMovieController implements INavigation {
@@ -20,9 +23,22 @@ public class SearchMovieController implements INavigation {
 				break;
 			}
 		}
+		String[] titles = new String[movies.length];
 		for(int i=0;i<movies.length;i++){
-			ConsoleIOManager.printLine("[ "+(i+1)+" ]");
-			ConsoleIOManager.printLine(movies[i].toString());
+			titles[i] = movies[i].getName();
+		}
+		SearchMovieView.listMovies(titles);
+		int choice = ConsoleIOManager.readInt();
+		if(choice!=0){
+			ConsoleIOManager.printLine(movies[choice-1].toString());
+			SearchMovieView.reviewOption();
+			String ans = ConsoleIOManager.readString();
+			if(ans.equals("Y") || ans.equals("y")){
+				gotoReviewSystem();
+			}
+			else{
+				NavigationController.getInstance().goBack();
+			}
 		}
 	}
 
@@ -44,7 +60,6 @@ public class SearchMovieController implements INavigation {
 	}
 
 	public void gotoReviewSystem() {
-		// TODO - implement Controllers.SearchMovieController.GotoReviewSystem
-		throw new UnsupportedOperationException();
+		return;
 	}
 }
