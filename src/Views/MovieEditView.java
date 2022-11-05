@@ -7,8 +7,7 @@ public class MovieEditView {
     public static void displayMenu() {
         ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("This is the Movie Editing Page", "Create a Movie", "Update existing Movies",
-                "Delete existing Movies",
-                "Go Back");
+                "Delete existing Movies");
         ConsoleIOManager.printGoBack();
     }
 
@@ -17,7 +16,7 @@ public class MovieEditView {
     }
 
     public static void printAddMovieStatus(){
-        ConsoleIOManager.printLine("Please input the movie status: \n1: Coming Soon\n2: Preview\n3: Now Showing\n");
+        ConsoleIOManager.printLine("Please input the movie status: \n[1] Coming Soon\n[2] Preview\n[3] Now Showing");
     }
 
     public static void printAddDuration(){
@@ -57,12 +56,13 @@ public class MovieEditView {
     }
 
     public static void printAddMovieType(){
-        ConsoleIOManager.printLine("Movie Type: ");
+        ConsoleIOManager.printLine("Please input the movie type: \n[1] DIGITAL3D\n[2] IMAX3D\n[3] BLOCKBUSTER\n[4] LOCAL");
     }
 
     public static void printAddMovieRating(){
-        ConsoleIOManager.printLine("Movie Rating: ");
+        ConsoleIOManager.printLine("Please input the movie rating: \n[1] G\n[2] PG\n[3] PG13\n[4] NC16\n[5] M18\n[6] R21");
     }
-
-
+    public static void printAddSuccess(){
+        ConsoleIOManager.printLine("Movie successfully added!");
+    }
 }

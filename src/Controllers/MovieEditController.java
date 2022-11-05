@@ -103,11 +103,11 @@ public class MovieEditController implements INavigation {
 		MovieEditView.printNumDirector();
 		int numDirector = ConsoleIOManager.readInt();
 		ArrayList <String> director = new ArrayList<>();
+		movie.setCast(director);
 		for (int i = 0; i < numDirector; i++){
 			MovieEditView.printAddDirector();
 			String directorMember = ConsoleIOManager.readString();
 			cast.add(directorMember);
-			movie.setCast(director);
 		}
 
 		//MovieTypeENUM
@@ -147,7 +147,10 @@ public class MovieEditController implements INavigation {
 			}
 		} while(true);
 
-		throw new UnsupportedOperationException();
+		MovieEditView.printAddSuccess();
+		ConsoleIOManager.printMenu(movie.toString());
+
+
 	}
 
 	public void updateMovie() {
