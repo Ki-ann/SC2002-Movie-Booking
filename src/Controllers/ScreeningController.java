@@ -17,8 +17,8 @@ public class ScreeningController implements INavigation {
 
     public void start() {
         ScreeningView.displayMenu();
-        initialMenuSelection = -1;
         do {
+            this.initialMenuSelection = -1;
             if (initialMenuSelection == -1) {
                 initialMenuSelection = ConsoleIOManager.readInt();
             }
@@ -39,9 +39,10 @@ public class ScreeningController implements INavigation {
         Screening screening = new Screening();
         CineplexController controller = new CineplexController();
         screening.setShowTime(new ShowTime());
-        ScreeningView.printInputMovie();
+        List<Movie> movieList = getMovieList();
+        ScreeningView.printMovieList(movieList);
         Movie movie;
-        movie = getMovie();
+        movie = getSelectedMovie(movieList);
         if (movie == null) {
             this.initialMenuSelection = -1; // Go back to main menu
             NavigationController.getInstance().goBack(0);
@@ -81,11 +82,11 @@ public class ScreeningController implements INavigation {
         screening.getShowTime().setDateOfMovie(selectDate);
         //selectedCineplex.getCinemaByIndex(0).addToScreeningList(screening);
         selectedCinema.addToScreeningList(screening);
-        DataStoreManager.getInstance().save(Cineplex.class);
-        //DataStoreManager.getInstance().addToStore(movie);
+        DataStoreManager.getInstance().addToStore(movie);
         ScreeningView.printAddShowTimeSuccess();
         do {
             if (ConsoleIOManager.readInt() == 0) {
+                this.initialMenuSelection = -1;
                 NavigationController.getInstance().goBack(0);
                 return;
             } else {
@@ -98,9 +99,10 @@ public class ScreeningController implements INavigation {
         Screening screening = new Screening();
         CineplexController controller = new CineplexController();
         screening.setShowTime(new ShowTime());
-        ScreeningView.printInputMovie();
+        List<Movie> movieList = getMovieList();
+        ScreeningView.printMovieList(movieList);
         Movie movie;
-        movie = getMovie();
+        movie = getSelectedMovie(movieList);
         if (movie == null) {
             this.initialMenuSelection = -1; // Go back to main menu
             NavigationController.getInstance().goBack(0);
@@ -135,12 +137,14 @@ public class ScreeningController implements INavigation {
         LocalTime localTime = ConsoleIOManager.readTimeHHMM();
         screening.getShowTime().setTimeOfMovie(localTime);
         screening.getShowTime().setDateOfMovie(selectDate);
+        boolean x = selectedCinema.removeScreeningList(screening);
+        ConsoleIOManager.printF(String.valueOf(x));
         selectedCinema.removeScreeningList(screening);
-        //DataStoreManager.getInstance().addToStore(movie);
-        DataStoreManager.getInstance().save(Cineplex.class);
+        DataStoreManager.getInstance().addToStore(movie);
         ScreeningView.printDeleteShowTimeSuccess();
         do {
             if (ConsoleIOManager.readInt() == 0) {
+                this.initialMenuSelection = -1;
                 NavigationController.getInstance().goBack(0);
                 return;
             } else {
@@ -190,16 +194,21 @@ public class ScreeningController implements INavigation {
         return selectedCinema;
     }
 
-    private Movie getMovie() {
+    private Movie getSelectedMovie(List<Movie> movieList) {
         Movie selectedMovie;
-        try {
-            String name = ConsoleIOManager.readString();
-            List<Movie> movieList = getMovieList().stream().filter(Movie -> Movie.getName().equals(name)).toList();
-            selectedMovie = movieList.get(0);
-            return selectedMovie;
-        } catch (Exception ex) {
-            System.out.println("Movie is not exist. Try again.");
-            return getMovie();
-        }
+        int input;
+        do {
+            input = ConsoleIOManager.readInt();
+
+            if (input < 0 || input > movieList.size()) {
+                ConsoleIOManager.printLine("Invalid input! Please select an item from the menu!");
+            } else if (input == 0) {
+                return null;
+            } else {
+                selectedMovie = movieList.get(input - 1);
+                break;
+            }
+        } while (true);
+        return selectedMovie;
     }
 }
