@@ -26,6 +26,11 @@ public class CoupleSeat extends Seat {
     }
 
     @Override
+    public Seat deepCopy() {
+        return new CoupleSeat(this.getRow(), this.getColumn());
+    }
+
+    @Override
     public void setAssigned(boolean assigned) {
         otherPair.coupleHelpedAssignedSeat(assigned);
         super.setAssigned(assigned);
