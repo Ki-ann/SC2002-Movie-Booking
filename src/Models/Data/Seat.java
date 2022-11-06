@@ -17,7 +17,17 @@ public class Seat implements Serializable {
 		this.seatString = String.format ("%c%d",(char)(this.row+65), this.column);
 	}
 
-	public int getRow() {
+	public Seat(Seat seat) {
+		this.seatType = seat.getSeatType();
+		this.row = seat.getRow();
+		this.column = seat.getColumn();
+		this.seatString = seat.getSeatString();
+	}
+
+	public Seat deepCopy(){
+		return new Seat(this);
+	}
+    public int getRow() {
 		return row;
 	}
 

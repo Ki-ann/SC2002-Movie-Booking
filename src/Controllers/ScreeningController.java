@@ -81,7 +81,8 @@ public class ScreeningController implements INavigation {
         screening.getShowTime().setDateOfMovie(selectDate);
         //selectedCineplex.getCinemaByIndex(0).addToScreeningList(screening);
         selectedCinema.addToScreeningList(screening);
-        DataStoreManager.getInstance().addToStore(movie);
+        DataStoreManager.getInstance().save(Cineplex.class);
+        //DataStoreManager.getInstance().addToStore(movie);
         ScreeningView.printAddShowTimeSuccess();
         do {
             if (ConsoleIOManager.readInt() == 0) {
@@ -135,7 +136,8 @@ public class ScreeningController implements INavigation {
         screening.getShowTime().setTimeOfMovie(localTime);
         screening.getShowTime().setDateOfMovie(selectDate);
         selectedCinema.removeScreeningList(screening);
-        DataStoreManager.getInstance().addToStore(movie);
+        //DataStoreManager.getInstance().addToStore(movie);
+        DataStoreManager.getInstance().save(Cineplex.class);
         ScreeningView.printDeleteShowTimeSuccess();
         do {
             if (ConsoleIOManager.readInt() == 0) {

@@ -30,7 +30,7 @@ public class AdminController implements INavigation {
     }
 
     public void gotoCineplexEditSystem() {
-        NavigationController.getInstance().load(new CineplexController());
+        NavigationController.getInstance().load(new ScreeningController());
     }
 
     public void logout() {
