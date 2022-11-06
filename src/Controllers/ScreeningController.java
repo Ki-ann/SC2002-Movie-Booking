@@ -17,6 +17,7 @@ public class ScreeningController implements INavigation {
 
     public void start() {
         ScreeningView.displayMenu();
+        initialMenuSelection = -1;
         do {
             if (initialMenuSelection == -1) {
                 initialMenuSelection = ConsoleIOManager.readInt();
