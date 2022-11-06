@@ -142,7 +142,7 @@ public class Movie extends SingleInstancedSerializable {
 
     @Override
     public String toString() {
-        return String.format("Movie Title:\n%s | %s\n\nLanguage:\n%s\n\nSynopsis:\n%s\nDuration of Movie:\n%02d hour %02d minutes\n\nGenre:\n%s\n\nCasts:\n%s\n\nDirector:%s\n\n%s\n",
+        return String.format("Movie Title:\n%s | %s\n\nLanguage:\n%s\n\nSynopsis:\n%s\n\nDuration of Movie:\n%02d hour %02d minutes\n\nGenre:\n%s\n\nCasts:\n%s\n\nDirector:%s\n\n%s\n",
                 name,
                 movieStatus,
                 language,

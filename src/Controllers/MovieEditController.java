@@ -17,9 +17,8 @@ public class MovieEditController implements INavigation {
 	public void start() {
 		MovieEditView.displayMenu();
 		do {
-			if (MovieEditSelection == -1) {
-				MovieEditSelection = ConsoleIOManager.readInt();
-			}
+			MovieEditView.displayMenu();
+			MovieEditSelection = ConsoleIOManager.readInt();
 			switch (MovieEditSelection) {
 				case 1 -> createMovie();
 				case 2 -> updateMovie();
@@ -27,10 +26,9 @@ public class MovieEditController implements INavigation {
 				case 4 -> NavigationController.getInstance().goBack();
 				default -> {
 					ConsoleIOManager.printLine("Invalid input! Please select an item from the menu!");
-					MovieEditSelection = -1;
 				}
 			}
-		} while (MovieEditSelection == -1);
+		} while (MovieEditSelection != -1);
 	}
 
 	public void createMovie() {
@@ -85,8 +83,8 @@ public class MovieEditController implements INavigation {
 			MovieEditView.printAddCast();
 			String castMember = ConsoleIOManager.readString();
 			cast.add(castMember);
-			movie.setCast(cast);
 		}
+		movie.setCast(cast);
 
 		//Genre
 		MovieEditView.printNumGenre();
@@ -95,20 +93,20 @@ public class MovieEditController implements INavigation {
 		for (int i = 0; i < numGenre; i++){
 			MovieEditView.printAddGenre();
 			String genreType = ConsoleIOManager.readString();
-			cast.add(genreType);
-			movie.setCast(genre);
+			genre.add(genreType);
 		}
+		movie.setMovieGenre(genre);
 
 		//Director
 		MovieEditView.printNumDirector();
 		int numDirector = ConsoleIOManager.readInt();
 		ArrayList <String> director = new ArrayList<>();
-		movie.setCast(director);
 		for (int i = 0; i < numDirector; i++){
 			MovieEditView.printAddDirector();
 			String directorMember = ConsoleIOManager.readString();
-			cast.add(directorMember);
+			director.add(directorMember);
 		}
+		movie.setDirector(director);
 
 		//MovieTypeENUM
 		MovieType movieType;
@@ -148,9 +146,8 @@ public class MovieEditController implements INavigation {
 		} while(true);
 
 		MovieEditView.printAddSuccess();
+		DataStoreManager.getInstance().addToStore(movie);
 		ConsoleIOManager.printMenu(movie.toString());
-
-
 	}
 
 	public void updateMovie() {
