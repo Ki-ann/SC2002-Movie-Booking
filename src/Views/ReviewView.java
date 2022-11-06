@@ -7,17 +7,21 @@ import java.util.ArrayList;
 
 public class ReviewView {
     public static void displayMenu(Movie selectedMovie) {
+        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu(selectedMovie.toString());
 
         ConsoleIOManager.printMenu("Reviews",
                 "List all Reviews",
                 "Leave a review");
         ConsoleIOManager.printGoBack();
-
     }
 
     public static void printReviewCreation() {
         ConsoleIOManager.printMenu("Creating a review");
+    }
+
+    public static void printGetName() {
+        ConsoleIOManager.printLine("Enter your name: ");
     }
 
     public static void printGetReview() {
@@ -30,10 +34,12 @@ public class ReviewView {
 
     public static void printReviewCreationSuccess() {
         ConsoleIOManager.printLine("Added your review!");
+        ConsoleIOManager.printGoBack();
     }
 
-    public static void printGetName() {
-        ConsoleIOManager.printLine("Enter your name: ");
+    public static void printReviewCreationCancelled() {
+        ConsoleIOManager.printMenu("Cancelled creation.");
+        ConsoleIOManager.printGoBack();
     }
 
     public static void printReviews(ArrayList<MovieReview> reviews) {
@@ -47,5 +53,14 @@ public class ReviewView {
         }else{
             ConsoleIOManager.printMenu("No reviews found");
         }
+        ConsoleIOManager.printGoBack();
+    }
+
+    public static void printCreateConfirm(MovieReview newReview) {
+        ConsoleIOManager.printMenu("Review preview");
+        ConsoleIOManager.printMenu(String.format("%-30s%s", newReview.getUserName() + "'s Review:", newReview.getTimeStamp()));
+        ConsoleIOManager.printLine("Rating: " + newReview.getReviewScore());
+        ConsoleIOManager.printLine("Comments: " + newReview.getReview());
+        ConsoleIOManager.printConfirm();
     }
 }

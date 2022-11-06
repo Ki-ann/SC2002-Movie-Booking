@@ -45,17 +45,23 @@ public class ReviewController implements INavigation {
         ReviewView.printReviewCreation();
 
         String userName = getUserName();
-
-
         String review = getReview();
-
         float rating = getRating();
 
         MovieReview newReview = new MovieReview(userName, rating, review, selectedMovie);
-        selectedMovie.addReview(newReview);
-        ReviewView.printReviewCreationSuccess();
 
-        DataStoreManager.getInstance().saveAll();
+        ReviewView.printCreateConfirm(newReview);
+        boolean confirm = ConsoleIOManager.readConfirm();
+        if(confirm){
+            selectedMovie.addReview(newReview);
+            ReviewView.printReviewCreationSuccess();
+            DataStoreManager.getInstance().saveAll();
+
+        }else{
+            ReviewView.printReviewCreationCancelled();
+        }
+
+        waitForReturnInput();
 
         NavigationController.getInstance().goBack(0);
     }
@@ -86,21 +92,17 @@ public class ReviewController implements INavigation {
         return ConsoleIOManager.readString();
     }
 
-    private boolean confirmReview() {
+    private void waitForReturnInput() {
+        int input;
+        do {
+            input = ConsoleIOManager.readInt();
 
-
-//		boolean confirm;
-//		do {
-//			confirm = ConsoleIOManager.readConfirm();
-//
-//			if (rating < 0 || rating > 5) {
-//				ConsoleIOManager.printLine("Invalid input! Please give a score of 0.0-5.0!");
-//			} else {
-//				break;
-//			}
-//		} while (true);
-//		return confirm;
-        return false;
+            if (input != 0) {
+                ConsoleIOManager.printLine("Invalid input! Please give a score of 0.0-5.0!");
+            } else {
+                break;
+            }
+        } while (true);
     }
 
     /**
@@ -108,9 +110,9 @@ public class ReviewController implements INavigation {
      */
     public void listReviews(Movie selectedMovie) {
         ArrayList<MovieReview> reviews = selectedMovie.getMovieReviews();
-
-
         ReviewView.printReviews(reviews);
+
+        waitForReturnInput();
         NavigationController.getInstance().goBack(0);
     }
 
