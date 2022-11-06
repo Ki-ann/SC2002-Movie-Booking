@@ -13,9 +13,7 @@ public class ScreeningView {
                             "Remove a showtime");
         ConsoleIOManager.printGoBack();
     }
-    public static void printInputMovie(){
-        ConsoleIOManager.printLine("Enter the movie name");
-    }
+
     public static void printInputDate(){
         ConsoleIOManager.printLine("Enter the date(Format: MM/DD)");
     }
@@ -96,6 +94,16 @@ public class ScreeningView {
         ConsoleIOManager.printMenu("These are the available show times for [" + selectedMovie.getName() + "]");
 
         ConsoleIOManager.printF(Arrays.toString(showTimeString)+"\n");
+        ConsoleIOManager.printGoBack();
+    }
+    public static void printMovieList(List<Movie> movieList) {
+        String[] movieStringList = movieList.stream()
+                .map(Movie::getName)
+                .toArray(String[]::new);
+
+        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.printMenu("Here are the movies to modify",
+                movieStringList);
         ConsoleIOManager.printGoBack();
     }
 
