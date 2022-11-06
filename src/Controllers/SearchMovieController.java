@@ -5,10 +5,8 @@ import Models.DataStoreManager;
 import Views.ConsoleIOManager;
 import Views.SearchMovieView;
 
-import javax.lang.model.type.UnknownTypeException;
-import javax.swing.text.NavigationFilter;
-import java.io.Console;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class SearchMovieController implements INavigation {
 
@@ -30,11 +28,11 @@ public class SearchMovieController implements INavigation {
 		SearchMovieView.listMovies(titles);
 		int choice = ConsoleIOManager.readInt();
 		if(choice!=0){
-			ConsoleIOManager.printLine(movies[choice-1].toString());
+			ConsoleIOManager.printMenu(movies[choice-1].toString());
 			SearchMovieView.reviewOption();
 			String ans = ConsoleIOManager.readString();
 			if(ans.equals("Y") || ans.equals("y")){
-				gotoReviewSystem();
+				gotoReviewSystem(movies[choice-1]);
 			}
 			else{
 				NavigationController.getInstance().goBack();
@@ -50,7 +48,7 @@ public class SearchMovieController implements INavigation {
 		ArrayList<Movie> movies	= DataStoreManager.getInstance().getStore(Movie.class);
 		ArrayList<Movie> found = new ArrayList<Movie>();
 		for(Movie movie:movies){
-			if(movie.getName().contains(NameSubstring)){
+			if(movie.getName().toUpperCase(Locale.ROOT).contains(NameSubstring.toUpperCase(Locale.ROOT))){
 				found.add(movie);
 			}
 		}
@@ -59,7 +57,9 @@ public class SearchMovieController implements INavigation {
 		return foundMovies;
 	}
 
-	public void gotoReviewSystem() {
-		return;
+	public void gotoReviewSystem(Movie movie) {
+		ReviewController reviewController = new ReviewController();
+		reviewController.setMovie(movie);
+		NavigationController.getInstance().load(reviewController);
 	}
 }

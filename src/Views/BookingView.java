@@ -149,9 +149,13 @@ public class BookingView {
                 (bookingTicket.getSelectedMovie().getMovieStatus() == MovieStatus.PREVIEW? " - Preview" : ""));
         ConsoleIOManager.printF("%s - %s\n", bookingTicket.getSelectedCineplex().getName(), bookingTicket.getSelectedCinema().getName());
         ConsoleIOManager.printF("%s - %s\n", bookingTicket.getSelectedScreening().getShowTime().getDateOfMovie(), bookingTicket.getSelectedScreening().getShowTime().getTimeOfMovie());
-        ConsoleIOManager.printF("Seat:  %s | %s | %s\n",bookingTicket.getSelectedSeat().getSeatString(),
-                                                            bookingTicket.getSelectedSeat().getSeatType(),
-                                                            bookingTicket.getCustomer().getAgeClass());
+
+        ConsoleIOManager.printLine("Seats: ");
+        for(Seat seat : bookingTicket.getSelectedSeats()) {
+            ConsoleIOManager.printF("%s | %s | %s\n", seat.getSeatString(),
+                    seat.getSeatType(),
+                    bookingTicket.getCustomer().getAgeClass());
+        }
         ConsoleIOManager.printF("$%.2f (Inclusive of GST/Service Change)\n", bookingTicket.getPrice());
         ConsoleIOManager.printLine("Name: " + bookingTicket.getCustomer().getName());
         ConsoleIOManager.printLine("Email: " + bookingTicket.getCustomer().getEmail());
@@ -227,5 +231,10 @@ public class BookingView {
         ConsoleIOManager.printMenu("Please select your age",
                 ageStringList);
         ConsoleIOManager.printGoBack();
+    }
+
+    public static void printDoneSeatPickingConfirm() {
+        ConsoleIOManager.printLine("[Y/N] Do you wish to add more seats?");
+
     }
 }

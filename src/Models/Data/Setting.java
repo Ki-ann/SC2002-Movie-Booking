@@ -87,12 +87,17 @@ public class Setting implements Serializable {
         }else if(isWeekend(dateOfMovie))
             specialDay = weekendMultiplier;
 
-        return roundNearest50Cents(getStandardPrice(newBookingTicket.getCustomer().getAgeClass())
-                * movieTypeMultiplier.get(newBookingTicket.getSelectedMovie().getMovieType())
-                * cinemaClassMultiplier.get(newBookingTicket.getSelectedCinema().getCinemaType())
-                * seatTypeMultiplier.get(newBookingTicket.getSelectedSeat().getSeatType())
-                * specialDay
-        );
+        double sum = 0;
+        for(Seat seat : newBookingTicket.getSelectedSeats()){
+            sum += roundNearest50Cents(getStandardPrice(newBookingTicket.getCustomer().getAgeClass())
+                    * movieTypeMultiplier.get(newBookingTicket.getSelectedMovie().getMovieType())
+                    * cinemaClassMultiplier.get(newBookingTicket.getSelectedCinema().getCinemaType())
+                    * seatTypeMultiplier.get(seat.getSeatType())
+                    * specialDay
+            );
+        }
+
+        return sum;
     }
 
     //This method is used to get the holiday with specified

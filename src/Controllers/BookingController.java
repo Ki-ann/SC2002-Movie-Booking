@@ -154,14 +154,17 @@ public class BookingController implements INavigation {
                         {
                             // Get input
                             BookingView.printSeatLayout(selectedScreening.getSessionLayout());
-                            Seat selectedLayout = getSelectedSeat(selectedScreening.getSessionLayout());
+                            ArrayList<Seat> selectedLayout = getSelectedSeat(selectedScreening.getSessionLayout());
                             // Did not get any seats
-                            if (selectedLayout == null) {
+                            if (selectedLayout == null && selectedLayout.size() == 0) {
                                 currentBookingBookingState = currentBookingBookingState.prev();
                                 continue;
                             }
-                            selectedScreening.getSessionLayout().get(selectedLayout.getRow()).set(selectedLayout.getColumn(), selectedLayout);
-                            bookingTicket.setSelectedSeat(selectedLayout);
+
+                            for(Seat seat : selectedLayout){
+                                selectedScreening.getSessionLayout().get(seat.getRow()).set(seat.getColumn(), seat);
+                                bookingTicket.setSelectedSeats(seat);
+                            }
                         }
                 case GET_CUSTOMER_INFO -> //===== Get Customer info
                         {
@@ -171,7 +174,7 @@ public class BookingController implements INavigation {
                                 if (customer == null) {
                                     currentBookingBookingState = currentBookingBookingState.prev();
                                     // Customer cancelled
-                                    bookingTicket.getSelectedSeat().setAssigned(false);
+                                    bookingTicket.getSelectedSeats().forEach(seat -> seat.setAssigned(false));
                                     continue;
                                 }
                                 // Print Final Preview
@@ -395,8 +398,10 @@ public class BookingController implements INavigation {
      * @param layout The current selected Screening's layout
      * @return User's selected Seat information
      */
-    private Seat getSelectedSeat(ArrayList<ArrayList<Seat>> layout) {
+    private ArrayList<Seat> getSelectedSeat(ArrayList<ArrayList<Seat>> layout) {
         String input;
+        boolean done = false;
+        ArrayList<Seat> seats = new ArrayList<>();
         do {
             input = ConsoleIOManager.readString();
             Seat selectedLayout = null;
@@ -429,9 +434,18 @@ public class BookingController implements INavigation {
                     continue;
                 }
                 selectedLayout.setAssigned(true);
-                return selectedLayout;
+                //return selectedLayout;
+                seats.add(selectedLayout);
             }
-        } while (true);
+
+            BookingView.printDoneSeatPickingConfirm();
+            done = !ConsoleIOManager.readConfirm();
+            if(!done){
+                BookingView.printSeatLayout(layout);
+            }
+        } while (!done);
+
+        return seats;
     }
 
     /**

@@ -7,7 +7,6 @@ import Models.DataStoreManager;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.stream.Collectors;
 
 public class Movie extends SingleInstancedSerializable {
@@ -114,45 +113,31 @@ public class Movie extends SingleInstancedSerializable {
     }
     
     public void addReview(MovieReview review) {
-		
-		
-		if(movieReviews == null) {
-			movieReviews = new ArrayList<MovieReview>();
-		}
-		
 		movieReviews.add(review);
 	}
 	
-	public ArrayList<MovieReview> getReview() {
-		
-		return movieReviews;
-	}
-	
-	public float getAvgRating()
+	public String getAverageRatingString()
 	{
 		float sum = 0;
 		for(int i = 0; i<movieReviews.size(); i++) {
-			
-			
 			sum += movieReviews.get(i).getReviewScore();
-			
 		}
-		return sum/((float)movieReviews.size());
+		return movieReviews.size() > 0 ? String.format("%.2f",(sum/((float)movieReviews.size()))) : "No reviews yet";
 	}
 
     @Override
     public String toString() {
-        return String.format("Movie Title:\n%s | %s\n\nLanguage:\n%s\n\nSynopsis:\n%s\n\nDuration of Movie:\n%02d hour %02d minutes\n\nGenre:\n%s\n\nCasts:\n%s\n\nDirector:%s\n\n%s\n",
+        return String.format("Movie Title:\n%s | %s\n\nLanguage:\n%s\n\nSynopsis:\n%s\n\nDuration of Movie:\n%02d hour %02d minutes\n\nAverage Rating:\n%s\n\nGenre:\n%s\n\nCasts:\n%s\nDirector:%s\n",
                 name,
                 movieStatus,
                 language,
                 synopsis,
                 duration.toHoursPart(),
                 duration.toMinutesPart(),
+                getAverageRatingString(),
                 movieGenre.stream().map(String::toString).collect(Collectors.joining(" | ")),
                 cast.stream().map(String::toString).collect(Collectors.joining(" | ")),
-                director.stream().map(String::toString).collect(Collectors.joining(" | ")),
-                movieReviews.stream().map(Object::toString).collect(Collectors.joining(" | ")));
+                director.stream().map(String::toString).collect(Collectors.joining(" | ")));
     }
 
     public int getTicketSales() {

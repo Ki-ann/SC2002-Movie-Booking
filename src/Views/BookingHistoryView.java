@@ -2,6 +2,7 @@ package Views;
 
 import Models.Data.BookingTicket;
 import Models.Data.Customer;
+import Models.Data.Seat;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -53,16 +54,19 @@ public class BookingHistoryView {
                 "Index", "Movie", "Seat", "Type", "Cinema", "Screening Time", "Screening Date", "Price", "Transaction ID"), 200);
         for (int i = 0; i < bookingTicketList.size(); ++i) {
             BookingTicket ticket = bookingTicketList.get(i);
-            ConsoleIOManager.printF("[       %-3d | %-50s| %-8s| %-10s | %-15s| %-15s| %-2td/%<-2tm/%<-2ty        | %-8s| %-16s        ]\n",
-                    i + 1,
-                    ticket.getSelectedMovie().getName() + " **" + ticket.getSelectedMovie().getMovieStatus() + "**",
-                    ticket.getSelectedSeat().getSeatString(),
-                    ticket.getSelectedSeat().getSeatType(),
-                    ticket.getSelectedCineplex().getName() + " - " + ticket.getSelectedCinema().getName(),
-                    ticket.getSelectedScreening().getShowTime().getTimeOfMovie() + " - " + ticket.getSelectedScreening().getShowTime().getTimeOfMovie().plus(ticket.getSelectedMovie().getDuration()).toString(),
-                    ticket.getSelectedScreening().getShowTime().getDateOfMovie(),
-                    "$" + twoPlaces.format(ticket.getPrice()),
-                    ticket.getBookingID());
+
+            for(Seat seat : ticket.getSelectedSeats()) {
+                ConsoleIOManager.printF("[       %-3d | %-50s| %-8s| %-10s | %-15s| %-15s| %-2td/%<-2tm/%<-2ty        | %-8s| %-16s        ]\n",
+                        i + 1,
+                        ticket.getSelectedMovie().getName() + " **" + ticket.getSelectedMovie().getMovieStatus() + "**",
+                        seat.getSeatString(),
+                        seat.getSeatType(),
+                        ticket.getSelectedCineplex().getName() + " - " + ticket.getSelectedCinema().getName(),
+                        ticket.getSelectedScreening().getShowTime().getTimeOfMovie() + " - " + ticket.getSelectedScreening().getShowTime().getTimeOfMovie().plus(ticket.getSelectedMovie().getDuration()).toString(),
+                        ticket.getSelectedScreening().getShowTime().getDateOfMovie(),
+                        "$" + twoPlaces.format(ticket.getPrice()),
+                        ticket.getBookingID());
+            }
         }
     }
 

@@ -1,6 +1,8 @@
 package Models.Data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+
 /**
  * Stores the data for a booking transaction
  *
@@ -16,7 +18,7 @@ public class BookingTicket implements Serializable {
 	private Cinema selectedCinema;
 	private Movie selectedMovie;
 	private Screening selectedScreening;
-	private Seat selectedSeat;
+	private ArrayList<Seat> selectedSeats;
 	private double price;
 
 	/**
@@ -103,16 +105,19 @@ public class BookingTicket implements Serializable {
 	 *
 	 * @return User selected Seat
 	 */
-	public Seat getSelectedSeat() {
-		return selectedSeat;
+	public ArrayList<Seat> getSelectedSeats() {
+		return selectedSeats;
 	}
 
 	/**
 	 *
-	 * @param selectedSeat User selected Seat to set
+	 * @param selectedSeat User selected Seat to add to list
 	 */
-	public void setSelectedSeat(Seat selectedSeat) {
-		this.selectedSeat = selectedSeat;
+	public void setSelectedSeats(Seat selectedSeat) {
+		if(this.selectedSeats == null){
+			this.selectedSeats = new ArrayList<>();
+		}
+		this.selectedSeats.add(selectedSeat);
 	}
 
 	/**
