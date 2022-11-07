@@ -65,4 +65,19 @@ public class MovieEditView {
     public static void printAddSuccess(){
         ConsoleIOManager.printLine("Movie successfully added!");
     }
+
+    public static void printDeleteMovie(){
+        ConsoleIOManager.printLine("Movie Deleted!");
+    }
+
+    public static void printEditMovie(){
+        ConsoleIOManager.printLine("Movie Edit Success!");
+    }
+
+    public static void printEditMoviePrompt(){
+//        ConsoleIOManager.printLine("What would you like to edit?\n[1] Movie Name\n[2] Movie Status\n[3] Duration of Movie\n[4] Synopsis\n[5] Language of Movie\n[6] Cast Details\n[7] Genre Details\n[8] Director Details\n[9] Movie Type\n[10] Movie Rating Details\n");
+        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.printMenu("This is the Movie Editing Page", "Movie Name", "Movie Status",
+                "Duration of Movie", "Synopsis", "Language of Movie", "Cast Details", "Genre Details", "Director Details", "Movie Type", "Movie Rating Details", "Go Back");
+    }
 }
