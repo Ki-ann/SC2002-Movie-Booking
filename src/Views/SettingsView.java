@@ -11,7 +11,8 @@ public class SettingsView {
 		ConsoleIOManager.clearScreen();
 		ConsoleIOManager.printMenu("This is the setting page.",
                 "I want to manage ticket price",
-                "I want to manage holidays");
+                "I want to manage holidays",
+                "I want to edit Customer Top Movie viewing states");
         ConsoleIOManager.printGoBack();
     }
     public static void printTicketPriceMenu(Setting setting) {

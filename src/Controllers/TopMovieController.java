@@ -1,6 +1,7 @@
 package Controllers;
 
 import Models.Data.Admin;
+import Models.Data.Enums.AgeClass;
 import Models.Data.Enums.TopMovieViewingState;
 import Models.Data.Movie;
 import Models.Data.Setting;
@@ -17,8 +18,9 @@ import Views.TopMovieView;
  */
 public class TopMovieController implements INavigation {
 
-    Setting setting = Setting.getSettings();
-    Admin currentAdmin;
+    private final Setting setting = Setting.getSettings();
+    private Admin currentAdmin = setting.getCurrentAdmin();
+    private boolean editMode = false;
 
     /**
      * Start method implementation for initialization after loading with NavigationController.
@@ -28,6 +30,11 @@ public class TopMovieController implements INavigation {
      * @see INavigation
      */
     public void start() {
+        if (editMode) {
+            editViewingState();
+            return;
+        }
+
         TopMovieViewingState currentViewingState = setting.getCurrentTopMovieViewingState();
         TopMovieView.displayMenu(currentViewingState, currentAdmin);
 
@@ -66,16 +73,66 @@ public class TopMovieController implements INavigation {
         } while (!valid);
     }
 
+    public void adminSetEditMode() {
+        this.editMode = true;
+    }
+
     /**
      * Allows for admin to configure which listing methods to be displayed for the customers
      */
     private void editViewingState() {
+        if (currentAdmin == null) {
+            TopMovieView.printUnauthorized();
+            return;
+        }
+        TopMovieView.printEditStates();
+        TopMovieViewingState selectedState = getSelectedViewingState();
+        if (selectedState == null) {
+            NavigationController.getInstance().goBack();
+            return;
+        }
+
+        Setting.getSettings().setCurrentTopMovieViewingState(selectedState);
+        TopMovieView.printEditSuccess();
+
+        if (ConsoleIOManager.readInt() == 0) {
+            NavigationController.getInstance().goBack();
+        }
+
+    }
+
+    private TopMovieViewingState getSelectedViewingState() {
+        TopMovieViewingState selectedState;
+        int input;
+        do {
+            input = ConsoleIOManager.readInt();
+
+            if (input < 0 || input > TopMovieViewingState.values().length) {
+                ConsoleIOManager.printLine("Invalid input! Please select an item from the menu!");
+            } else if (input == 0) {
+                return null;
+            } else {
+                selectedState = TopMovieViewingState.values()[input - 1];
+                break;
+            }
+        } while (true);
+        return selectedState;
     }
 
     /**
      * Lists top 5 movies by review ratings
      */
     private void viewByRatings() {
+        TopMovieView.printTopReviews(DataStoreManager.getInstance().getStore(Movie.class));
+
+        do {
+            if (ConsoleIOManager.readInt() == 0) {
+                NavigationController.getInstance().goBack(0);
+                return;
+            } else {
+                ConsoleIOManager.printLine("Invalid input! Please select an item from the menu!");
+            }
+        } while (true);
     }
 
     /**
@@ -96,6 +153,7 @@ public class TopMovieController implements INavigation {
 
     /**
      * Sets the currently logged in admin for the session
+     *
      * @param admin current admin user
      */
     public void SetAdmin(Admin admin) {

@@ -17,8 +17,8 @@ public class CustomerView {
     public static void displayMenu() {
 		ConsoleIOManager.clearScreen();
 		ConsoleIOManager.printMenu("This is the customer page.",
-                "I want to book a ticket",
-                "I want to search for a movie",
+                "Book a ticket",
+                "Search for/Review a movie",
                 "List top rated movies",
                 "I want to see my booking history");
         ConsoleIOManager.printGoBack();

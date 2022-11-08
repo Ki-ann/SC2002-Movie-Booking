@@ -2,6 +2,7 @@ package Controllers.Authentication;
 
 import Controllers.INavigation;
 import Controllers.NavigationController;
+import Models.Data.Setting;
 import Models.DataStoreManager;
 import Models.Data.Admin;
 import Views.AdminView;
@@ -21,6 +22,7 @@ public class AuthController implements IAuthenticator{
 		for (Admin admin : admins) {
 			if (Username.equals(admin.getUsername()) && password.equals(admin.getPassword())) {
 				AdminView.printLoginSuccess();
+				Setting.getSettings().setCurrentAdmin(admin);
 				return new Admin(Username, password);
 			}
 		}
@@ -38,7 +40,8 @@ public class AuthController implements IAuthenticator{
 	}
 
 	public void logout() {
-		System.out.println("Logged out!");
+		ConsoleIOManager.printLine("Logged out!");
+		Setting.getSettings().setCurrentAdmin(null);
 		NavigationController.getInstance().goBack();
 	}
 

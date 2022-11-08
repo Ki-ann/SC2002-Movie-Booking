@@ -27,6 +27,7 @@ public class Setting implements Serializable {
         DataStoreManager.getInstance().save(Setting.class);
     }
 
+    private Admin currentAdmin;
     private double standardPrice = 10;
     private TopMovieViewingState currentTopMovieViewingState = TopMovieViewingState.BY_BOTH;
 
@@ -117,5 +118,13 @@ public class Setting implements Serializable {
 
     public void setCurrentTopMovieViewingState(TopMovieViewingState currentTopMovieViewingState) {
         this.currentTopMovieViewingState = currentTopMovieViewingState;
+    }
+
+    public void setCurrentAdmin(Admin admin) {
+        this.currentAdmin = admin;
+    }
+
+    public Admin getCurrentAdmin(){
+        return this.currentAdmin;
     }
 }

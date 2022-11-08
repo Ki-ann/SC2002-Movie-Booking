@@ -3,6 +3,7 @@ package Controllers;
 import Controllers.Authentication.AuthController;
 import Controllers.Authentication.IAuthenticator;
 import Models.Data.Admin;
+import Models.Data.Setting;
 import Views.ConsoleIOManager;
 import Views.LoginView;
 

@@ -1,13 +1,15 @@
 package Views;
 
-import java.io.Console;
-
 public class AdminView {
     /**
      * Print Menu to display different functionalities of Admin
      */
     public static void DisplayMenu() {
-        ConsoleIOManager.printMenu("This is the admin page","Edit Movies","Edit Settings","Edit Cineplexes");
+        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.printMenu("This is the admin page",
+                "Edit Movies",
+                "Edit Screenings",
+                "Edit Admin Settings");
         ConsoleIOManager.printF("[%d] %s\n", 0, "Logout");
     }
     /**

@@ -125,6 +125,14 @@ public class Movie extends SingleInstancedSerializable {
 		return movieReviews.size() > 0 ? String.format("%.2f",(sum/((float)movieReviews.size()))) : "No reviews yet";
 	}
 
+    public float getAverageRatingFloat(){
+        float sum = 0;
+        for(int i = 0; i<movieReviews.size(); i++) {
+            sum += movieReviews.get(i).getReviewScore();
+        }
+        return movieReviews.size() > 0 ? (sum/((float)movieReviews.size())) : 0;
+    }
+
     @Override
     public String toString() {
         return String.format("Movie Title:\n%s | %s\n\nLanguage:\n%s\n\nSynopsis:\n%s\n\nDuration of Movie:\n%02d hour %02d minutes\n\nAverage Rating:\n%s\n\nGenre:\n%s\n\nCasts:\n%s\nDirector:%s\n",

@@ -10,56 +10,50 @@ import java.util.Locale;
 
 public class SearchMovieController implements INavigation {
 
-	public void start() {
-		Movie[] movies;
-		while(true){
-			String name = SearchMovieView.searchOptions();
-			movies = searchMoviebyName(name);
-			if(movies.length==0){
-				ConsoleIOManager.printLine("Sorry movie not found! Please type the correct movie name");
-			}else{
-				break;
-			}
-		}
-		String[] titles = new String[movies.length];
-		for(int i=0;i<movies.length;i++){
-			titles[i] = movies[i].getName();
-		}
-		SearchMovieView.listMovies(titles);
-		int choice = ConsoleIOManager.readInt();
-		if(choice!=0){
-			ConsoleIOManager.printMenu(movies[choice-1].toString());
-			SearchMovieView.reviewOption();
-			String ans = ConsoleIOManager.readString();
-			if(ans.equals("Y") || ans.equals("y")){
-				gotoReviewSystem(movies[choice-1]);
-			}
-			else{
-				NavigationController.getInstance().goBack();
-			}
-		}
-	}
+    public void start() {
+        Movie[] movies = searchMovieByName();
 
-	/**
-	 *
-	 * @param NameSubstring
-	 */
-	public Movie[] searchMoviebyName(String NameSubstring) {
-		ArrayList<Movie> movies	= DataStoreManager.getInstance().getStore(Movie.class);
-		ArrayList<Movie> found = new ArrayList<Movie>();
-		for(Movie movie:movies){
-			if(movie.getName().toUpperCase(Locale.ROOT).contains(NameSubstring.toUpperCase(Locale.ROOT))){
-				found.add(movie);
-			}
-		}
-		Movie[] foundMovies = new Movie[found.size()];
-		foundMovies = found.toArray(foundMovies);
-		return foundMovies;
-	}
+        String[] titles = new String[movies.length];
+        for (int i = 0; i < movies.length; i++) {
+            titles[i] = movies[i].getName();
+        }
+        SearchMovieView.listMovies(titles);
+        int choice = ConsoleIOManager.readInt();
+        if (choice != 0) {
+            ConsoleIOManager.printMenu(movies[choice - 1].toString());
+            gotoReviewSystem(movies[choice - 1]);
 
-	public void gotoReviewSystem(Movie movie) {
-		ReviewController reviewController = new ReviewController();
-		reviewController.setMovie(movie);
-		NavigationController.getInstance().load(reviewController);
-	}
+        }
+    }
+
+    /**
+     *
+     */
+    public Movie[] searchMovieByName() {
+        ArrayList<Movie> foundMovies = new ArrayList<>();
+        while (true) {
+            SearchMovieView.searchOptions();
+            String name = ConsoleIOManager.readString();
+
+            ArrayList<Movie> movies = DataStoreManager.getInstance().getStore(Movie.class);
+            for (Movie movie : movies) {
+                if (movie.getName().toUpperCase(Locale.ROOT).contains(name.toUpperCase(Locale.ROOT))) {
+                    foundMovies.add(movie);
+                }
+            }
+
+            if (foundMovies.size() == 0) {
+                ConsoleIOManager.printLine("Sorry movie not found! Please type the correct movie name");
+            } else {
+                break;
+            }
+        }
+        return foundMovies.toArray(Movie[]::new);
+    }
+
+    public void gotoReviewSystem(Movie movie) {
+        ReviewController reviewController = new ReviewController();
+        reviewController.setMovie(movie);
+        NavigationController.getInstance().load(reviewController);
+    }
 }

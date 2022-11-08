@@ -35,6 +35,7 @@ public class SettingsController implements INavigation {
             switch (initialMenuSelection) {
                 case 1 -> manageTicketPrice();
                 case 2 -> manageHolidays();
+                case 3 -> manageTopMovieStates();
                 case 0 -> NavigationController.getInstance().goBack();
                 default -> {
                     ConsoleIOManager.printLine("Invalid input! Please select an item from the menu!");
@@ -42,6 +43,13 @@ public class SettingsController implements INavigation {
                 }
             }
         } while (initialMenuSelection == -1);
+    }
+
+    private void manageTopMovieStates() {
+        initialMenuSelection = -1;
+        TopMovieController controller = new TopMovieController();
+        controller.adminSetEditMode();
+        NavigationController.getInstance().load(controller);
     }
 
     /**

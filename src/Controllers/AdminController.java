@@ -1,22 +1,17 @@
 package Controllers;
 
-import java.util.ArrayList;
-
 import Controllers.Authentication.AuthController;
-import Controllers.Authentication.IAuthenticator;
-import Models.DataStoreManager;
-import Models.Data.Admin;
 import Views.AdminView;
 import Views.ConsoleIOManager;
-import Views.LoginView;
 
 public class AdminController implements INavigation {
     public void start() {
         AdminView.DisplayMenu();
         switch (ConsoleIOManager.readInt()) {
             case 1 -> gotoMovieEditSystem();
-            case 2 -> gotoSettingsSystem();
-            case 3 -> gotoCineplexEditSystem();
+            case 2 -> gotoScreeningEditSystem();
+            case 3 -> gotoSettingsSystem();
+            case 4 -> gotoTopMoviesSystem();
             case 0 -> logout();
         }
     }
@@ -29,13 +24,21 @@ public class AdminController implements INavigation {
         NavigationController.getInstance().load(new SettingsController());
     }
 
-    public void gotoCineplexEditSystem() {
+    public void gotoScreeningEditSystem() {
         NavigationController.getInstance().load(new ScreeningController());
+    }
+    /**
+     * Call NavigationController to load new instance of TopMovieController object
+     *
+     * @see TopMovieController
+     * @see NavigationController
+     */
+    public void gotoTopMoviesSystem() {
+        NavigationController.getInstance().load(new TopMovieController());
     }
 
     public void logout() {
         new AuthController().logout();
-        throw new UnsupportedOperationException();
     }
 
 }
