@@ -5,7 +5,20 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+/**
+ * ScreeningView class used by ScreeningController for printing information to console using static functions
+ *
+ * @author Han Zhiguang
+ * @version 1.0
+ * @since 2022-11-05
+ * @see Controllers.ScreeningController
+ * @see Views.ConsoleIOManager
+ */
 public class ScreeningView {
+
+     /**
+     * Prints a menu for showtime management.
+     */
     public static void displayMenu() {
         ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("This is the ShowTime managing page.",
@@ -14,47 +27,40 @@ public class ScreeningView {
         ConsoleIOManager.printGoBack();
     }
 
+    /**
+     * Prints a date enter message.
+     */
     public static void printInputDate(){
         ConsoleIOManager.printLine("Enter the date(Format: MM/DD)");
     }
+
+    /**
+     * Prints a time enter message.
+     */
     public static void printInputTime(){
         ConsoleIOManager.printLine("Enter the time(Format: HH:mm)");
     }
+
+    /**
+     * Prints a showtime added message.
+     */
     public static void printAddShowTimeSuccess(){
         ConsoleIOManager.printLine("Successfully added the show time.");
         ConsoleIOManager.printGoBack();
     }
+
+    /**
+     * Prints a showtime deleted message.
+     */
     public static void printDeleteShowTimeSuccess(){
         ConsoleIOManager.printLine("Successfully deleted the show time.");
         ConsoleIOManager.printGoBack();
     }
 
-    public static void printDate(List<Screening> screeningList, Movie selectedMovie, LocalDate selectedDate) {
-        String[] showTimeString = screeningList.stream()
-                .map(s -> s.getShowTime().getTimeOfMovie() +
-                        " - " +
-                        s.getShowTime().getTimeOfMovie().plus(s.getMovie().getDuration()).toString())
-                .toArray(String[]::new);
-
-        ConsoleIOManager.clearScreen();
-        ConsoleIOManager.printMenu("These are the available show times for [" + selectedMovie.getName() + "]",
-                showTimeString);
-        ConsoleIOManager.printGoBack();
-    }
-
-    public static void printTime(List<Screening> screeningList, Movie selectedMovie, LocalDate selectedDate) {
-        String[] showTimeString = screeningList.stream()
-                .map(s -> s.getShowTime().getTimeOfMovie() +
-                        " - " +
-                        s.getShowTime().getTimeOfMovie().plus(s.getMovie().getDuration()).toString())
-                .toArray(String[]::new);
-
-        ConsoleIOManager.clearScreen();
-        ConsoleIOManager.printMenu("These are the available show times for [" + selectedMovie.getName() + "]",
-                showTimeString);
-        ConsoleIOManager.printGoBack();
-    }
-
+    /**
+     * prints a list cineplex for selection
+     * @param filteredCineplexList filtered cineplex list that contain a specific movie
+     */
     public static void printCineplexList(List<Cineplex> filteredCineplexList) {
         String[] cineplexStringList = filteredCineplexList.stream()
                 .map(Cineplex::getName)
@@ -65,6 +71,13 @@ public class ScreeningView {
                 cineplexStringList);
         ConsoleIOManager.printGoBack();
     }
+
+    /**
+     * prints a selection menu of aviable showtime and cinema regarding selected movie and date.
+     * @param filteredCineplexList  List of cinemas that contain selectedMovie.
+     * @param selectedMovie the currently selected movie by the admin.
+     * @param selectedDate the selected date to filter for.
+     */
     public static void printCinemaOverview(List<Cinema> filteredCinemaList, Movie selectedMovie, LocalDate selectedDate) {
         String[] showTimeString = filteredCinemaList.stream()
                 .map(model -> model.getName() + " | " + model.getCinemaType().name() +
@@ -83,6 +96,13 @@ public class ScreeningView {
                 showTimeString);
         ConsoleIOManager.printGoBack();
     }
+
+    /**
+     * Prints a selection menu for the admin to choose the specific showtime.
+     * @param screeningList the list of screenings in the cinema for the specific date chosen.
+     * @param selectedMovie the movie to filter for screeningList.
+     * @param selectedDate the date to filter for screeningList.
+     */
     public static void printCinemaShowtime(List<Screening> screeningList, Movie selectedMovie, LocalDate selectedDate) {
         String[] showTimeString = screeningList.stream()
                 .map(s -> s.getShowTime().getTimeOfMovie() +
@@ -96,6 +116,10 @@ public class ScreeningView {
         ConsoleIOManager.printF(Arrays.toString(showTimeString)+"\n");
         ConsoleIOManager.printGoBack();
     }
+    /**
+     * prints a list for movie selection
+     * @param movieList a list of movies
+     */
     public static void printMovieList(List<Movie> movieList) {
         String[] movieStringList = movieList.stream()
                 .map(Movie::getName)

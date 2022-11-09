@@ -1,5 +1,4 @@
 package Controllers;
-
 import Models.Data.*;
 import Models.DataStoreManager;
 import Views.ScreeningView;
@@ -10,11 +9,23 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.ArrayList;
 
-
+/**
+ * ScreeningController is a Navigation that manages the logic and flow for manage showtime
+ *
+ * @author Han Zhiguang
+ * @version 1.0
+ * @since 2022-11-05
+ */
 public class ScreeningController implements INavigation {
 
     private int initialMenuSelection = -1;
 
+     /**
+     * Start method implementation for initialization after loading with NavigationController.
+     *
+     * @see NavigationController
+     * @see INavigation
+     */
     public void start() {
         ScreeningView.displayMenu();
         do {
@@ -34,8 +45,10 @@ public class ScreeningController implements INavigation {
         } while (initialMenuSelection == -1);
     }
 
+    /**
+     * The flow of adding new showtime.
+     */
     private void addShowtime() {
-        // get movie
         Screening screening = new Screening();
         CineplexController controller = new CineplexController();
         screening.setShowTime(new ShowTime());
@@ -47,7 +60,6 @@ public class ScreeningController implements INavigation {
             this.initialMenuSelection = -1; // Go back to main menu
             NavigationController.getInstance().goBack(0);
         }
-        //get cineplex
         List<Cineplex> filteredCineplexList = controller.findCineplexAndCinemaWithSelectedMovie(movie);
         ScreeningView.printCineplexList(filteredCineplexList);
         Cineplex selectedCineplex = getSelectedCineplex(filteredCineplexList);
@@ -68,10 +80,7 @@ public class ScreeningController implements INavigation {
         ScreeningView.printCinemaOverview(CinemasWithSelectedMovie, movie, selectDate);
         Cinema selectedCinema = getSelectedCinema(CinemasWithSelectedMovie);
         List<Screening> filteredScreeningList = selectedCinema.getScreeningList().stream().filter(s -> s.getMovie().getName().equals(movie.getName()) && s.getShowTime().getDateOfMovie().isEqual(selectDate)).toList();
-        if (selectedCinema == null) {
-            this.initialMenuSelection = -1; // Go back to main menu
-            NavigationController.getInstance().goBack(0);
-        }
+        
         //get time
         ScreeningView.printCinemaShowtime(filteredScreeningList, movie, selectDate);
         screening.setMovie(movie);
@@ -82,7 +91,6 @@ public class ScreeningController implements INavigation {
         screening.getShowTime().setDateOfMovie(selectDate);
         //selectedCineplex.getCinemaByIndex(0).addToScreeningList(screening);
         selectedCinema.addToScreeningList(screening);
-        DataStoreManager.getInstance().addToStore(movie);
         ScreeningView.printAddShowTimeSuccess();
         do {
             if (ConsoleIOManager.readInt() == 0) {
@@ -95,6 +103,9 @@ public class ScreeningController implements INavigation {
         } while (true);
     }
 
+    /**
+     * The flow of removing new showtime.
+     */
     private void removeShowtime() {
         Screening screening = new Screening();
         CineplexController controller = new CineplexController();
@@ -127,20 +138,13 @@ public class ScreeningController implements INavigation {
         ScreeningView.printCinemaOverview(CinemasWithSelectedMovie, movie, selectDate);
         Cinema selectedCinema = getSelectedCinema(CinemasWithSelectedMovie);
         List<Screening> filteredScreeningList = selectedCinema.getScreeningList().stream().filter(s -> s.getMovie().getName().equals(movie.getName()) && s.getShowTime().getDateOfMovie().isEqual(selectDate)).toList();
-        if (selectedCinema == null) {
-            this.initialMenuSelection = -1; // Go back to main menu
-            NavigationController.getInstance().goBack(0);
-        }
         ScreeningView.printCinemaShowtime(filteredScreeningList, movie, selectDate);
         screening.setMovie(movie);
         ScreeningView.printInputTime();
         LocalTime localTime = ConsoleIOManager.readTimeHHMM();
         screening.getShowTime().setTimeOfMovie(localTime);
         screening.getShowTime().setDateOfMovie(selectDate);
-        boolean x = selectedCinema.removeScreeningList(screening);
-        ConsoleIOManager.printF(String.valueOf(x));
         selectedCinema.removeScreeningList(screening);
-        DataStoreManager.getInstance().addToStore(movie);
         ScreeningView.printDeleteShowTimeSuccess();
         do {
             if (ConsoleIOManager.readInt() == 0) {
@@ -154,10 +158,19 @@ public class ScreeningController implements INavigation {
 
     }
 
+    /**
+     * Get movie list from database.
+     */
     private ArrayList<Movie> getMovieList() {
         return DataStoreManager.getInstance().getStore(Movie.class);
     }
 
+    /**
+     * Gets the admin's desired cineplex selection input.
+     *
+     * @param filteredCineplexList The list of cineplex for the admin to choose from.
+     * @return Admin selected cineplex.
+     */
     private Cineplex getSelectedCineplex(List<Cineplex> filteredCineplexList) {
         Cineplex selectedCineplex;
         int input;
@@ -176,6 +189,12 @@ public class ScreeningController implements INavigation {
         return selectedCineplex;
     }
 
+    /**
+     * Gets the admin's desired cinema selection input.
+     *
+     * @param cinemasWithSelectedMovie The list of cinemas that contain the selected movie.
+     * @return Admin selected cinema.
+     */
     private Cinema getSelectedCinema(List<Cinema> cinemasWithSelectedMovie) {
         Cinema selectedCinema;
         int input;
@@ -194,6 +213,12 @@ public class ScreeningController implements INavigation {
         return selectedCinema;
     }
 
+     /**
+     * Gets the admin's desired movie selection input .
+     *
+     * @param movieList The list of movies for the admin to choose from.
+     * @return Admin selected movie.
+     */
     private Movie getSelectedMovie(List<Movie> movieList) {
         Movie selectedMovie;
         int input;
