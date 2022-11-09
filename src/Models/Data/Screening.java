@@ -6,9 +6,9 @@ import java.util.ArrayList;
 /**
  * Stores the data for a screening.
  *
- * @author Phee Kian Ann
+ * @author Han Zhiguang
  * @version 1.0
- * @since 2022-11-03
+ * @since 2022-11-04
  */
 public class Screening implements Serializable {
 
