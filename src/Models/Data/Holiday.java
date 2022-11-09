@@ -5,8 +5,7 @@ import Models.DataStoreManager;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
-import java.text.SimpleDateFormat;
+
 
 // This class contains all information of a holiday - including its name, date and price rate.
 
