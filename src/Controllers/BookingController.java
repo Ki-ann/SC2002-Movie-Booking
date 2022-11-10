@@ -156,7 +156,7 @@ public class BookingController implements INavigation {
                             BookingView.printSeatLayout(selectedScreening.getSessionLayout());
                             ArrayList<Seat> selectedLayout = getSelectedSeat(selectedScreening.getSessionLayout());
                             // Did not get any seats
-                            if (selectedLayout == null && selectedLayout.size() == 0) {
+                            if (selectedLayout == null || selectedLayout.size() == 0) {
                                 currentBookingBookingState = currentBookingBookingState.prev();
                                 continue;
                             }
@@ -409,7 +409,7 @@ public class BookingController implements INavigation {
             if (input.trim().length() >= 2) {
                 try {
                     char inputCharArray = input.charAt(0);
-                    int row = inputCharArray > 64 && inputCharArray < 91 ? inputCharArray - 65 : -1;
+                    int row = Character.isLetter(inputCharArray) ? Character.toUpperCase(inputCharArray) - 65 : -1;
                     int col = Integer.parseInt(input.substring(1));
                     if (row >= 0 && row < layout.size() && col >= 0 && col < layout.get(row).size()) {
                         // Get seat layout
@@ -417,11 +417,13 @@ public class BookingController implements INavigation {
                     }
                 } catch (NumberFormatException exception) {
                     ConsoleIOManager.printLine("Invalid input! Please select a valid row & column! e.g. A10");
+                    continue;
                 }
             } else if (input.equals("0")) {
                 return null;
             } else {
                 ConsoleIOManager.printLine("Invalid input! Please select a valid row & column! e.g. A10");
+                continue;
             }
 
             // Found seat, assigning

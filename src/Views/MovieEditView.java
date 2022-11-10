@@ -1,14 +1,12 @@
 package Views;
 
-import Models.Data.Movie;
-
 public class MovieEditView {
 
     public static void displayMenu() {
         ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("This is the Movie Editing Page", "Create a Movie", "Update existing Movies",
-                "Delete existing Movies", "Go Back");
-        //ConsoleIOManager.printGoBack();
+                "Delete existing Movies");
+        ConsoleIOManager.printGoBack();
     }
 
     public static void printAddName(){
@@ -62,8 +60,10 @@ public class MovieEditView {
     public static void printAddMovieRating(){
         ConsoleIOManager.printLine("Please input the movie rating: \n[1] G\n[2] PG\n[3] PG13\n[4] NC16\n[5] M18\n[6] R21");
     }
-    public static void printAddSuccess(){
+    public static void printAddSuccess(String movie){
+        ConsoleIOManager.printMenu(movie);
         ConsoleIOManager.printLine("Movie successfully added!");
+        ConsoleIOManager.printGoBack();
     }
 
     public static void printDeleteMovie(){
@@ -74,10 +74,20 @@ public class MovieEditView {
         ConsoleIOManager.printLine("Movie Edit Success!");
     }
 
-    public static void printEditMoviePrompt(){
-//        ConsoleIOManager.printLine("What would you like to edit?\n[1] Movie Name\n[2] Movie Status\n[3] Duration of Movie\n[4] Synopsis\n[5] Language of Movie\n[6] Cast Details\n[7] Genre Details\n[8] Director Details\n[9] Movie Type\n[10] Movie Rating Details\n");
+    public static void printEditMoviePrompt(String movieString){
         ConsoleIOManager.clearScreen();
-        ConsoleIOManager.printMenu("This is the Movie Editing Page", "Movie Name", "Movie Status",
-                "Duration of Movie", "Synopsis", "Language of Movie", "Cast Details", "Genre Details", "Director Details", "Movie Type", "Movie Rating Details", "Go Back");
+        ConsoleIOManager.printMenu(movieString);
+        ConsoleIOManager.printMenu("This is the Movie Editing Page",
+                "Movie Name",
+                "Movie Status",
+                "Duration of Movie",
+                "Synopsis",
+                "Language of Movie",
+                "Cast Details",
+                "Genre Details",
+                "Director Details",
+                "Movie Type",
+                "Movie Rating Details");
+        ConsoleIOManager.printGoBack();
     }
 }

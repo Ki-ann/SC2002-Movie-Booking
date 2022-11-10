@@ -6,29 +6,72 @@ import Views.ConsoleIOManager;
 import Views.SearchMovieView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class SearchMovieController implements INavigation {
 
     public void start() {
-        Movie[] movies = searchMovieByName();
-
-        String[] titles = new String[movies.length];
-        for (int i = 0; i < movies.length; i++) {
-            titles[i] = movies[i].getName();
-        }
-        SearchMovieView.listMovies(titles);
+        SearchMovieView.displayMenu();
         int choice = ConsoleIOManager.readInt();
-        if (choice != 0) {
-            ConsoleIOManager.printMenu(movies[choice - 1].toString());
-            gotoReviewSystem(movies[choice - 1]);
 
+        switch (choice) {
+            case 1 -> listAllMovie();
+            case 2 -> searchAndReview();
+            case 0 -> NavigationController.getInstance().goBack();
+            default -> ConsoleIOManager.printLine("Invalid input! Please select an item from the menu!");
         }
+
     }
 
     /**
      *
      */
+    public void listAllMovie() {
+        ArrayList<Movie> moviesList = DataStoreManager.getInstance().getStore(Movie.class);
+        Movie[] movies = moviesList.stream().sorted(Comparator.comparing(m -> m.getMovieStatus().name())).toArray(Movie[]::new);
+
+        SearchMovieView.listMovies(movies);
+
+        do {
+            int choice = ConsoleIOManager.readInt();
+
+            if (choice < 0 || choice > movies.length) {
+                ConsoleIOManager.printLine("Invalid input! Please select an item from the menu!");
+            }else if(choice == 0) {
+                NavigationController.getInstance().goBack(0);
+                break;
+            }else{
+                ConsoleIOManager.printMenu(movies[choice - 1].toString());
+                gotoReviewSystem(movies[choice - 1]);
+                break;
+            }
+        }while(true);
+    }
+
+    public void searchAndReview() {
+        Movie[] movies = searchMovieByName();
+
+        SearchMovieView.listMovies(movies);
+
+        do {
+            int choice = ConsoleIOManager.readInt();
+
+            if (choice < 0 || choice > movies.length) {
+                ConsoleIOManager.printLine("Invalid input! Please select an item from the menu!");
+            }else if(choice == 0) {
+                NavigationController.getInstance().goBack(0);
+                break;
+            }else{
+                ConsoleIOManager.printMenu(movies[choice - 1].toString());
+                gotoReviewSystem(movies[choice - 1]);
+                break;
+            }
+        }while(true);
+    }
+
     public Movie[] searchMovieByName() {
         ArrayList<Movie> foundMovies = new ArrayList<>();
         while (true) {

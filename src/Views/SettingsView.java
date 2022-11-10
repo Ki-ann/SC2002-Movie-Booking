@@ -22,7 +22,8 @@ public class SettingsView {
 		ConsoleIOManager.printMenu("This is the setting page.",
                 "I want to manage ticket price",
                 "I want to manage holidays",
-                "I want to edit Customer Top Movie viewing states");
+                "I want to edit Customer Top Movie viewing states",
+                "I want to manage discounts");
         ConsoleIOManager.printGoBack();
     }
 
@@ -103,6 +104,7 @@ public class SettingsView {
 
     /**
      * Prints a choice of holiday deletion
+     * @param holiday the current selected holiday
      */
     public static void displayHolidayDetails(Holiday holiday) {
         ConsoleIOManager.clearScreen();
@@ -118,6 +120,59 @@ public class SettingsView {
      */
     public static void printHolidayDeletionSuccess() {
         ConsoleIOManager.printLine("Successfully deleted the holiday.");
+        ConsoleIOManager.printGoBack();
+    }
+
+    /**
+     * Prints list of discount codes
+     * @param codeString list of discount code strings
+     */
+    public static void printDiscountCodeList(String[] codeString) {
+        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.printMenu("Discount Codes");
+
+        if (codeString.length == 0) {
+            ConsoleIOManager.printLine("No Discount Codes exists");
+        }else{
+            for(String code : codeString){
+                ConsoleIOManager.printLine(code);
+            }
+        }
+        ConsoleIOManager.printGoBack();
+    }
+
+    /**
+     * Print a message for starting of adding discount code
+     */
+    public static void printAddDiscountCode() {
+        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.printMenu("Add discount code");
+        ConsoleIOManager.printLine("Enter name for the discount code: ");
+    }
+
+    /**
+     * Prints a message for retrieving discount percentage
+     */
+    public static void printAddDiscountCodePercentage() {
+        ConsoleIOManager.printLine("Enter discount percentage: e.g. 0.3");
+    }
+
+    /**
+     * Prints a message for successfully adding a discount code
+     */
+    public static void printAddDiscountCodeSuccess() {
+        ConsoleIOManager.printLine("Successfully added discount code!");
+        ConsoleIOManager.printGoBack();
+    }
+
+    /**
+     * Prints menu for discount settings
+     */
+    public static void printDiscountMenu() {
+        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.printMenu("Manage discounts",
+                "List all discounts code",
+                "Add a discount code");
         ConsoleIOManager.printGoBack();
     }
 }

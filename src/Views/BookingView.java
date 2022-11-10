@@ -39,7 +39,7 @@ public class BookingView {
      */
     public static void printMovieList(List<Movie> movieList) {
         String[] movieStringList = movieList.stream()
-                .map(Movie::getName)
+                .map(movie-> movie.getName()+ " | " + movie.getMovieRating().name() + " | " + movie.getMovieType().name())
                 .toArray(String[]::new);
 
         ConsoleIOManager.clearScreen();
@@ -105,6 +105,10 @@ public class BookingView {
         ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("These are the available show times for [" + selectedMovie.getName() + "]",
                 showTimeString);
+
+        if(showTimeString.length<= 0) {
+            ConsoleIOManager.printLine("No current show times");
+        }
         ConsoleIOManager.printGoBack();
     }
 
@@ -145,9 +149,8 @@ public class BookingView {
     public static void printCheckout(BookingTicket bookingTicket) {
         ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("Booking Preview");
-        ConsoleIOManager.printLine("Movie: " + bookingTicket.getSelectedMovie().getName() +
-                (bookingTicket.getSelectedMovie().getMovieStatus() == MovieStatus.PREVIEW? " - Preview" : ""));
-        ConsoleIOManager.printF("%s - %s\n", bookingTicket.getSelectedCineplex().getName(), bookingTicket.getSelectedCinema().getName());
+        ConsoleIOManager.printLine("Movie: " + bookingTicket.getSelectedMovie().getName() + " " + bookingTicket.getSelectedMovie().getMovieStatus().name());
+        ConsoleIOManager.printF("%s - %s - %s\n", bookingTicket.getSelectedCineplex().getName(), bookingTicket.getSelectedCinema().getName(), bookingTicket.getSelectedCinema().getCinemaType());
         ConsoleIOManager.printF("%s - %s\n", bookingTicket.getSelectedScreening().getShowTime().getDateOfMovie(), bookingTicket.getSelectedScreening().getShowTime().getTimeOfMovie());
 
         ConsoleIOManager.printLine("Seats: ");

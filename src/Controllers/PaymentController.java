@@ -1,7 +1,7 @@
 package Controllers;
 
 import Controllers.Payment.IPayment;
-import Controllers.Payment.SimplePayment;
+import Controllers.Payment.SimplePaymentAlwaysSuccess;
 import Controllers.Payment.SimplePaymentAlwaysFailure;
 import Models.Data.BookingTicket;
 import Models.Data.DiscountCode;
@@ -26,7 +26,7 @@ public class PaymentController {
      */
     private final ArrayList<IPayment> paymentMethods = new ArrayList<>() {
         {
-            add(new SimplePayment());
+            add(new SimplePaymentAlwaysSuccess());
             add(new SimplePaymentAlwaysFailure());
         }
     };

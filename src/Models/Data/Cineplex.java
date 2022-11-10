@@ -25,7 +25,7 @@ public class Cineplex implements Serializable {
                         // Foreach movie screening in the cinema
                         .stream()
                         // Find the screenings which match
-                        .anyMatch(mov -> mov.getName().equals(movie.getName())))
+                        .anyMatch(mov -> mov.equals(movie)))
                 .toList();
     }
 

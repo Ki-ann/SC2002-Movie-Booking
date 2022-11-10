@@ -133,6 +133,30 @@ public class DataStoreManager {
     }
 
     /**
+     * Check whether any data files have been created
+     * @return true if there are no data files created and the folder is empty
+     */
+    public boolean isEmptyDataFolder(){
+        List<String> fileList;
+        // Get the root path of the project
+        Path start = Paths.get(System.getProperty("user.dir"), dataFolder);
+        // Try walking through the directory and subdirectory for serialized .dat files
+        try (Stream<Path> stream = Files.walk(start, Integer.MAX_VALUE)) {
+            fileList = stream
+                    .map(String::valueOf)
+                    .filter(file -> !new File(file).isDirectory() && file.lastIndexOf(".dat") > 0)
+                    .map(file -> file.substring(start.toString().length() + 1))
+                    .map(file -> file.substring(0, file.length() - 7).trim())
+                    .sorted()
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return fileList.isEmpty();
+    }
+
+    /**
      * Retrieve all Serialized datafiles from the project root folder,
      * and Deserialize the files into the DataStore dictionary.
      * <br>Example:

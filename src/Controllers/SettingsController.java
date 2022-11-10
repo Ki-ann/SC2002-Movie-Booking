@@ -36,6 +36,7 @@ public class SettingsController implements INavigation {
                 case 1 -> manageTicketPrice();
                 case 2 -> manageHolidays();
                 case 3 -> manageTopMovieStates();
+                case 4 -> manageDiscounts();
                 case 0 -> NavigationController.getInstance().goBack();
                 default -> {
                     ConsoleIOManager.printLine("Invalid input! Please select an item from the menu!");
@@ -43,6 +44,55 @@ public class SettingsController implements INavigation {
                 }
             }
         } while (initialMenuSelection == -1);
+    }
+
+    private void manageDiscounts() {
+        SettingsView.printDiscountMenu();
+        do {
+
+            switch (ConsoleIOManager.readInt()) {
+                case 1 -> listDiscountCodes();
+                case 2 -> addDiscountCode();
+                case 0 -> {
+                    initialMenuSelection = -1;
+                    NavigationController.getInstance().goBack(0);
+                    return;
+                }
+                default -> ConsoleIOManager.printLine("Invalid input! Please select an item from the menu!");
+            }
+        } while (true);
+    }
+
+    private void addDiscountCode() {
+        SettingsView.printAddDiscountCode();
+        String code = ConsoleIOManager.readString();
+
+        SettingsView.printAddDiscountCodePercentage();
+        double discount = ConsoleIOManager.readDouble();
+
+        SettingsView.printAddDiscountCodeSuccess();
+        DataStoreManager.getInstance().addToStore(new DiscountCode(code,discount));
+
+        if (ConsoleIOManager.readInt() == 0) {
+            NavigationController.getInstance().goBack(0);
+        } else {
+            ConsoleIOManager.printLine("Invalid input!");
+        }
+    }
+
+    private void listDiscountCodes() {
+        ArrayList<DiscountCode> discountList = DataStoreManager.getInstance().getStore(DiscountCode.class);
+
+        var codeStringList = discountList.stream()
+                .map(discountCode -> String.format("%-10s %.2f%% OFF",discountCode.getCode(),discountCode.getDiscountPercentage() * 100))
+                .toArray(String[]::new);
+        SettingsView.printDiscountCodeList(codeStringList);
+
+        if (ConsoleIOManager.readInt() == 0) {
+            NavigationController.getInstance().goBack(0);
+        } else {
+            ConsoleIOManager.printLine("Invalid input!");
+        }
     }
 
     /**
@@ -136,7 +186,7 @@ public class SettingsController implements INavigation {
     /**
      * gets the admin's desired holiday selection input .
      *
-     * @param holidaylist The list of holidays for the admin to choose from.
+     * @param holidayList The list of holidays for the admin to choose from.
      * @return Admin selected movie.
      */
     private Holiday getSelectedHoliday(ArrayList<Holiday> holidayList) {

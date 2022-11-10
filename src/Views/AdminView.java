@@ -9,7 +9,8 @@ public class AdminView {
         ConsoleIOManager.printMenu("This is the admin page",
                 "Edit Movies",
                 "Edit Screenings",
-                "Edit Admin Settings");
+                "Edit Admin Settings",
+                "View Top Movies (Admin)");
         ConsoleIOManager.printF("[%d] %s\n", 0, "Logout");
     }
     /**

@@ -50,13 +50,13 @@ public class BookingHistoryView {
     public static void printBookingHistoryList(List<BookingTicket> bookingTicketList, Customer requestedCustomer) {
         ConsoleIOManager.printMenu(String.format("Booking History list for:\nName:%s Email:%s", requestedCustomer.getName(), requestedCustomer.getEmail()));
         DecimalFormat twoPlaces = new DecimalFormat("00.00");
-        ConsoleIOManager.printMenu(String.format("%-5s | %-50s| %-8s| %-10s | %-15s| %-15s| %-15s | %-8s| %-16s  \n",
+        ConsoleIOManager.printMenu(String.format("%-5s | %-50s| %-8s| %-10s | %-20s| %-15s| %-15s | %-8s| %-16s  \n",
                 "Index", "Movie", "Seat", "Type", "Cinema", "Screening Time", "Screening Date", "Price", "Transaction ID"), 200);
         for (int i = 0; i < bookingTicketList.size(); ++i) {
             BookingTicket ticket = bookingTicketList.get(i);
 
             for(Seat seat : ticket.getSelectedSeats()) {
-                ConsoleIOManager.printF("[       %-3d | %-50s| %-8s| %-10s | %-15s| %-15s| %-2td/%<-2tm/%<-2ty        | %-8s| %-16s        ]\n",
+                ConsoleIOManager.printF("[       %-3d | %-50s| %-8s| %-10s | %-20s| %-15s| %-2td/%<-2tm/%<-2ty        | %-8s| %-16s        ]\n",
                         i + 1,
                         ticket.getSelectedMovie().getName() + " **" + ticket.getSelectedMovie().getMovieStatus() + "**",
                         seat.getSeatString(),

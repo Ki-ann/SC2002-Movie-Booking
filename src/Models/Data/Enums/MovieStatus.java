@@ -1,5 +1,7 @@
 package Models.Data.Enums;
 
+import Models.Data.Movie;
+
 /**
  * Enumerator class for categorizing Movie showing status
  *
@@ -11,6 +13,7 @@ public enum MovieStatus {
 	COMING_SOON,
 	PREVIEW,
 	NOW_SHOWING,
-	END_SHOWING
+	END_SHOWING;
+
 
 }

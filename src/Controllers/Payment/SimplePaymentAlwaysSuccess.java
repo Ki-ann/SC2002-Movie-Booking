@@ -7,7 +7,7 @@ package Controllers.Payment;
  * @version 1.0
  * @since 2022-11-03
  */
-public class SimplePayment implements IPayment {
+public class SimplePaymentAlwaysSuccess implements IPayment {
 	/**
 	 * Logic for processing payment
 	 * @return successful payment

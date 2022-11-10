@@ -1,6 +1,7 @@
 package Views;
 import Models.Data.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -74,7 +75,7 @@ public class ScreeningView {
 
     /**
      * prints a selection menu of aviable showtime and cinema regarding selected movie and date.
-     * @param filteredCineplexList  List of cinemas that contain selectedMovie.
+     * @param filteredCinemaList  List of cinemas that contain selectedMovie.
      * @param selectedMovie the currently selected movie by the admin.
      * @param selectedDate the selected date to filter for.
      */
@@ -103,7 +104,7 @@ public class ScreeningView {
      * @param selectedMovie the movie to filter for screeningList.
      * @param selectedDate the date to filter for screeningList.
      */
-    public static void printCinemaShowtime(List<Screening> screeningList, Movie selectedMovie, LocalDate selectedDate) {
+    public static void printCinemaShowtimePreview(List<Screening> screeningList, Movie selectedMovie, LocalDate selectedDate) {
         String[] showTimeString = screeningList.stream()
                 .map(s -> s.getShowTime().getTimeOfMovie() +
                         " - " +
@@ -111,9 +112,35 @@ public class ScreeningView {
                 .toArray(String[]::new);
 
         ConsoleIOManager.clearScreen();
-        ConsoleIOManager.printMenu("These are the available show times for [" + selectedMovie.getName() + "]");
+        ConsoleIOManager.printMenu("These are the current show times for [" + selectedMovie.getName() + "]");
 
-        ConsoleIOManager.printF(Arrays.toString(showTimeString)+"\n");
+        if(showTimeString.length> 0) {
+            ConsoleIOManager.printF(Arrays.toString(showTimeString) + "\n");
+        }else{
+            ConsoleIOManager.printLine("No current show times");
+        }
+    }
+
+    /**
+     *
+     * @param screeningList
+     * @param selectedMovie
+     * @param selectedDate
+     */
+    public static void printCinemaShowtimeSelectionList(List<Screening> screeningList, Movie selectedMovie, LocalDate selectedDate) {
+        String[] showTimeString = screeningList.stream()
+                .map(s -> s.getShowTime().getTimeOfMovie() +
+                        " - " +
+                        s.getShowTime().getTimeOfMovie().plus(s.getMovie().getDuration()).toString())
+                .toArray(String[]::new);
+
+        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.printMenu("These are the current show times for [" + selectedMovie.getName() + "]",
+                showTimeString);
+
+        if(showTimeString.length<= 0) {
+            ConsoleIOManager.printLine("No current show times");
+        }
         ConsoleIOManager.printGoBack();
     }
     /**
@@ -131,4 +158,12 @@ public class ScreeningView {
         ConsoleIOManager.printGoBack();
     }
 
+    public static void printDateList(LocalDate[] localDates) {
+        String[] dateString = Arrays.stream(localDates).map(date -> date.format(DateTimeFormatter.ofPattern("dd/MM"))).toArray(String[]::new);
+
+        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.printMenu("Here are the movies to modify",
+                dateString);
+        ConsoleIOManager.printGoBack();
+    }
 }
