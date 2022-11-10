@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * SettingsController that handles the logic for modifying system configuration
  *
- * @author Han Zhi Guang, Phee Kian Ann
+ * @author Han Zhiguang, Phee Kian Ann
  * @version 1.0
  * @since 2022-11-03
  */
@@ -45,6 +45,12 @@ public class SettingsController implements INavigation {
         } while (initialMenuSelection == -1);
     }
 
+    /**
+     * Call NavigationController to load new instance of TopMovieController object.
+     * 
+     * @see TopMovieController
+     * @see NavigationController
+     */
     private void manageTopMovieStates() {
         initialMenuSelection = -1;
         TopMovieController controller = new TopMovieController();
@@ -53,10 +59,9 @@ public class SettingsController implements INavigation {
     }
 
     /**
-     *
+     * a selection for manage ticket price.
      */
     private void manageTicketPrice() {
-        //display original price chart
         SettingsView.printTicketPriceMenu(setting);
         do {
 
@@ -73,7 +78,7 @@ public class SettingsController implements INavigation {
     }
 
     /**
-     *
+     * a selection to set standard price.
      */
     private void setStandardPrice() {
         SettingsView.printSetStandardPrice(setting);
@@ -91,7 +96,7 @@ public class SettingsController implements INavigation {
     }
 
     /**
-     *
+     * a selection to manage holidays.
      */
     private void manageHolidays() {
         do {
@@ -111,7 +116,7 @@ public class SettingsController implements INavigation {
     }
 
     /**
-     *
+     * display the holiday list and manage holiday list.
      */
     private void displayHolidayList() {
         ArrayList<Holiday> holidayList = Holiday.getHolidayList();
@@ -129,9 +134,10 @@ public class SettingsController implements INavigation {
     }
 
     /**
+     * gets the admin's desired holiday selection input .
      *
-     * @param holidayList
-     * @return
+     * @param holidaylist The list of holidays for the admin to choose from.
+     * @return Admin selected movie.
      */
     private Holiday getSelectedHoliday(ArrayList<Holiday> holidayList) {
         int input;
@@ -149,6 +155,7 @@ public class SettingsController implements INavigation {
     }
 
     /**
+     * set the admin's desired date to holiday.
      *
      */
     private void addHoliday() {
@@ -176,9 +183,10 @@ public class SettingsController implements INavigation {
         } while (true);
     }
 
-    /**
+    /** 
+     * display the details for admin's desired holiday.
      *
-     * @param holiday
+     * @param holiday a holiday selected by admin.
      */
     private void displayHolidayDetail(Holiday holiday) {
         SettingsView.displayHolidayDetails(holiday);
@@ -190,8 +198,9 @@ public class SettingsController implements INavigation {
     }
 
     /**
+     * delete admin's desired holiday.
      *
-     * @param holiday
+     * @param holiday a holiday selected by admin.
      */
     private void deleteHoliday(Holiday holiday) {
         DataStoreManager.getInstance().removeFromStore(holiday);
