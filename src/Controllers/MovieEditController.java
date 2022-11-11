@@ -8,6 +8,7 @@ import Models.DataStoreManager;
 import Views.ConsoleIOManager;
 import Views.MovieEditView;
 import Views.SearchMovieView;
+
 import java.util.ArrayList;
 
 /**
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 public class MovieEditController implements INavigation {
 
     private int MovieEditSelection = -1;
+
     /**
      * Start method implementation for initialization after loading with NavigationController.
      *
@@ -55,7 +57,7 @@ public class MovieEditController implements INavigation {
         //Name
         addMovieName(movie);
 
-		//movieStatusENUM
+        //movieStatusENUM
         addMovieStatus(movie);
 
         //DurationD
@@ -109,7 +111,7 @@ public class MovieEditController implements INavigation {
             int choice = ConsoleIOManager.readInt();
             boolean valid = true;
             int MovieEditPromptSelect;
-            if(choice==0){
+            if (choice == 0) {
                 break;
             }
             do {
@@ -129,6 +131,7 @@ public class MovieEditController implements INavigation {
                     case 10 -> editRatingDetail(movies, choice);
                     case 0 -> {
                         valid = false;
+                        continue;
                     }
                     default -> {
                         ConsoleIOManager.printLine("Invalid input! Please select an item from the menu!");
@@ -136,6 +139,19 @@ public class MovieEditController implements INavigation {
                 }
 
                 DataStoreManager.getInstance().saveAll();
+
+                // Wait for user ready
+                int input;
+                do {
+                    input = ConsoleIOManager.readInt();
+
+                    if (input != 0) {
+                        ConsoleIOManager.printLine("Invalid input!");
+                    } else {
+                        break;
+                    }
+                } while (true);
+
             } while (valid);
         }
     }
@@ -150,33 +166,46 @@ public class MovieEditController implements INavigation {
         SearchMovieView.listMovies(movies);
         int choice = ConsoleIOManager.readInt();
         if (choice != 0) {
-            DataStoreManager.getInstance().removeFromStore(movies[choice-1]);
+            DataStoreManager.getInstance().removeFromStore(movies[choice - 1]);
             movies[choice - 1].setMovieStatus(MovieStatus.END_SHOWING);
             ConsoleIOManager.printMenu(movies[choice - 1].toString());
             //particular movie change to ENUM endofshowing
-            DataStoreManager.getInstance().addToStore(movies[choice-1]);
+            DataStoreManager.getInstance().addToStore(movies[choice - 1]);
             MovieEditView.printDeleteMovie();
+
+            // Wait for user ready
+            int input;
+            do {
+                input = ConsoleIOManager.readInt();
+
+                if (input != 0) {
+                    ConsoleIOManager.printLine("Invalid input!");
+                } else {
+                    break;
+                }
+            } while (true);
         }
     }
 
     /**
      * Retrieves User input for new movie name
+     *
      * @param movie current temporary new movie object
      */
     private void addMovieName(Movie movie) {
         MovieEditView.printAddName();
         String name = ConsoleIOManager.readString();
-        if (name.length() == 0){
+        if (name.length() == 0) {
             MovieEditView.printEmptyError();
             addMovieName(movie);
-        }
-        else {
+        } else {
             movie.setName(name);
         }
     }
 
     /**
      * Retrieves User input for new movie name
+     *
      * @param movie current temporary new movie object
      */
     private void addMovieStatus(Movie movie) {
@@ -198,6 +227,7 @@ public class MovieEditController implements INavigation {
 
     /**
      * Retrieves User input for new movie duration
+     *
      * @param movie current temporary new movie object
      */
     private void addMovieDuration(Movie movie) {
@@ -208,48 +238,48 @@ public class MovieEditController implements INavigation {
 
     /**
      * Retrieves User input for new movie synopsis
+     *
      * @param movie current temporary new movie object
      */
     private void addMovieSynopsis(Movie movie) {
         MovieEditView.printAddSynopsis();
         String synopsis = ConsoleIOManager.readString();
-        if (synopsis.length() == 0){
+        if (synopsis.length() == 0) {
             MovieEditView.printEmptyError();
             addMovieSynopsis(movie);
-        }
-        else {
+        } else {
             movie.setSynopsis(synopsis);
         }
     }
 
     /**
      * Retrieves User input for new movie language
+     *
      * @param movie current temporary new movie object
      */
     private void addMovieLanguages(Movie movie) {
         MovieEditView.printAddLanguage();
         String language = ConsoleIOManager.readString();
-        if (language.length() == 0){
+        if (language.length() == 0) {
             MovieEditView.printEmptyError();
             addMovieLanguages(movie);
-        }
-        else {
+        } else {
             movie.setLanguage(language);
         }
     }
 
     /**
      * Retrieves User input for multiple new movie casts
+     *
      * @param movie current temporary new movie object
      */
     private void addMovieCasts(Movie movie) {
         MovieEditView.printNumCast();
         int numCasts = ConsoleIOManager.readInt();
 
-        if (numCasts == 0){
+        if (numCasts == 0) {
             MovieEditView.printEmptyError();
-        }
-        else{
+        } else {
             ArrayList<String> cast = new ArrayList<>();
             for (int i = 0; i < numCasts; i++) {
                 MovieEditView.printAddCast();
@@ -262,17 +292,16 @@ public class MovieEditController implements INavigation {
 
     /**
      * Retrieves User input for multiple new movie genres
+     *
      * @param movie current temporary new movie object
      */
     private void addMovieGenres(Movie movie) {
         MovieEditView.printNumGenre();
         int numGenre = ConsoleIOManager.readInt();
-        if (numGenre == 0){
+        if (numGenre == 0) {
             MovieEditView.printEmptyError();
             addMovieGenres(movie);
-        }
-
-        else{
+        } else {
             ArrayList<String> genre = new ArrayList<>();
             for (int i = 0; i < numGenre; i++) {
                 MovieEditView.printAddGenre();
@@ -286,17 +315,16 @@ public class MovieEditController implements INavigation {
 
     /**
      * Retrieves User input for multiple new movie directors
+     *
      * @param movie current temporary new movie object
      */
     private void addMovieDirectors(Movie movie) {
         MovieEditView.printNumDirector();
         int numDirector = ConsoleIOManager.readInt();
-        if (numDirector == 0){
+        if (numDirector == 0) {
             MovieEditView.printEmptyError();
             addMovieDirectors(movie);
-        }
-
-        else{
+        } else {
             ArrayList<String> director = new ArrayList<>();
             for (int i = 0; i < numDirector; i++) {
                 MovieEditView.printAddDirector();
@@ -310,6 +338,7 @@ public class MovieEditController implements INavigation {
 
     /**
      * Retrieves User input for new movie type
+     *
      * @param movie current temporary new movie object
      */
     private void addMovieType(Movie movie) {
@@ -331,6 +360,7 @@ public class MovieEditController implements INavigation {
 
     /**
      * Retrieves User input for new movie rating type
+     *
      * @param movie current temporary new movie object
      */
     private void addMovieRating(Movie movie) {
@@ -352,6 +382,7 @@ public class MovieEditController implements INavigation {
 
     /**
      * Updates the rating setting of the movie using a new User input
+     *
      * @param movies Entire movie list array
      * @param choice User selected choice
      */
@@ -375,6 +406,7 @@ public class MovieEditController implements INavigation {
 
     /**
      * Updates the movie type setting of the movie using a new User input
+     *
      * @param movies Entire movie list array
      * @param choice User selected choice
      */
@@ -398,18 +430,17 @@ public class MovieEditController implements INavigation {
 
     /**
      * Updates the director setting of the movie using a new User input
+     *
      * @param movies Entire movie list array
      * @param choice User selected choice
      */
     private void editDirector(Movie[] movies, int choice) {
         MovieEditView.printNumDirector();
         int numDirector = ConsoleIOManager.readInt();
-        if (numDirector == 0){
+        if (numDirector == 0) {
             MovieEditView.printEmptyError();
             editDirector(movies, choice);
-        }
-
-        else{
+        } else {
             ArrayList<String> director = new ArrayList<>();
             for (int i = 0; i < numDirector; i++) {
                 MovieEditView.printAddDirector();
@@ -423,18 +454,17 @@ public class MovieEditController implements INavigation {
 
     /**
      * Updates the genre setting of the movie using a new User input
+     *
      * @param movies Entire movie list array
      * @param choice User selected choice
      */
     private void editGenre(Movie[] movies, int choice) {
         MovieEditView.printNumGenre();
         int numGenre = ConsoleIOManager.readInt();
-        if (numGenre == 0){
+        if (numGenre == 0) {
             MovieEditView.printEmptyError();
             editGenre(movies, choice);
-        }
-
-        else{
+        } else {
             ArrayList<String> genre = new ArrayList<>();
             for (int i = 0; i < numGenre; i++) {
                 MovieEditView.printAddGenre();
@@ -449,6 +479,7 @@ public class MovieEditController implements INavigation {
 
     /**
      * Updates the cast setting of the movie using a new User input
+     *
      * @param movies Entire movie list array
      * @param choice User selected choice
      */
@@ -456,11 +487,10 @@ public class MovieEditController implements INavigation {
         MovieEditView.printNumCast();
         int numCasts = ConsoleIOManager.readInt();
 
-        if (numCasts == 0){
+        if (numCasts == 0) {
             MovieEditView.printEmptyError();
             editCast(movies, choice);
-        }
-        else{
+        } else {
             ArrayList<String> cast = new ArrayList<>();
             for (int i = 0; i < numCasts; i++) {
                 MovieEditView.printAddCast();
@@ -474,17 +504,17 @@ public class MovieEditController implements INavigation {
 
     /**
      * Updates the language setting of the movie using a new User input
+     *
      * @param movies Entire movie list array
      * @param choice User selected choice
      */
     private void editLanguage(Movie[] movies, int choice) {
         MovieEditView.printAddLanguage();
         String language = ConsoleIOManager.readString();
-        if (language.length() == 0){
+        if (language.length() == 0) {
             MovieEditView.printEmptyError();
             editLanguage(movies, choice);
-        }
-        else {
+        } else {
             movies[choice - 1].setLanguage(language);
             MovieEditView.printEditMovie();
         }
@@ -492,17 +522,17 @@ public class MovieEditController implements INavigation {
 
     /**
      * Updates the synopsis setting of the movie using a new User input
+     *
      * @param movies Entire movie list array
      * @param choice User selected choice
      */
     private void editSynopsis(Movie[] movies, int choice) {
         MovieEditView.printAddSynopsis();
         String synopsis = ConsoleIOManager.readString();
-        if (synopsis.length() == 0){
+        if (synopsis.length() == 0) {
             MovieEditView.printEmptyError();
             editSynopsis(movies, choice);
-        }
-        else {
+        } else {
             movies[choice - 1].setSynopsis(synopsis);
             MovieEditView.printEditMovie();
         }
@@ -510,6 +540,7 @@ public class MovieEditController implements INavigation {
 
     /**
      * Updates the duration setting of the movie using a new User input
+     *
      * @param movies Entire movie list array
      * @param choice User selected choice
      */
@@ -522,6 +553,7 @@ public class MovieEditController implements INavigation {
 
     /**
      * Updates the status setting of the movie using a new User input
+     *
      * @param movies Entire movie list array
      * @param choice User selected choice
      */
@@ -545,17 +577,17 @@ public class MovieEditController implements INavigation {
 
     /**
      * Updates the name setting of the movie using a new User input
+     *
      * @param movies Entire movie list array
      * @param choice User selected choice
      */
     private void editName(Movie[] movies, int choice) {
         MovieEditView.printAddName();
         String name = ConsoleIOManager.readString();
-        if (name.length() == 0){
+        if (name.length() == 0) {
             MovieEditView.printEmptyError();
             editName(movies, choice);
-        }
-        else {
+        } else {
             movies[choice - 1].setName(name);
         }
         MovieEditView.printEditMovie();
@@ -563,6 +595,7 @@ public class MovieEditController implements INavigation {
 
     /**
      * Calls SearchMovieController to retrieve a list of movies by name
+     *
      * @return list of movies filtered by the substring of a given string input
      */
     public Movie[] gotoSearchMoviesSystem() {

@@ -125,6 +125,7 @@ public class MovieEditView {
      */
     public static void printDeleteMovie(){
         ConsoleIOManager.printLine("Movie Deleted!");
+        ConsoleIOManager.printGoBack();
     }
 
     /**
@@ -132,6 +133,7 @@ public class MovieEditView {
      */
     public static void printEditMovie(){
         ConsoleIOManager.printLine("Movie Edit Success!");
+        ConsoleIOManager.printGoBack();
     }
 
     /**
