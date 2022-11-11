@@ -8,8 +8,21 @@ import Models.Data.Setting;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
+/**
+ * TopMovieView class used by TopMovieController for printing information to console using static functions
+ *
+ * @author Phee Kian Ann
+ * @version 1.0
+ * @since 2022-11-11
+ * @see Controllers.TopMovieController
+ * @see Views.ConsoleIOManager
+ */
 public class TopMovieView {
+    /**
+     * Prints a selection menu
+     * @param currentTopMovieViewingState the current viewable state for customers
+     * @param currentAdmin current admin instance
+     */
     public static void displayMenu(TopMovieViewingState currentTopMovieViewingState, Admin currentAdmin) {
         ConsoleIOManager.clearScreen();
         ArrayList<String> displayString = new ArrayList<>();
@@ -36,6 +49,10 @@ public class TopMovieView {
         ConsoleIOManager.printGoBack();
     }
 
+    /**
+     * Prints the top 5 movies by ticket sales
+     * @param store Movie list from DataStore
+     */
     public static void printTopSales(ArrayList<Movie> store) {
         ConsoleIOManager.clearScreen();
         ArrayList<Movie> sortedList = new ArrayList<>(store);
@@ -47,6 +64,10 @@ public class TopMovieView {
         ConsoleIOManager.printGoBack();
     }
 
+    /**
+     * Prints the top 5 movies by review score
+     * @param store Movie list from DataStore
+     */
     public static void printTopReviews(ArrayList<Movie> store) {
         ConsoleIOManager.clearScreen();
         ArrayList<Movie> sortedList = new ArrayList<>(store);
@@ -58,6 +79,9 @@ public class TopMovieView {
         ConsoleIOManager.printGoBack();
     }
 
+    /**
+     * Print a selection menu for editing TopMovieViewing State for admins
+     */
     public static void printEditStates() {
         TopMovieViewingState currentBookingState = Setting.getSettings().getCurrentTopMovieViewingState();
         String[] stateStringList = Arrays.stream(TopMovieViewingState.values())
@@ -70,10 +94,16 @@ public class TopMovieView {
         ConsoleIOManager.printGoBack();
     }
 
+    /**
+     * Prints a message for unauthorized access
+     */
     public static void printUnauthorized() {
         ConsoleIOManager.printLine("Unauthorized attempt!");
     }
 
+    /**
+     * Prints a message for a successful edit
+     */
     public static void printEditSuccess() {
         ConsoleIOManager.printLine("Top movie viewing state updated!");
         ConsoleIOManager.printGoBack();

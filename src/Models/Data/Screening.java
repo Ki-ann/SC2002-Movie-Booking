@@ -17,7 +17,6 @@ public class Screening implements Serializable {
 	private ArrayList<ArrayList<Seat>> sessionLayout;
 
 	/**
-	 *
 	 * @return movie for the show time.
 	 */
 	public Movie getMovie() {
@@ -25,15 +24,6 @@ public class Screening implements Serializable {
 	}
 
 	/**
-	 *
-	 * @param selectedMovie Admin selected Movie to set.
-	 */
-	public void setMovie(Movie movie) {
-		this.movie = movie;
-	}
-
-	/**
-	 *
 	 * @return selected show time.
 	 */
 	public ShowTime getShowTime() {
@@ -41,7 +31,21 @@ public class Screening implements Serializable {
 	}
 
 	/**
-	 *
+	 * @return the current seats layout
+	 */
+	public ArrayList<ArrayList<Seat>> getSessionLayout() {
+		return sessionLayout;
+	}
+
+
+	/**
+	 * @param movie Admin selected Movie to set.
+	 */
+	public void setMovie(Movie movie) {
+		this.movie = movie;
+	}
+
+	/**
 	 * @param showTime Admin select show time to set.
 	 */
 	public void setShowTime(ShowTime showTime) {
@@ -49,15 +53,6 @@ public class Screening implements Serializable {
 	}
 
 	/**
-	 *
-	 * @return the current seats layout 
-	 */
-	public ArrayList<ArrayList<Seat>> getSessionLayout() {
-		return sessionLayout;
-	}
-
-	/**
-	 *
 	 * @param sessionLayout new seats layout to set
 	 */
 	public void setSessionLayout(ArrayList<ArrayList<Seat>> sessionLayout) {

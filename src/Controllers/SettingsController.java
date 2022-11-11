@@ -46,6 +46,9 @@ public class SettingsController implements INavigation {
         } while (initialMenuSelection == -1);
     }
 
+    /**
+     * a selection to manage discount codes
+     */
     private void manageDiscounts() {
         SettingsView.printDiscountMenu();
         do {
@@ -63,6 +66,9 @@ public class SettingsController implements INavigation {
         } while (true);
     }
 
+    /**
+     * logic for adding a discount code to the DataStore
+     */
     private void addDiscountCode() {
         SettingsView.printAddDiscountCode();
         String code = ConsoleIOManager.readString();
@@ -80,6 +86,9 @@ public class SettingsController implements INavigation {
         }
     }
 
+    /**
+     * lists all currently available discount codes and their discount percentages
+     */
     private void listDiscountCodes() {
         ArrayList<DiscountCode> discountList = DataStoreManager.getInstance().getStore(DiscountCode.class);
 

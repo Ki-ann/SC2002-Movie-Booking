@@ -1,20 +1,16 @@
 package Controllers;
 
-import Models.Data.Cinema;
 import Models.Data.Cineplex;
-import Models.Data.Enums.CinemaType;
 import Models.Data.Movie;
 import Models.DataStoreManager;
-
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
 
 /**
  * Cineplex Controller is a Navigation that manages the logic and flow for Cineplex functions.
  *
- * @author
+ * @author Phee Kian Ann
  * @version 1.0
- * @since 2022-10-28
+ * @since 2022-11-11
  */
 public class CineplexController implements INavigation {
 

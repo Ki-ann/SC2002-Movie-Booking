@@ -480,7 +480,9 @@ public class BookingController implements INavigation {
      */
     private void saveBookingTransaction(BookingTicket newBookingTicket) {
         BookingView.printSaveBooking();
-        newBookingTicket.getSelectedMovie().incrementTicketSales();
+        for(Seat ignored : newBookingTicket.getSelectedSeats()) {
+            newBookingTicket.getSelectedMovie().incrementTicketSales();
+        }
         DataStoreManager.getInstance().addToStore(newBookingTicket);
         // Save everything including Cineplex information
         DataStoreManager.getInstance().saveAll();

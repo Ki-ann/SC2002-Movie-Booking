@@ -22,15 +22,6 @@ public class BookingTicket implements Serializable {
 	private double price;
 
 	/**
-	 *
-	 * @return Transaction ID string for the payment
-	 */
-	public String getBookingID() {
-		return bookingID;
-	}
-
-	/**
-	 *
 	 * @param bookingID Transaction ID string to set
 	 */
 	public void setBookingID(String bookingID) {
@@ -38,15 +29,6 @@ public class BookingTicket implements Serializable {
 	}
 
 	/**
-	 *
-	 * @return User selected Movie
-	 */
-	public Movie getSelectedMovie() {
-		return selectedMovie;
-	}
-
-	/**
-	 *
 	 * @param selectedMovie User selected Movie to set
 	 */
 	public void setSelectedMovie(Movie selectedMovie) {
@@ -54,15 +36,6 @@ public class BookingTicket implements Serializable {
 	}
 
 	/**
-	 *
-	 * @return User selected Cineplex object
-	 */
-	public Cineplex getSelectedCineplex() {
-		return selectedCineplex;
-	}
-
-	/**
-	 *
 	 * @param selectedCineplex User selected Cineplex to set
 	 */
 	public void setSelectedCineplex(Cineplex selectedCineplex) {
@@ -70,15 +43,6 @@ public class BookingTicket implements Serializable {
 	}
 
 	/**
-	 *
-	 * @return User selected Cinema object
-	 */
-	public Cinema getSelectedCinema() {
-		return selectedCinema;
-	}
-
-	/**
-	 *
 	 * @param selectedCinema User selected Cinema to set
 	 */
 	public void setSelectedCinema(Cinema selectedCinema) {
@@ -86,15 +50,6 @@ public class BookingTicket implements Serializable {
 	}
 
 	/**
-	 *
-	 * @return User selected Screening session
-	 */
-	public Screening getSelectedScreening() {
-		return selectedScreening;
-	}
-
-	/**
-	 *
 	 * @param selectedScreening User selected Screening session to set
 	 */
 	public void setSelectedScreening(Screening selectedScreening) {
@@ -102,15 +57,6 @@ public class BookingTicket implements Serializable {
 	}
 
 	/**
-	 *
-	 * @return User selected Seat
-	 */
-	public ArrayList<Seat> getSelectedSeats() {
-		return selectedSeats;
-	}
-
-	/**
-	 *
 	 * @param selectedSeat User selected Seat to add to list
 	 */
 	public void setSelectedSeats(Seat selectedSeat) {
@@ -121,23 +67,63 @@ public class BookingTicket implements Serializable {
 	}
 
 	/**
-	 *
-	 * @return User tagged to this booking transaction
+	 * @param price booking price to set
 	 */
-	public Customer getCustomer() {
-		return customer;
+	public void setPrice(double price) {
+		this.price = price;
 	}
 
 	/**
-	 *
 	 * @param customer User to tag to this booking transaction
 	 */
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
 
+
 	/**
-	 *
+	 * @return Transaction ID string for the payment
+	 */
+	public String getBookingID() {
+		return bookingID;
+	}
+
+	/**
+	 * @return User selected Movie
+	 */
+	public Movie getSelectedMovie() {
+		return selectedMovie;
+	}
+
+	/**
+	 * @return User selected Cineplex object
+	 */
+	public Cineplex getSelectedCineplex() {
+		return selectedCineplex;
+	}
+
+	/**
+	 * @return User selected Screening session
+	 */
+	public Screening getSelectedScreening() {
+		return selectedScreening;
+	}
+
+	/**
+	 * @return User selected Cinema object
+	 */
+	public Cinema getSelectedCinema() {
+		return selectedCinema;
+	}
+
+	/**
+	 * @return User selected Seat
+	 */
+	public ArrayList<Seat> getSelectedSeats() {
+		return selectedSeats;
+	}
+
+	/**
 	 * @return price of the entire booking
 	 */
 	public double getPrice() {
@@ -145,10 +131,9 @@ public class BookingTicket implements Serializable {
 	}
 
 	/**
-	 *
-	 * @param price booking price to set
+	 * @return User tagged to this booking transaction
 	 */
-	public void setPrice(double price) {
-		this.price = price;
+	public Customer getCustomer() {
+		return customer;
 	}
 }

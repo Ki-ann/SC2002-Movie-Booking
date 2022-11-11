@@ -16,7 +16,6 @@ public class SettingsView {
     /**
      * Prints the selection menu.
      */
-    Scanner sc = new Scanner(System.in);
     public static void displayMenu() {
 		ConsoleIOManager.clearScreen();
 		ConsoleIOManager.printMenu("This is the setting page.",

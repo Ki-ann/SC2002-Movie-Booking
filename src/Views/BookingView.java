@@ -236,6 +236,9 @@ public class BookingView {
         ConsoleIOManager.printGoBack();
     }
 
+    /**
+     * Prints a confirmation message for seat picking finished
+     */
     public static void printDoneSeatPickingConfirm() {
         ConsoleIOManager.printLine("[Y/N] Do you wish to add more seats?");
 

@@ -13,17 +13,25 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import java.time.LocalTime;
+
 /**
  * Manager class to store an instance of Scanner and interface with console read and write.
  * <br>Wrappers allow for easy extension of logging if needed.
  *
  * @author Phee Kian Ann
  * @version 1.0
- * @since 2022-10-29
+ * @since 2022-11-11
  */
 public class ConsoleIOManager {
 
     private static final Scanner scanner = new Scanner(System.in);
+
+    /**
+     * Prints 50 new lines to simulate a screen clear in console.
+     */
+    public static void clearScreen() {
+        printLine(System.lineSeparator().repeat(50));
+    }
 
     /**
      * Wrapper for System.out.println() to output an empty \n to console.
@@ -52,21 +60,22 @@ public class ConsoleIOManager {
     }
 
     /**
-     * Prints 50 new lines to simulate a screen clear in console.
+     * Prints a choice menu with the given title and options. Usually followed by a readInt(). Max Length 100 words
+     *
+     * @param title       Title of the choice menu.
+     * @param menuOptions Takes in a String Array of choices to be printed out sequentially.
      */
-    public static void clearScreen() {
-        printLine(System.lineSeparator().repeat(50));
-    }
-
     public static void printMenu(String title, String... menuOptions) {
         printMenu(title, 100, menuOptions);
     }
-        /**
-         * Prints a choice menu with the given title and options. Usually followed by a readInt().
-         *
-         * @param title       Title of the choice menu.
-         * @param menuOptions Takes in a String Array of choices to be printed out sequentially.
-         */
+
+    /**
+     * Prints a choice menu with the given title and options. Usually followed by a readInt(). Customizable max Length
+     *
+     * @param title       Title of the choice menu.
+     * @param maxLength   Max word length of the menu
+     * @param menuOptions Takes in a String Array of choices to be printed out sequentially.
+     */
     public static void printMenu(String title, int maxLength, String... menuOptions) {
         String choiceLine = "Please enter your choice:";
         // Get the largest per-line string length from either Title or menuOptions
@@ -85,7 +94,7 @@ public class ConsoleIOManager {
         String[] centeredTitleArray = Arrays.stream(title.split("\\r?\\n"))
                 // Split string again if it is longer than the max length (Word wrap)
                 .flatMap(splitLine -> (splitLine.length() > maxLength ?
-                        wordWrapper(splitLine,maxLength).stream()  // Split string into multiple smaller strings
+                        wordWrapper(splitLine, maxLength).stream()  // Split string into multiple smaller strings
                         : Arrays.stream(new String[]{splitLine}))) // Only 1 line string found
                 .toList().stream()
                 // Center all splits
@@ -111,16 +120,37 @@ public class ConsoleIOManager {
         }
     }
 
+    /**
+     * Splits a string into several Strings if they exceed a max length while keeping word boundaries
+     * @param splitLine the string to check for word wrapping
+     * @param maxLength max length to check for word wrapping
+     * @return an ArrayList of Strings separated according to max length
+     */
     private static ArrayList<String> wordWrapper(String splitLine, int maxLength) {
-            ArrayList<String> matchList = new ArrayList<>();
-            Pattern regex = Pattern.compile(String.format("(.{1,%d}(?:\\s|$))|(.{0,%<d})",maxLength), Pattern.DOTALL);
-            Matcher regexMatcher = regex.matcher(splitLine);
-            while (regexMatcher.find()) {
-                matchList.add(regexMatcher.group());
-            }
-            return matchList;
+        ArrayList<String> matchList = new ArrayList<>();
+        Pattern regex = Pattern.compile(String.format("(.{1,%d}(?:\\s|$))|(.{0,%<d})", maxLength), Pattern.DOTALL);
+        Matcher regexMatcher = regex.matcher(splitLine);
+        while (regexMatcher.find()) {
+            matchList.add(regexMatcher.group());
+        }
+        return matchList;
     }
 
+    /**
+     * Helper function to center a string with paddings.
+     *
+     * @param width Final width required for the return string to be.
+     * @param s     The string to be centered.
+     * @return a centered string with paddings on the left and right of the given string to reach the required width.
+     */
+    public static String centerString(int width, String s, char fillChar) {
+        int paddingSize = (width - s.length()) / 2;
+        if (paddingSize <= 0)
+            paddingSize = 2; // Default padding
+        // If string is of odd length, append an extra character at the end.
+        return String.format("%s", String.valueOf(fillChar).repeat(paddingSize) + s + String.valueOf(fillChar).repeat((width - s.length()) % 2 == 0 ? paddingSize : paddingSize + 1));
+
+    }
 
     /**
      * To be used after a printMenu() method call to append a "Go Back" option.
@@ -165,6 +195,25 @@ public class ConsoleIOManager {
     }
 
     /**
+     * Wrapper for scanner.nextDouble() to allow for a shared instance of a single scanner class.
+     * <br>Retries until given a valid integer. Clears the buffer after a successful double read.
+     *
+     * @return Inputted double
+     */
+    public static double readDouble() {
+        double output;
+        try {
+            output = scanner.nextDouble();
+            scanner.nextLine(); // Clear buffer
+            return output;
+        } catch (InputMismatchException ex) {
+            ConsoleIOManager.printLine("Invalid input, try again.");
+            scanner.nextLine();  // flush scanner
+            return readDouble();
+        }
+    }
+
+    /**
      * Wrapper for scanner.nextLine() to allow for a shared instance of a single scanner class.
      * <br>Retries until given a valid string.
      *
@@ -205,33 +254,26 @@ public class ConsoleIOManager {
     }
 
     /**
-     * Helper function to center a string with paddings.
-     *
-     * @param width Final width required for the return string to be.
-     * @param s     The string to be centered.
-     * @return a centered string with paddings on the left and right of the given string to reach the required width.
+     * Reads for user inputted Date of MM/dd and tries to parse it
+     * @return LocalDate instance of inputted Date
      */
-    public static String centerString(int width, String s, char fillChar) {
-        int paddingSize = (width - s.length()) / 2;
-        if (paddingSize <= 0)
-            paddingSize = 2; // Default padding
-        // If string is of odd length, append an extra character at the end.
-        return String.format("%s", String.valueOf(fillChar).repeat(paddingSize) + s + String.valueOf(fillChar).repeat((width - s.length()) % 2 == 0 ? paddingSize : paddingSize + 1));
-
-    }
-
     public static LocalDate readTimeMMdd() {
         return readTimeMMdd("");
     }
 
+    /**
+     * Parses an inputted Date string
+     * @param x input Date string
+     * @return LocalDate instance of inputted Date
+     */
     public static LocalDate readTimeMMdd(String x) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         try {
             String input = x;
-            if(input.equals("")){
+            if (input.equals("")) {
                 input = ConsoleIOManager.readString();
             }
-            input = String.format("%d/%s",LocalDate.now().getYear(), input);
+            input = String.format("%d/%s", LocalDate.now().getYear(), input);
             return LocalDate.parse(input, dateTimeFormatter);
         } catch (Exception ex) {
             System.out.println("Wrong format. Try again.");
@@ -239,31 +281,24 @@ public class ConsoleIOManager {
         }
     }
 
-    public static String formatTimeMMdd(Date time) {
-        return new SimpleDateFormat("MMMM, dd").format(time);
-    }
-
-    public static double readDouble() {
-        double output;
-        try {
-            output = scanner.nextDouble();
-            scanner.nextLine(); // Clear buffer
-            return output;
-        } catch (InputMismatchException ex) {
-            ConsoleIOManager.printLine("Invalid input, try again.");
-            scanner.nextLine();  // flush scanner
-            return readDouble();
-        }
-    }
-
+    /**
+     * Reads for user inputted time of HH/MM and tries to parse it
+     * @return LocalTime instance of inputted time
+     */
     public static LocalTime readTimeHHMM() {
         return readTimeHHMM("");
     }
+
+    /**
+     * Parses an inputted time string
+     * @param x input time string
+     * @return LocalTime instance of inputted time
+     */
     public static LocalTime readTimeHHMM(String x) {
         DateTimeFormatter f = DateTimeFormatter.ofPattern("HH:mm");
         try {
             String input = x;
-            if(input.equals("")){
+            if (input.equals("")) {
                 input = ConsoleIOManager.readString();
             }
             return LocalTime.parse(input, f);

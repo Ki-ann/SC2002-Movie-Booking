@@ -5,14 +5,23 @@ import Models.Data.Enums.CinemaType;
 import Models.Data.Enums.MovieRating;
 import Models.Data.Enums.MovieStatus;
 import Models.Data.Enums.MovieType;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * DataSeeder initializes data into the DataStore if there are no previously created files
+ *
+ * @author Phee Kian Ann
+ * @version 1.0
+ * @since 2022-11-11
+ */
 public class DataSeeder {
 
+    /**
+     * Seeds the initial pre-configured data
+     */
     public static void initializeData(){
         if(!DataStoreManager.getInstance().isEmptyDataFolder()){
             return;
@@ -23,12 +32,18 @@ public class DataSeeder {
         seedDiscounts();
     }
 
+    /**
+     * Seeds discount codes
+     */
     private static void seedDiscounts() {
         DataStoreManager.getInstance().addToStore(new DiscountCode("DISC", 0.3));
         DataStoreManager.getInstance().addToStore(new DiscountCode("DISC2", 0.5));
 
     }
 
+    /**
+     * Seeds Cineplex and movies
+     */
     private static void seedCineplex() {
         ArrayList<Movie> movies = new ArrayList<>();
         Movie mov1 = new Movie();
@@ -214,6 +229,9 @@ public class DataSeeder {
         DataStoreManager.getInstance().addToStore(cine);
     }
 
+    /**
+     * Seed Admin accounts
+     */
     private static void seedAdmin() {
         Admin admin1 = new Admin("admin", "admin");
         Admin admin2 = new Admin("admin2", "admin");

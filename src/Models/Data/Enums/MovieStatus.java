@@ -1,7 +1,5 @@
 package Models.Data.Enums;
 
-import Models.Data.Movie;
-
 /**
  * Enumerator class for categorizing Movie showing status
  *

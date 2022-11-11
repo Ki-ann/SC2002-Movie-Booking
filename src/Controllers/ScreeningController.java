@@ -173,7 +173,7 @@ public class ScreeningController implements INavigation {
 
         //====Get Screening
         List<Screening> filteredScreeningList = selectedCinema.getScreeningList().stream().filter(s -> s.getMovie().getName().equals(movie.getName()) && s.getShowTime().getDateOfMovie().isEqual(selectDate)).toList();
-        ScreeningView.printCinemaShowtimeSelectionList(filteredScreeningList, movie, selectDate);
+        ScreeningView.printCinemaShowtimeSelectionList(filteredScreeningList, movie);
         Screening selectedScreening = getScreening(filteredScreeningList);
         if (selectedScreening == null) {
             this.initialMenuSelection = -1; // Go back to main menu
@@ -198,6 +198,11 @@ public class ScreeningController implements INavigation {
 
     }
 
+    /**
+     * Gets the user input for the specific screening.
+     * @param filteredScreeningList list of screenings the user can choose from.
+     * @return user selected screening
+     */
     private Screening getScreening(List<Screening> filteredScreeningList) {
         Screening selectedScreening;
         int input;
@@ -216,6 +221,11 @@ public class ScreeningController implements INavigation {
         return selectedScreening;
     }
 
+    /**
+     * Gets the user selected date from a list of dates.
+     * @param localDates list of dates the user can choose from.
+     * @return user selected date
+     */
     private LocalDate getSelectedDate(LocalDate[] localDates) {
         LocalDate selectedLocalDate;
         int input;

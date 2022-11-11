@@ -1,7 +1,6 @@
 package Controllers;
 
 import Models.Data.Admin;
-import Models.Data.Enums.AgeClass;
 import Models.Data.Enums.TopMovieViewingState;
 import Models.Data.Movie;
 import Models.Data.Setting;
@@ -14,7 +13,7 @@ import Views.TopMovieView;
  *
  * @author Phee Kian Ann
  * @version 1.0
- * @since 2022-11-03
+ * @since 2022-11-11
  */
 public class TopMovieController implements INavigation {
 
@@ -73,6 +72,9 @@ public class TopMovieController implements INavigation {
         } while (!valid);
     }
 
+    /**
+     * Sets the controller to allow for editing of viewing states
+     */
     public void adminSetEditMode() {
         this.editMode = true;
     }
@@ -101,6 +103,10 @@ public class TopMovieController implements INavigation {
 
     }
 
+    /**
+     * Gets the Admin selected viewing state to set
+     * @return Top Movie Viewing state to set for the customer
+     */
     private TopMovieViewingState getSelectedViewingState() {
         TopMovieViewingState selectedState;
         int input;
@@ -151,12 +157,4 @@ public class TopMovieController implements INavigation {
         } while (true);
     }
 
-    /**
-     * Sets the currently logged in admin for the session
-     *
-     * @param admin current admin user
-     */
-    public void SetAdmin(Admin admin) {
-        this.currentAdmin = admin;
-    }
 }

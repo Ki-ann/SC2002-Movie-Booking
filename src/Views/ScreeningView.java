@@ -122,12 +122,11 @@ public class ScreeningView {
     }
 
     /**
-     *
-     * @param screeningList
-     * @param selectedMovie
-     * @param selectedDate
+     * Prints a list of showtime screenings for the selected movie
+     * @param screeningList list of screenings
+     * @param selectedMovie selected movie to display screenings for
      */
-    public static void printCinemaShowtimeSelectionList(List<Screening> screeningList, Movie selectedMovie, LocalDate selectedDate) {
+    public static void printCinemaShowtimeSelectionList(List<Screening> screeningList, Movie selectedMovie) {
         String[] showTimeString = screeningList.stream()
                 .map(s -> s.getShowTime().getTimeOfMovie() +
                         " - " +
@@ -143,6 +142,7 @@ public class ScreeningView {
         }
         ConsoleIOManager.printGoBack();
     }
+
     /**
      * prints a list for movie selection
      * @param movieList a list of movies
@@ -158,6 +158,10 @@ public class ScreeningView {
         ConsoleIOManager.printGoBack();
     }
 
+    /**
+     * Prints a list of dates for user selection
+     * @param localDates list of selectable dates
+     */
     public static void printDateList(LocalDate[] localDates) {
         String[] dateString = Arrays.stream(localDates).map(date -> date.format(DateTimeFormatter.ofPattern("dd/MM"))).toArray(String[]::new);
 

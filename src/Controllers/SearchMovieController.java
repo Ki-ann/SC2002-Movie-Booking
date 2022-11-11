@@ -4,15 +4,25 @@ import Models.Data.Movie;
 import Models.DataStoreManager;
 import Views.ConsoleIOManager;
 import Views.SearchMovieView;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
+/**
+ * SearchMovieController is a Navigation that manages the logic and flow for searching of movies
+ *
+ * @author Shreyas Pramod Hegde, Phee Kian Ann
+ * @version 1.0
+ * @since 2022-11-11
+ */
 public class SearchMovieController implements INavigation {
 
+    /**
+     * Start method implementation for initialization after loading with NavigationController.
+     *
+     * @see NavigationController
+     * @see INavigation
+     */
     public void start() {
         SearchMovieView.displayMenu();
         int choice = ConsoleIOManager.readInt();
@@ -27,7 +37,7 @@ public class SearchMovieController implements INavigation {
     }
 
     /**
-     *
+     * Lists all movies for user to choose from in order from movie showing status
      */
     public void listAllMovie() {
         ArrayList<Movie> moviesList = DataStoreManager.getInstance().getStore(Movie.class);
@@ -51,6 +61,9 @@ public class SearchMovieController implements INavigation {
         }while(true);
     }
 
+    /**
+     * Search movie by name then proceed to review system
+     */
     public void searchAndReview() {
         Movie[] movies = searchMovieByName();
 
@@ -72,6 +85,10 @@ public class SearchMovieController implements INavigation {
         }while(true);
     }
 
+    /**
+     * Search movie by name and return the list of movies found
+     * @return list of movies found.
+     */
     public Movie[] searchMovieByName() {
         ArrayList<Movie> foundMovies = new ArrayList<>();
         while (true) {
@@ -94,7 +111,14 @@ public class SearchMovieController implements INavigation {
         return foundMovies.toArray(Movie[]::new);
     }
 
-    public void gotoReviewSystem(Movie movie) {
+    /**
+     * Set the selected movie and call NavigationController to load new instance of ReviewController object
+     *
+     * @param movie user selected movie
+     * @see ReviewController
+     * @see NavigationController
+     */
+    private void gotoReviewSystem(Movie movie) {
         ReviewController reviewController = new ReviewController();
         reviewController.setMovie(movie);
         NavigationController.getInstance().load(reviewController);

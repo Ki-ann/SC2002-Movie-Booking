@@ -1,5 +1,15 @@
 package Views;
 
+
+/**
+ * AdminView class used by AdminController for printing information to console using static functions
+ *
+ * @author Shreyas Pramod Hegde
+ * @version 1.0
+ * @since 2022-11-11
+ * @see Controllers.AdminController
+ * @see Views.ConsoleIOManager
+ */
 public class AdminView {
     /**
      * Print Menu to display different functionalities of Admin
