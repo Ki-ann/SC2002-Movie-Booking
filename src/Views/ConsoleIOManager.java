@@ -181,14 +181,12 @@ public class ConsoleIOManager {
      */
     public static int readInt() {
         try {
-            int input = scanner.nextInt();
-            scanner.nextLine(); // Clear buffer
+            int input = Integer.parseInt(scanner.nextLine());
 
             return input;
         } catch (Exception exception) {
             //exception.printStackTrace();
             printLine("Invalid input! Please try again.");
-            scanner.nextLine(); // Clear buffer
         }
         // Try again
         return readInt();
@@ -203,12 +201,10 @@ public class ConsoleIOManager {
     public static double readDouble() {
         double output;
         try {
-            output = scanner.nextDouble();
-            scanner.nextLine(); // Clear buffer
+            output = Double.parseDouble(scanner.nextLine());
             return output;
         } catch (InputMismatchException ex) {
             ConsoleIOManager.printLine("Invalid input, try again.");
-            scanner.nextLine();  // flush scanner
             return readDouble();
         }
     }
@@ -221,10 +217,13 @@ public class ConsoleIOManager {
      */
     public static String readString() {
         try {
-            return scanner.nextLine();
+            String str = scanner.nextLine();
+            if(str.isEmpty()){
+                throw new RuntimeException();
+            }
+            return str;
         } catch (Exception exception) {
             printLine("Invalid input! Please try again.");
-            scanner.nextLine(); // Clear buffer
         }
         // Try again
         return readString();
@@ -247,7 +246,6 @@ public class ConsoleIOManager {
             }
         } catch (Exception exception) {
             printLine("Invalid input! Please try again.");
-            scanner.nextLine(); // Clear buffer
         }
         // Try again
         return readConfirm();
