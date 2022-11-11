@@ -39,14 +39,12 @@ public class SearchMovieView {
      * @param movieList selectable movie list
      */
     public static void listMovies(Movie[] movieList){
-        ArrayList<String> titles = new ArrayList<String>();
-//        String[] titles = new String[movieList.length];
+        String[] titles = new String[movieList.length];
         for (int i = 0; i < movieList.length; i++) {
-            if(movieList[i].getMovieStatus()!= MovieStatus.END_SHOWING) {
-                titles.add(movieList[i].getName()+ " | " + movieList[i].getMovieRating().name() + " | " + movieList[i].getMovieType().name() + " | " + movieList[i].getMovieStatus());
-            }
+            titles[i] = movieList[i].getName()+ " | " + movieList[i].getMovieRating().name() + " | " + movieList[i].getMovieType().name() + " | " + movieList[i].getMovieStatus();
         }
-        ConsoleIOManager.printMenu("These are the movies: ",titles.toArray(String[]::new));
+
+        ConsoleIOManager.printMenu("These are the movies: ",titles);
         ConsoleIOManager.printGoBack();
     }
 }

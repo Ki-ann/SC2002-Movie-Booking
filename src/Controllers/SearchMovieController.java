@@ -98,7 +98,7 @@ public class SearchMovieController implements INavigation {
 
             ArrayList<Movie> movies = DataStoreManager.getInstance().getStore(Movie.class);
             for (Movie movie : movies) {
-                if (movie.getName().toUpperCase(Locale.ROOT).contains(name.toUpperCase(Locale.ROOT)) && movie.getMovieStatus() != MovieStatus.END_SHOWING) {
+                if (movie.getName().toUpperCase(Locale.ROOT).contains(name.toUpperCase(Locale.ROOT))) {
                     foundMovies.add(movie);
                 }
             }
