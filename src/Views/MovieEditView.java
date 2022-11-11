@@ -154,4 +154,8 @@ public class MovieEditView {
                 "Movie Rating Details");
         ConsoleIOManager.printGoBack();
     }
+
+    public static void printEmptyError(){
+        ConsoleIOManager.printLine("Invalid input! Please try again.");
+    }
 }

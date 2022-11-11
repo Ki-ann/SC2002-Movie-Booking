@@ -1,6 +1,8 @@
 package Views;
 
+import Models.Data.Enums.MovieStatus;
 import Models.Data.Movie;
+import java.util.ArrayList;
 
 /**
  * ReviewView class used by ReviewController for printing information to console using static functions
@@ -37,12 +39,14 @@ public class SearchMovieView {
      * @param movieList selectable movie list
      */
     public static void listMovies(Movie[] movieList){
-        String[] titles = new String[movieList.length];
+        ArrayList<String> titles = new ArrayList<String>();
+//        String[] titles = new String[movieList.length];
         for (int i = 0; i < movieList.length; i++) {
-            titles[i] = movieList[i].getName()+ " | " + movieList[i].getMovieRating().name() + " | " + movieList[i].getMovieType().name() + " | " + movieList[i].getMovieStatus();
+            if(movieList[i].getMovieStatus()!= MovieStatus.END_SHOWING) {
+                titles.add(movieList[i].getName()+ " | " + movieList[i].getMovieRating().name() + " | " + movieList[i].getMovieType().name() + " | " + movieList[i].getMovieStatus());
+            }
         }
-
-        ConsoleIOManager.printMenu("These are the movies: ",titles);
+        ConsoleIOManager.printMenu("These are the movies: ",titles.toArray(String[]::new));
         ConsoleIOManager.printGoBack();
     }
 }

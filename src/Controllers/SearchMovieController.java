@@ -1,5 +1,6 @@
 package Controllers;
 
+import Models.Data.Enums.MovieStatus;
 import Models.Data.Movie;
 import Models.DataStoreManager;
 import Views.ConsoleIOManager;
@@ -97,7 +98,7 @@ public class SearchMovieController implements INavigation {
 
             ArrayList<Movie> movies = DataStoreManager.getInstance().getStore(Movie.class);
             for (Movie movie : movies) {
-                if (movie.getName().toUpperCase(Locale.ROOT).contains(name.toUpperCase(Locale.ROOT))) {
+                if (movie.getName().toUpperCase(Locale.ROOT).contains(name.toUpperCase(Locale.ROOT)) && movie.getMovieStatus() != MovieStatus.END_SHOWING) {
                     foundMovies.add(movie);
                 }
             }
