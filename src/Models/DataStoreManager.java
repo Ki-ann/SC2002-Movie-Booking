@@ -137,7 +137,7 @@ public class DataStoreManager {
      * @return true if there are no data files created and the folder is empty
      */
     public boolean isEmptyDataFolder(){
-        List<String> fileList;
+        List<String> fileList = new ArrayList<>();
         // Get the root path of the project
         Path start = Paths.get(System.getProperty("user.dir"), dataFolder);
         // Try walking through the directory and subdirectory for serialized .dat files
@@ -150,7 +150,7 @@ public class DataStoreManager {
                     .sorted()
                     .collect(Collectors.toList());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            ConsoleIOManager.printLine("No saved data files found.");
         }
 
         return fileList.isEmpty();

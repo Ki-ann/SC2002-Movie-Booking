@@ -5,6 +5,8 @@ import Models.Data.Enums.CinemaType;
 import Models.Data.Enums.MovieRating;
 import Models.Data.Enums.MovieStatus;
 import Models.Data.Enums.MovieType;
+import Views.ConsoleIOManager;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ public class DataSeeder {
         if(!DataStoreManager.getInstance().isEmptyDataFolder()){
             return;
         }
-
+        ConsoleIOManager.printLine("Initializing Data...");
         seedAdmin();
         seedCineplex();
         seedDiscounts();
