@@ -58,7 +58,7 @@ public class DataStoreManager {
     /**
      * File path to store the serialized data files.
      */
-    private final String dataFolder = "\\Data\\";
+    private final String dataFolder = "/Data/";
     /**
      * Adds the given object to the ArrayList stored in the DataStore
      * <br>Example:
