@@ -59,7 +59,7 @@ public class TopMovieView {
         sortedList.sort((m1, m2)-> Integer.compare(m2.getTicketSales(), m1.getTicketSales()));
         ConsoleIOManager.printMenu("Current Top 5 ranking movies by Ticket Sales");
         for(int i = 0; i < sortedList.size() && i < 5;++i){
-            ConsoleIOManager.printF("No %d. %-40s Tickets Sold: %d\n",i+1, sortedList.get(i).getName(), sortedList.get(i).getTicketSales());
+            ConsoleIOManager.printF("No %d. %-60s Tickets Sold: %d\n",i+1, sortedList.get(i).getName() + "| " + sortedList.get(i).getMovieType(), sortedList.get(i).getTicketSales());
         }
         ConsoleIOManager.printGoBack();
     }
@@ -74,7 +74,7 @@ public class TopMovieView {
         sortedList.sort((m1, m2)-> Float.compare(m2.getAverageRatingFloat(), m1.getAverageRatingFloat()));
         ConsoleIOManager.printMenu("Current Top 5 ranking movies by Ticket Reviews");
         for(int i = 0; i < sortedList.size() && i < 5;++i){
-            ConsoleIOManager.printF("No %d. %-40s Review Score: %.2f\n",i+1, sortedList.get(i).getName(), sortedList.get(i).getAverageRatingFloat());
+            ConsoleIOManager.printF("No %d. %-60s Review Score: %.2f\n",i+1, sortedList.get(i).getName() + " | " + sortedList.get(i).getMovieType(), sortedList.get(i).getAverageRatingFloat());
         }
         ConsoleIOManager.printGoBack();
     }
