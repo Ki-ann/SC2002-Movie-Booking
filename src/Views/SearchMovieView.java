@@ -19,7 +19,7 @@ public class SearchMovieView {
      * Displays a selection menu
      */
     public static void displayMenu() {
-        ConsoleIOManager.clearScreen();
+//        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("Search for movies",
                 "List all movies",
                 "Search via name");
@@ -30,7 +30,7 @@ public class SearchMovieView {
      * Prints a message for movie name input
      */
     public static void searchOptions() {
-        ConsoleIOManager.clearScreen();
+//        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printLine("Enter movie name: ");
     }
 

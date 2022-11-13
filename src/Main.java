@@ -16,7 +16,6 @@ class Main {
 		Setting.getSettings().setCurrentAdmin(null);
 		// Load Initial Controller
 		NavigationController.getInstance().load(new MainController());
-
 	}
 }
 

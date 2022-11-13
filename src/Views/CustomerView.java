@@ -15,7 +15,7 @@ public class CustomerView {
      * Prints the selection menu
      */
     public static void displayMenu() {
-		ConsoleIOManager.clearScreen();
+//		ConsoleIOManager.clearScreen();
 		ConsoleIOManager.printMenu("This is the customer page.",
                 "Book a ticket",
                 "Search for/Review a movie",

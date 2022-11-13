@@ -27,7 +27,7 @@ public class BookingView {
      * Prints the selection menu.
      */
     public static void displayMenu() {
-        ConsoleIOManager.clearScreen();
+//        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("This is the booking page.",
                 "Start booking");
         ConsoleIOManager.printGoBack();
@@ -42,7 +42,7 @@ public class BookingView {
                 .map(movie-> movie.getName()+ " | " + movie.getMovieRating().name() + " | " + movie.getMovieType().name())
                 .toArray(String[]::new);
 
-        ConsoleIOManager.clearScreen();
+//        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("Here are the movies currently showing",
                 movieStringList);
         ConsoleIOManager.printGoBack();
@@ -57,7 +57,7 @@ public class BookingView {
                 .map(Cineplex::getName)
                 .toArray(String[]::new);
 
-        ConsoleIOManager.clearScreen();
+//        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("The movie is currently screening in the following Cineplex",
                 cineplexStringList);
         ConsoleIOManager.printGoBack();
@@ -83,7 +83,7 @@ public class BookingView {
                                 .collect(Collectors.joining(" | ")))
                 .toArray(String[]::new);
 
-        ConsoleIOManager.clearScreen();
+//        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("These are the available show times for [" + selectedMovie.getName() + "]",
                 showTimeString);
         ConsoleIOManager.printGoBack();
@@ -102,7 +102,7 @@ public class BookingView {
                         s.getShowTime().getTimeOfMovie().plus(s.getMovie().getDuration()).toString())
                 .toArray(String[]::new);
 
-        ConsoleIOManager.clearScreen();
+//        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("These are the available show times for [" + selectedMovie.getName() + "]",
                 showTimeString);
 
@@ -123,7 +123,7 @@ public class BookingView {
         }
         String[] dateString = Arrays.stream(dates).map(date -> date.format(DateTimeFormatter.ofPattern("dd/MM"))).toArray(String[]::new);
 
-        ConsoleIOManager.clearScreen();
+//        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("Select the date you want to book for for [" + movie.getName() + "]",
                 dateString);
         ConsoleIOManager.printGoBack();
@@ -134,7 +134,7 @@ public class BookingView {
      * @param customer the current customer instance.
      */
     public static void printCustomerInfo(Customer customer) {
-        ConsoleIOManager.clearScreen();
+//        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("Enter customer information");
         ConsoleIOManager.printLine("Name: " + customer.getName());
         ConsoleIOManager.printLine("Email: " + customer.getEmail());
@@ -147,7 +147,7 @@ public class BookingView {
      * @param bookingTicket the current booking transaction.
      */
     public static void printCheckout(BookingTicket bookingTicket) {
-        ConsoleIOManager.clearScreen();
+//        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("Booking Preview");
         ConsoleIOManager.printLine("Movie: " + bookingTicket.getSelectedMovie().getName() + " " + bookingTicket.getSelectedMovie().getMovieStatus().name());
         ConsoleIOManager.printF("%s - %s - %s\n", bookingTicket.getSelectedCineplex().getName(), bookingTicket.getSelectedCinema().getName(), bookingTicket.getSelectedCinema().getCinemaType());
@@ -171,7 +171,7 @@ public class BookingView {
      * @param layout the given session seat layout.
      */
     public static void printSeatLayout(ArrayList<ArrayList<Seat>> layout){
-        ConsoleIOManager.clearScreen();
+//        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("Pick the seat you want to book for");
 
 
@@ -230,7 +230,7 @@ public class BookingView {
                 .map(Enum::name)
                 .toArray(String[]::new);
 
-        ConsoleIOManager.clearScreen();
+//        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("Please select your age",
                 ageStringList);
         ConsoleIOManager.printGoBack();
