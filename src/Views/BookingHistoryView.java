@@ -51,7 +51,7 @@ public class BookingHistoryView {
         ConsoleIOManager.printMenu(String.format("Booking History list for:\nName:%s Email:%s", requestedCustomer.getName(), requestedCustomer.getEmail()));
         DecimalFormat twoPlaces = new DecimalFormat("00.00");
         ConsoleIOManager.printMenu(String.format("%-5s | %-50s| %-8s| %-10s | %-20s| %-15s| %-15s | %-8s| %-16s  \n",
-                "Index", "Movie", "Seat", "Type", "Cinema", "Screening Time", "Screening Date", "Price", "Transaction ID"), 200);
+                "Index", "Movie", "Seat", "Seat Type", "Cinema", "Screening Time", "Screening Date", "Price", "Transaction ID"), 200);
         for (int i = 0; i < bookingTicketList.size(); ++i) {
             BookingTicket ticket = bookingTicketList.get(i);
 
@@ -61,7 +61,7 @@ public class BookingHistoryView {
                         ticket.getSelectedMovie().getName() + " **" + ticket.getSelectedMovie().getMovieStatus() + "**",
                         seat.getSeatString(),
                         seat.getSeatType(),
-                        ticket.getSelectedCineplex().getName() + " - " + ticket.getSelectedCinema().getName(),
+                        ticket.getSelectedCineplex().getName() + " - " + ticket.getSelectedCinema().getName() + " - " + ticket.getSelectedCinema().getCinemaType(),
                         ticket.getSelectedScreening().getShowTime().getTimeOfMovie() + " - " + ticket.getSelectedScreening().getShowTime().getTimeOfMovie().plus(ticket.getSelectedMovie().getDuration()).toString(),
                         ticket.getSelectedScreening().getShowTime().getDateOfMovie(),
                         "$" + twoPlaces.format(ticket.getPrice()),

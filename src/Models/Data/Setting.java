@@ -107,7 +107,7 @@ public class Setting implements Serializable {
         var holiday = getHoliday(dateOfMovie);
         double specialDay = 1.0;
         if(holiday != null){
-            specialDay =  holiday.getRate();
+            specialDay =  (holiday.getRate() / 100) + 1;
         }else if(isWeekend(dateOfMovie))
             specialDay = weekendMultiplier;
 
@@ -131,7 +131,7 @@ public class Setting implements Serializable {
      */
     private Holiday getHoliday(LocalDate selectedDate) {
         ArrayList<Holiday> holidayList = Holiday.getHolidayList();
-        return holidayList.stream().filter(holiday -> holiday.getDate() == selectedDate).findFirst().orElse(null);
+        return holidayList.stream().filter(holiday -> holiday.getDate().isEqual(selectedDate)).findFirst().orElse(null);
 
     }
 
