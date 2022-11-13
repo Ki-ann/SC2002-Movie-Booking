@@ -12,6 +12,7 @@ import Views.ConsoleIOManager;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -67,9 +68,12 @@ public class BookingController implements INavigation {
             Customer customer = bookingTicket.getCustomer();
             // State machine
             switch (currentBookingBookingState) {
-                case GET_MOVIES ->//===== Get Movies that are NOW_SHOWING
+                case GET_MOVIES ->//===== Get Movies that are NOW_SHOWING or Preview
                         {
-                            List<Movie> movieList = getMovieList().stream().filter(Movie -> Movie.getMovieStatus() == MovieStatus.NOW_SHOWING).toList();
+                            List<Movie> movieList = getMovieList().stream()
+                                    .filter(Movie -> Movie.getMovieStatus() == MovieStatus.NOW_SHOWING ||  Movie.getMovieStatus() == MovieStatus.PREVIEW)
+                                    .sorted(Comparator.comparing(Movie::getName))
+                                    .toList();
 
                             // Display Movie list
                             BookingView.printMovieList(movieList);

@@ -30,7 +30,7 @@ public class ConsoleIOManager {
      * Prints 50 new lines to simulate a screen clear in console.
      */
     public static void clearScreen() {
-        printLine(System.lineSeparator().repeat(50));
+        printLine(System.lineSeparator().repeat(2));
     }
 
     /**

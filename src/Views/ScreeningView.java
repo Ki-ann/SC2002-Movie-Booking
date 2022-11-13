@@ -149,7 +149,7 @@ public class ScreeningView {
      */
     public static void printMovieList(List<Movie> movieList) {
         String[] movieStringList = movieList.stream()
-                .map(Movie::getName)
+                .map(movie-> movie.getName()+ " | " + movie.getMovieRating().name() + " | " + movie.getMovieType().name())
                 .toArray(String[]::new);
 
         ConsoleIOManager.clearScreen();

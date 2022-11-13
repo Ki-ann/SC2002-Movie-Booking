@@ -42,7 +42,9 @@ public class SearchMovieController implements INavigation {
      */
     public void listAllMovie() {
         ArrayList<Movie> moviesList = DataStoreManager.getInstance().getStore(Movie.class);
-        Movie[] movies = moviesList.stream().sorted(Comparator.comparing(m -> m.getMovieStatus().name())).toArray(Movie[]::new);
+        Movie[] movies = moviesList.stream()
+                .sorted(Comparator.comparing(m -> m.getMovieStatus().name()))
+                .toArray(Movie[]::new);
 
         SearchMovieView.listMovies(movies);
 
@@ -79,7 +81,6 @@ public class SearchMovieController implements INavigation {
                 NavigationController.getInstance().goBack(0);
                 break;
             }else{
-                ConsoleIOManager.printMenu(movies[choice - 1].toString());
                 gotoReviewSystem(movies[choice - 1]);
                 break;
             }

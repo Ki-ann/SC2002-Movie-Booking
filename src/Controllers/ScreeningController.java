@@ -1,6 +1,7 @@
 package Controllers;
 
 import Models.Data.*;
+import Models.Data.Enums.MovieStatus;
 import Models.DataStoreManager;
 import Views.ScreeningView;
 import Views.ConsoleIOManager;
@@ -9,6 +10,7 @@ import Models.Data.Screening;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -56,7 +58,11 @@ public class ScreeningController implements INavigation {
         CineplexController controller = new CineplexController();
         screening.setShowTime(new ShowTime());
 
-        List<Movie> movieList = getMovieList();
+        List<Movie> movieList = getMovieList().stream()
+                .filter(Movie -> Movie.getMovieStatus() == MovieStatus.NOW_SHOWING ||  Movie.getMovieStatus() == MovieStatus.PREVIEW)
+                .sorted(Comparator.comparing(Movie::getName))
+                .toList();
+
         ScreeningView.printMovieList(movieList);
         Movie movie;
         movie = getSelectedMovie(movieList);
@@ -121,7 +127,10 @@ public class ScreeningController implements INavigation {
      */
     private void removeShowtime() {
         CineplexController controller = new CineplexController();
-        List<Movie> movieList = getMovieList();
+        List<Movie> movieList = getMovieList().stream()
+                .filter(Movie -> Movie.getMovieStatus() == MovieStatus.NOW_SHOWING ||  Movie.getMovieStatus() == MovieStatus.PREVIEW)
+                .sorted(Comparator.comparing(Movie::getName))
+                .toList();
 
         //====Get Movie
         ScreeningView.printMovieList(movieList);
@@ -161,7 +170,7 @@ public class ScreeningController implements INavigation {
             return;
         }
 
-        //====Get Cinema
+        //====Get Cinema overview
         ScreeningView.printCinemaOverview(CinemasWithSelectedMovie, movie, selectDate);
         Cinema selectedCinema = getSelectedCinema(CinemasWithSelectedMovie);
 

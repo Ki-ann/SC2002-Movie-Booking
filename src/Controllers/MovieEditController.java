@@ -49,6 +49,8 @@ public class MovieEditController implements INavigation {
      * The function that handles the flow for creation of movies.
      */
     public void createMovie() {
+        MovieEditSelection = -1;
+
         Movie movie = new Movie();
 
         //PROMPTS
@@ -94,6 +96,7 @@ public class MovieEditController implements INavigation {
             if (input != 0) {
                 ConsoleIOManager.printLine("Invalid input! ");
             } else {
+                NavigationController.getInstance().goBack(0);
                 break;
             }
         } while (true);
@@ -103,6 +106,7 @@ public class MovieEditController implements INavigation {
      * The function that handles the flow for updating of movies
      */
     public void updateMovie() {
+        MovieEditSelection = -1;
         SearchMovieView.searchOptions();
         Movie[] movies = gotoSearchMoviesSystem();
 
@@ -148,18 +152,21 @@ public class MovieEditController implements INavigation {
                     if (input != 0) {
                         ConsoleIOManager.printLine("Invalid input!");
                     } else {
+                        NavigationController.getInstance().goBack(0);
                         break;
                     }
                 } while (true);
 
             } while (valid);
         }
+        NavigationController.getInstance().goBack(0);
     }
 
     /**
      * The function that handles the flow for deletion of movies
      */
     public void deleteMovie() {
+        MovieEditSelection = -1;
         SearchMovieView.searchOptions();
         Movie[] movies = gotoSearchMoviesSystem();
 
@@ -181,10 +188,13 @@ public class MovieEditController implements INavigation {
                 if (input != 0) {
                     ConsoleIOManager.printLine("Invalid input!");
                 } else {
+                    NavigationController.getInstance().goBack(0);
                     break;
                 }
             } while (true);
         }
+        NavigationController.getInstance().goBack(0);
+
     }
 
     /**
