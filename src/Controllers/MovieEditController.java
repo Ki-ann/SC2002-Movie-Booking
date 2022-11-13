@@ -20,7 +20,7 @@ import java.util.ArrayList;
  */
 public class MovieEditController implements INavigation {
 
-    private int MovieEditSelection = -1;
+    private int movieEditSelection = -1;
 
     /**
      * Start method implementation for initialization after loading with NavigationController.
@@ -30,9 +30,11 @@ public class MovieEditController implements INavigation {
      */
     public void start() {
         do {
-            MovieEditView.displayMenu();
-            MovieEditSelection = ConsoleIOManager.readInt();
-            switch (MovieEditSelection) {
+            if (movieEditSelection == -1) {
+                MovieEditView.displayMenu();
+            }
+            movieEditSelection = ConsoleIOManager.readInt();
+            switch (movieEditSelection) {
                 case 1 -> createMovie();
                 case 2 -> updateMovie();
                 case 3 -> deleteMovie();
@@ -41,14 +43,14 @@ public class MovieEditController implements INavigation {
                     ConsoleIOManager.printLine("Invalid input! Please select an item from the menu!");
                 }
             }
-        } while (MovieEditSelection != -1);
+        } while (movieEditSelection != -1);
     }
 
     /**
      * The function that handles the flow for creation of movies.
      */
     public void createMovie() {
-        MovieEditSelection = -1;
+        movieEditSelection = -1;
 
         Movie movie = new Movie();
 
@@ -149,13 +151,13 @@ public class MovieEditController implements INavigation {
                     if (input != 0) {
                         ConsoleIOManager.printLine("Invalid input!");
                     } else {
-                        NavigationController.getInstance().goBack(0);
                         break;
                     }
                 } while (true);
 
             } while (valid);
         }
+        movieEditSelection = -1;
         NavigationController.getInstance().goBack(0);
     }
 
@@ -163,7 +165,7 @@ public class MovieEditController implements INavigation {
      * The function that handles the flow for deletion of movies
      */
     public void deleteMovie() {
-        MovieEditSelection = -1;
+        movieEditSelection = -1;
         Movie[] movies = gotoSearchMoviesSystem();
 
         SearchMovieView.listMovies(movies);
@@ -281,19 +283,22 @@ public class MovieEditController implements INavigation {
      */
     private void addMovieCasts(Movie movie) {
         MovieEditView.printNumCast();
-        int numCasts = ConsoleIOManager.readInt();
 
-        if (numCasts == 0) {
-            MovieEditView.printEmptyError();
-        } else {
-            ArrayList<String> cast = new ArrayList<>();
-            for (int i = 0; i < numCasts; i++) {
-                MovieEditView.printAddCast();
-                String castMember = ConsoleIOManager.readString();
-                cast.add(castMember);
+        do {
+            int numCasts = ConsoleIOManager.readInt();
+            if (numCasts == 0) {
+                MovieEditView.printEmptyError();
+            } else {
+                ArrayList<String> cast = new ArrayList<>();
+                for (int i = 0; i < numCasts; i++) {
+                    MovieEditView.printAddCast();
+                    String castMember = ConsoleIOManager.readString();
+                    cast.add(castMember);
+                }
+                movie.setCast(cast);
+                break;
             }
-            movie.setCast(cast);
-        }
+        } while (true);
     }
 
     /**
@@ -303,20 +308,22 @@ public class MovieEditController implements INavigation {
      */
     private void addMovieGenres(Movie movie) {
         MovieEditView.printNumGenre();
-        int numGenre = ConsoleIOManager.readInt();
-        if (numGenre == 0) {
-            MovieEditView.printEmptyError();
-            addMovieGenres(movie);
-        } else {
-            ArrayList<String> genre = new ArrayList<>();
-            for (int i = 0; i < numGenre; i++) {
-                MovieEditView.printAddGenre();
-                String genreType = ConsoleIOManager.readString();
-                genre.add(genreType);
-            }
-            movie.setMovieGenre(genre);
-        }
 
+        do {
+            int numGenre = ConsoleIOManager.readInt();
+            if (numGenre == 0) {
+                MovieEditView.printEmptyError();
+            } else {
+                ArrayList<String> genre = new ArrayList<>();
+                for (int i = 0; i < numGenre; i++) {
+                    MovieEditView.printAddGenre();
+                    String genreType = ConsoleIOManager.readString();
+                    genre.add(genreType);
+                }
+                movie.setMovieGenre(genre);
+                break;
+            }
+        } while (true);
     }
 
     /**
@@ -326,19 +333,21 @@ public class MovieEditController implements INavigation {
      */
     private void addMovieDirectors(Movie movie) {
         MovieEditView.printNumDirector();
-        int numDirector = ConsoleIOManager.readInt();
-        if (numDirector == 0) {
-            MovieEditView.printEmptyError();
-            addMovieDirectors(movie);
-        } else {
-            ArrayList<String> director = new ArrayList<>();
-            for (int i = 0; i < numDirector; i++) {
-                MovieEditView.printAddDirector();
-                String directorMember = ConsoleIOManager.readString();
-                director.add(directorMember);
+        do {
+            int numDirector = ConsoleIOManager.readInt();
+            if (numDirector == 0) {
+                MovieEditView.printEmptyError();
+            } else {
+                ArrayList<String> director = new ArrayList<>();
+                for (int i = 0; i < numDirector; i++) {
+                    MovieEditView.printAddDirector();
+                    String directorMember = ConsoleIOManager.readString();
+                    director.add(directorMember);
+                }
+                movie.setDirector(director);
+                break;
             }
-            movie.setDirector(director);
-        }
+        } while (true);
 
     }
 
