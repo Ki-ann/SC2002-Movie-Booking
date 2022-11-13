@@ -56,7 +56,7 @@ public class PaymentView {
      * Prints a message when starting payment
      */
     public static void printPaymentStart() {
-        //ConsoleIOManager.clearScreen();
+        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("Starting Payment Transaction");
         ConsoleIOManager.printLine("[Y/N] Do you wish to enter a discount code?");
     }

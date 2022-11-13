@@ -17,7 +17,7 @@ public class SettingsView {
      * Prints the selection menu.
      */
     public static void displayMenu() {
-//		ConsoleIOManager.clearScreen();
+		ConsoleIOManager.clearScreen();
 		ConsoleIOManager.printMenu("This is the setting page.",
                 "I want to manage ticket price",
                 "I want to manage holidays",
@@ -31,7 +31,7 @@ public class SettingsView {
      * @param setting Default setting
      */
     public static void printTicketPriceMenu(Setting setting) {
-//        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.clearScreen();
         displayTicketPrices(setting);
         ConsoleIOManager.printMenu("Manage Ticket Price",
                 "Edit Standard Ticket Price");
@@ -42,7 +42,7 @@ public class SettingsView {
      * Prints a selection menu of holiday management.
      */
     public static void printHolidayMenu(){
-//        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("Manage holidays",
         "List all holidays",
                 "Add a holiday");
@@ -85,7 +85,7 @@ public class SettingsView {
      * @param holidayString holiday list
      */
     public static void printHolidayListMenu(String[] holidayString) {
-//        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("Holiday list option", holidayString);
         if (holidayString.length == 0) {
             ConsoleIOManager.printLine("No holiday exists");
@@ -106,7 +106,7 @@ public class SettingsView {
      * @param holiday the current selected holiday
      */
     public static void displayHolidayDetails(Holiday holiday) {
-//        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printLine(holiday.detailString());
         ConsoleIOManager.printLine();
         ConsoleIOManager.printLine("Please enter your choice:");
@@ -127,7 +127,7 @@ public class SettingsView {
      * @param codeString list of discount code strings
      */
     public static void printDiscountCodeList(String[] codeString) {
-//        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("Discount Codes");
 
         if (codeString.length == 0) {
@@ -144,7 +144,7 @@ public class SettingsView {
      * Print a message for starting of adding discount code
      */
     public static void printAddDiscountCode() {
-//        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("Add discount code");
         ConsoleIOManager.printLine("Enter name for the discount code: ");
     }
@@ -168,7 +168,7 @@ public class SettingsView {
      * Prints menu for discount settings
      */
     public static void printDiscountMenu() {
-//        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("Manage discounts",
                 "List all discounts code",
                 "Add a discount code");

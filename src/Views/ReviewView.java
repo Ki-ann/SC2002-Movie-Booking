@@ -18,7 +18,7 @@ public class ReviewView {
      * Prints the selection menu.
      */
     public static void displayMenu(Movie selectedMovie) {
-//        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu(selectedMovie.toString());
 
         ConsoleIOManager.printMenu("Reviews",

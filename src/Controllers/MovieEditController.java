@@ -29,6 +29,7 @@ public class MovieEditController implements INavigation {
      * @see INavigation
      */
     public void start() {
+        MovieEditView.displayMenu();
         do {
             MovieEditView.displayMenu();
             MovieEditSelection = ConsoleIOManager.readInt();

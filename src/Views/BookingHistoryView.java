@@ -22,7 +22,7 @@ public class BookingHistoryView {
      * Print default title display when loaded in.
      */
     public static void displayMenu() {
-//        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("Booking History Viewer");
     }
 

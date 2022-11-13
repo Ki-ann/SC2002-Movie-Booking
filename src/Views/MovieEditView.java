@@ -14,7 +14,7 @@ public class MovieEditView {
      * Prints the selection menu.
      */
     public static void displayMenu() {
-//        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("This is the Movie Editing Page", "Create a Movie", "Update existing Movies",
                 "Delete existing Movies");
         ConsoleIOManager.printGoBack();
@@ -141,7 +141,7 @@ public class MovieEditView {
      * @param movieString movie details
      */
     public static void printEditMoviePrompt(String movieString){
-//        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu(movieString);
         ConsoleIOManager.printMenu("This is the Movie Editing Page",
                 "Movie Name",

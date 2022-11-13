@@ -15,7 +15,7 @@ public class AdminView {
      * Print Menu to display different functionalities of Admin
      */
     public static void DisplayMenu() {
-//        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("This is the admin page",
                 "Edit Movies",
                 "Edit Screenings",

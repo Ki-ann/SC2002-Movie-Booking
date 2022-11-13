@@ -24,7 +24,7 @@ public class TopMovieView {
      * @param currentAdmin current admin instance
      */
     public static void displayMenu(TopMovieViewingState currentTopMovieViewingState, Admin currentAdmin) {
-//        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.clearScreen();
         ArrayList<String> displayString = new ArrayList<>();
         if(currentAdmin != null){
             ConsoleIOManager.printMenu("Admin: Showing all viewing modes");
@@ -54,7 +54,7 @@ public class TopMovieView {
      * @param store Movie list from DataStore
      */
     public static void printTopSales(ArrayList<Movie> store) {
-//        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.clearScreen();
         ArrayList<Movie> sortedList = new ArrayList<>(store);
         sortedList.sort((m1, m2)-> Integer.compare(m2.getTicketSales(), m1.getTicketSales()));
         ConsoleIOManager.printMenu("Current Top 5 ranking movies by Ticket Sales");
@@ -69,7 +69,7 @@ public class TopMovieView {
      * @param store Movie list from DataStore
      */
     public static void printTopReviews(ArrayList<Movie> store) {
-//        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.clearScreen();
         ArrayList<Movie> sortedList = new ArrayList<>(store);
         sortedList.sort((m1, m2)-> Float.compare(m2.getAverageRatingFloat(), m1.getAverageRatingFloat()));
         ConsoleIOManager.printMenu("Current Top 5 ranking movies by Ticket Reviews");
@@ -88,7 +88,7 @@ public class TopMovieView {
                 .map(e-> currentBookingState.name().equals(e.name()) ? e.name() + " (Current Mode)" : e.name())
                 .toArray(String[]::new);
 
-//        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("Please select the review mode for customers:",
                 stateStringList);
         ConsoleIOManager.printGoBack();

@@ -55,7 +55,7 @@ public class SearchMovieController implements INavigation {
                 NavigationController.getInstance().goBack(0);
                 break;
             }else{
-                ConsoleIOManager.printLine(movies[choice - 1].toString());
+                ConsoleIOManager.printMenu(movies[choice - 1].toString());
                 gotoReviewSystem(movies[choice - 1]);
                 break;
             }
@@ -79,6 +79,7 @@ public class SearchMovieController implements INavigation {
                 NavigationController.getInstance().goBack(0);
                 break;
             }else{
+                ConsoleIOManager.printMenu(movies[choice - 1].toString());
                 gotoReviewSystem(movies[choice - 1]);
                 break;
             }

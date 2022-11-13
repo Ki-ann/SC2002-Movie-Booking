@@ -21,7 +21,7 @@ public class ScreeningView {
      * Prints a menu for showtime management.
      */
     public static void displayMenu() {
-//        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("This is the ShowTime managing page.",
                 "Add a showtime",
                             "Remove a showtime");
@@ -67,7 +67,7 @@ public class ScreeningView {
                 .map(Cineplex::getName)
                 .toArray(String[]::new);
 
-//        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("The movie is currently in the following Cineplex",
                 cineplexStringList);
         ConsoleIOManager.printGoBack();
@@ -92,7 +92,7 @@ public class ScreeningView {
                                 .collect(Collectors.joining(" | ")))
                 .toArray(String[]::new);
 
-//        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("These are the current show times for [" + selectedMovie.getName() + "]",
                 showTimeString);
         ConsoleIOManager.printGoBack();
@@ -111,7 +111,7 @@ public class ScreeningView {
                         s.getShowTime().getTimeOfMovie().plus(s.getMovie().getDuration()).toString())
                 .toArray(String[]::new);
 
-//        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("These are the current show times for [" + selectedMovie.getName() + "]");
 
         if(showTimeString.length> 0) {
@@ -133,7 +133,7 @@ public class ScreeningView {
                         s.getShowTime().getTimeOfMovie().plus(s.getMovie().getDuration()).toString())
                 .toArray(String[]::new);
 
-//        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("These are the current show times for [" + selectedMovie.getName() + "]",
                 showTimeString);
 
@@ -152,7 +152,7 @@ public class ScreeningView {
                 .map(Movie::getName)
                 .toArray(String[]::new);
 
-//        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("Here are the movies to modify",
                 movieStringList);
         ConsoleIOManager.printGoBack();
@@ -165,7 +165,7 @@ public class ScreeningView {
     public static void printDateList(LocalDate[] localDates) {
         String[] dateString = Arrays.stream(localDates).map(date -> date.format(DateTimeFormatter.ofPattern("dd/MM"))).toArray(String[]::new);
 
-//        ConsoleIOManager.clearScreen();
+        ConsoleIOManager.clearScreen();
         ConsoleIOManager.printMenu("Here are the movies to modify",
                 dateString);
         ConsoleIOManager.printGoBack();
