@@ -29,7 +29,6 @@ public class MovieEditController implements INavigation {
      * @see INavigation
      */
     public void start() {
-        MovieEditView.displayMenu();
         do {
             MovieEditView.displayMenu();
             MovieEditSelection = ConsoleIOManager.readInt();
@@ -106,8 +105,6 @@ public class MovieEditController implements INavigation {
      * The function that handles the flow for updating of movies
      */
     public void updateMovie() {
-        MovieEditSelection = -1;
-        SearchMovieView.searchOptions();
         Movie[] movies = gotoSearchMoviesSystem();
 
         while (true) {
@@ -167,7 +164,6 @@ public class MovieEditController implements INavigation {
      */
     public void deleteMovie() {
         MovieEditSelection = -1;
-        SearchMovieView.searchOptions();
         Movie[] movies = gotoSearchMoviesSystem();
 
         SearchMovieView.listMovies(movies);
