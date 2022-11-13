@@ -26,6 +26,7 @@ public class SettingsController implements INavigation {
      * @see INavigation
      */
     public void start() {
+        if(initialMenuSelection == -1)
         SettingsView.displayMenu();
 
         do {
